@@ -262,7 +262,7 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  ## Contributors
 
-This project exists thanks to all the people who contribute.
+这个项目的存在要感谢所有做出贡献的人.
 
 <a href="https://github.com/a616567126/GPT-WEB-JAVA/graphs/contributors">
 <img src="https://contrib.rocks/image?repo=a616567126/GPT-WEB-JAVA" />
