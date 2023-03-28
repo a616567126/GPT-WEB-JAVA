@@ -3,17 +3,22 @@
 基于Spring Boot 3.0 Mybatis-plus的GPTweb后台
  
 ## Getting Started
-  JDK>=17
+  JDK>=17  
+  
   MySql>=8.0
  
 ### Installing
  
-1.本地运行配置maven，jdk并检查版本是否兼容
+1.本地运行配置maven，jdk并检查版本是否兼容  
 
-2.安装mysql8.0 并创建数据库`gpt`
 
-3.导入sql
+2.安装mysql8.0 并创建数据库`gpt`  
 
+
+3.导入sql  
+
+ -- Table structure for announcement  
+ 
   DROP TABLE IF EXISTS `announcement`;
   CREATE TABLE `announcement` (
   `id` bigint NOT NULL,
@@ -28,11 +33,10 @@
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='公告';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='公告';  
 
--- ----------------------------
--- Table structure for gpt_key
--- ----------------------------
+-- Table structure for gpt_key  
+
 DROP TABLE IF EXISTS `gpt_key`;
 CREATE TABLE `gpt_key` (
   `id` bigint NOT NULL,
@@ -47,11 +51,10 @@ CREATE TABLE `gpt_key` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='gptkey\n';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='gptkey\n';  
 
--- ----------------------------
--- Table structure for pay_config
--- ----------------------------
+-- Table structure for pay_config  
+
 DROP TABLE IF EXISTS `pay_config`;
 CREATE TABLE `pay_config` (
   `id` bigint NOT NULL,
@@ -67,11 +70,10 @@ CREATE TABLE `pay_config` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='支付配置';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='支付配置';    
 
--- ----------------------------
--- Table structure for product
--- ----------------------------
+-- Table structure for product  
+
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `id` bigint NOT NULL,
@@ -89,11 +91,10 @@ CREATE TABLE `product` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='产品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='产品表';  
 
--- ----------------------------
--- Table structure for refueling_kit
--- ----------------------------
+-- Table structure for refueling_kit  
+
 DROP TABLE IF EXISTS `refueling_kit`;
 CREATE TABLE `refueling_kit` (
   `id` bigint NOT NULL,
@@ -107,11 +108,10 @@ CREATE TABLE `refueling_kit` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='加油包';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='加油包';  
 
--- ----------------------------
--- Table structure for t_order
--- ----------------------------
+-- Table structure for t_order  
+
 DROP TABLE IF EXISTS `t_order`;
 CREATE TABLE `t_order` (
   `id` bigint NOT NULL,
@@ -130,11 +130,10 @@ CREATE TABLE `t_order` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT NULL COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='订单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='订单表';  
 
--- ----------------------------
--- Table structure for use_log
--- ----------------------------
+-- Table structure for use_log  
+
 DROP TABLE IF EXISTS `use_log`;
 CREATE TABLE `use_log` (
   `id` bigint NOT NULL,
@@ -152,11 +151,10 @@ CREATE TABLE `use_log` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='使用记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='使用记录表';  
 
--- ----------------------------
--- Table structure for user
--- ----------------------------
+-- Table structure for user  
+
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` bigint NOT NULL,
@@ -175,13 +173,13 @@ CREATE TABLE `user` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户表';  
 
-4.安装redis
+4.安装redis  
 
 5.修改yml种的mysql与redis连接地址与账号密码
   dev-开发环境
-  prod-生产环境
+  prod-生产环境  
   
 spring:
   datasource:
@@ -218,9 +216,8 @@ spring:
 ## Running the tests
  
 启动idea出现如下信息说明运行成功
-
-2023-03-28T08:36:32.509+08:00  INFO 87213 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8000 (http) with context path ''
-2023-03-28T08:36:32.514+08:00  INFO 87213 --- [           main] com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds (process running for 5.521)
+INFO 87213 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8000 (http) with context path ''
+INFO 87213 --- [           main] com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds (process running for 5.521)
  
 ### And coding style tests
  
@@ -228,5 +225,5 @@ spring:
  
 ## Express gratitude
  
-感谢开原作者 [CONTRIBUTING.md](https://github.com/dulaiduwang003/ChatGPT_wechat) 提供的基础gpt功能
+感谢开原作者 [dulaiduwang003](https://github.com/dulaiduwang003/ChatGPT_wechat) 提供的基础GPT功能
  
