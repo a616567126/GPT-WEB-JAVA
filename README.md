@@ -1,5 +1,5 @@
 <div align="center">
-    <p style="font-size:25px;font-weight: 800;">GPT-WEB-CLIENT</p>
+    <p style="font-size:25px;font-weight: 800;">GPT-WEB-JAVA</p>
 </div>
 <div align="center" style="text-align:center;margin-top:30px;margin-bottom:20px">
    <a style="padding-left:10px"><img src="https://img.shields.io/github/stars/a616567126/GPT-WEB-JAVA"/></a>
