@@ -286,9 +286,9 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
 ## 条件允许的情况下可以请作者喝一杯冰阔落
  * **支付宝**  
- * ![WX20230328-094221@2x](https://user-images.githubusercontent.com/43660702/228105535-144d09cd-6326-4c22-b9b9-8c69c299caac.png)
+ * <img src="https://user-images.githubusercontent.com/43660702/228105535-144d09cd-6326-4c22-b9b9-8c69c299caac.png" width="100px" height="100px">
  * **微信**
- * ![WX20230328-094204@2x](https://user-images.githubusercontent.com/43660702/228105188-09c49078-9156-40bc-8327-f2b05c5bc5fa.png)
+ * <img src="https://user-images.githubusercontent.com/43660702/228105188-09c49078-9156-40bc-8327-f2b05c5bc5fa.png" width="100px" height="100px"> 
  
  
 ## 记得点一个Star哦!!!!
