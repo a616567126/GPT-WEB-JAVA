@@ -11,7 +11,7 @@
  
 **基于Spring Boot 3.0 Mybatis-plus的GPTweb后台**  
 
-**demo地址：http://gptai.v-wim.xyz/login**
+**Demo地址：http://gptai.v-wim.xyz/login**
 ## Getting Started  
 
 * [**JDK>=17**](golang_install_guide)
@@ -265,7 +265,7 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  **后端基于另一个开源项目开发，所用到jdk17特性** 
  
- **前端项目地址[GPT-WEB-CLIENT](https://github.com/a616567126/GPT-WEB-CLIENT) 
+ **前端项目基于Vue2地址[GPT-WEB-CLIENT](https://github.com/a616567126/GPT-WEB-CLIENT)**
  
 ## Express gratitude
  
