@@ -33,16 +33,55 @@
 
 
  
-### Installing
+## Installing
  
-1.本地运行配置maven，jdk并检查版本是否兼容  
+**1.本地运行配置maven，jdk并检查版本是否兼容  
 
-2.安装redis  
+**2.安装redis  
 
-3.安装mysql8.0 并创建数据库`gpt`  
+**3.安装mysql8.0 并创建数据库`gpt`  
 
-4.导入sql  
+**4.导入sql  
 
+**5.修改yml种的mysql与redis连接地址与账号密码  
+
+    dev-开发环境  
+    
+    prod-生产环境  
+## yml
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1/gpt?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6380
+      password: password
+      database: 0
+      jedis:
+        pool:
+          max-idle: 100
+          min-idle: 1
+          max-active: 1000
+          max-wait: -1
+## SQL
  ```sql
  -- Table structure for announcement  
  
@@ -201,43 +240,6 @@ CREATE TABLE `user` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户表';  
-
-5.修改yml种的mysql与redis连接地址与账号密码
-  dev-开发环境
-  prod-生产环境  
-  
-spring:
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1/gpt?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    filters: stat
-    maxActive: 20
-    initialSize: 1
-    maxWait: 60000
-    minIdle: 1
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: select 'x'
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
-    maxOpenPreparedStatements: 20
-  data:
-    redis:
-      host: 127.0.0.1
-      port: 6380
-      password: password
-      database: 0
-      jedis:
-        pool:
-          max-idle: 100
-          min-idle: 1
-          max-active: 1000
-          max-wait: -1
           
 ```         
 ## Running the tests
