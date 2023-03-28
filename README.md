@@ -81,7 +81,8 @@ spring:
           max-idle: 100
           min-idle: 1
           max-active: 1000
-          max-wait: -1
+          max-wait: -1  
+          
 ## SQL
  ```sql
  -- Table structure for announcement  
