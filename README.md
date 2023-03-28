@@ -16,7 +16,7 @@
 
 
 3.导入sql  
-
+ ```sql
  -- Table structure for announcement  
  
   DROP TABLE IF EXISTS `announcement`;  
