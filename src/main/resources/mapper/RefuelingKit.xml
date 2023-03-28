@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.app.chatgptbot.dao.RefuelingKitDao">
+
+
+    <select id="selectUserKit" resultType="com.cn.app.chatgptbot.model.res.UserRefuelingKitRes">
+        SELECT
+            p.`name` as productName,
+            r.number_times,
+            ifnull(useNumber,0) as useNumber,
+            DATE_ADD(r.create_time, INTERVAL 1 DAY)  as expirationDateTime
+        FROM
+            refueling_kit r
+                LEFT JOIN product p on p.id = r.product_id
+                LEFT JOIN (SELECT count(1) as useNumber,kit_id  FROM use_log WHERE user_id = #{userId} and use_type = 3 GROUP BY kit_id) k on k.kit_id = r.id
+        where r.user_id  = #{userId}
+    </select>
+    <select id="getUserKitId" resultType="java.lang.Long">
+        SELECT
+            id
+        FROM
+            refueling_kit r
+        left join (SELECT count(1) number,kit_id FROM use_log where state = 0 and user_id = #{userId} and use_type = 3 group by kit_id)  u on u.kit_id = r.id
+        WHERE DATE_ADD(create_time, INTERVAL 1 DAY) >= now()
+        and user_id = #{userId}
+        and number_times > u.number
+        and r.deleted = 0
+        ORDER BY
+            id
+        limit 1
+    </select>
+</mapper>

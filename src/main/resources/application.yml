@@ -1,0 +1,47 @@
+server:
+  port: 8000
+  tomcat:
+    uri-encoding: utf-8
+spring:
+  profiles:
+    active: dev
+jackson:
+  default-property-inclusion: non_null
+#    设置上传文件大小
+servlet:
+  multipart:
+    max-file-size: 1000000Mb
+    max-request-size: 1000000Mb
+#配置mybatis-plus 开启日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
+  mapper-locations: classpath:mapper/*.xml
+#swgger加密
+knife4j:
+  enable: true
+  basic:
+    enable: true
+    username: ssp
+    password: simshen
+#代理ip
+broker:
+  ip:
+  port:
+# 微信小程序配置
+we-chat:
+  #小程序 ID
+  appId: 'wx720af89b8fdf80c7'
+  #小程序 密钥
+  secret: '7fbe5a174ce5701a26e4cb2a263a8531'
+# Open配置
+open:
+  # Key池
+  keys:
+    - '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'
+  thirdPartyKey: 'Xxxxxxx'
+  choose: true
+  isStream: true
+  isRandom: false
+# bing机器人请求路径
+bingUrl: "http://XXXXXXXXX:3000/bing"
