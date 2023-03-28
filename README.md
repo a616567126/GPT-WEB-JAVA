@@ -35,15 +35,15 @@
  
 ## Installing
  
-**1.本地运行配置maven，jdk并检查版本是否兼容  
+**1.本地运行配置maven，jdk并检查版本是否兼容**  
 
-**2.安装redis  
+**2.安装redis**  
 
-**3.安装mysql8.0 并创建数据库`gpt`  
+**3.安装mysql8.0 并创建数据库`gpt`**  
 
-**4.导入sql  
+**4.导入sql**  
 
-**5.修改yml种的mysql与redis连接地址与账号密码  
+**5.修改yml种的mysql与redis连接地址与账号密码**  
 
     dev-开发环境  
     
