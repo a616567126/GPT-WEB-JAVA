@@ -258,7 +258,7 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
 ## Express gratitude
  
- **感谢开原作者 [dulaiduwang003](https://github.com/dulaiduwang003/ChatGPT_wechat) 提供的基础GPT功能**
+ **感谢开源作者 [dulaiduwang003](https://github.com/dulaiduwang003/ChatGPT_wechat) 提供的基础GPT功能可以的话点个Star**
  
 ## Put It Last
  **解释一下pay_config内容，如果自己对接其他支付可忽略**  
@@ -281,4 +281,16 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  **notify_url：支付成功后回调地址**  
  
- **return_url：支付成功后跳转页面**
+ **return_url：支付成功后跳转页面**  
+ 
+ 
+## 条件允许的情况下可以请作者喝一杯冰阔落
+ * **支付宝**
+ ![WX20230328-094221@2x](https://user-images.githubusercontent.com/43660702/228105155-20f7ebee-f525-445e-9a88-a664d37cb03e.png)
+ * **微信**
+ ![WX20230328-094204@2x](https://user-images.githubusercontent.com/43660702/228105188-09c49078-9156-40bc-8327-f2b05c5bc5fa.png)
+ 
+ 
+## 记得点一个Star哦!!!!
+
+  `id` bigint NOT NULL,
