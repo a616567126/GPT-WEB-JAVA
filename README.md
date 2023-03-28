@@ -1,3 +1,12 @@
+<div align="center">
+    <p style="font-size:25px;font-weight: 800;">GPT-WEB-CLIENT</p>
+</div>
+<div align="center" style="text-align:center;margin-top:30px;margin-bottom:20px">
+   <a style="padding-left:10px"><img src="https://img.shields.io/github/stars/a616567126/GPT-WEB-CLIENT"/></a>
+   <a style="padding-left:10px"><img src="https://img.shields.io/github/forks/a616567126/GPT-WEB-CLIENT?color=red&logo=red"/></a>
+</div>
+
+
 # **Project Title**
  
 **基于Spring Boot 3.0 Mybatis-plus的GPTweb后台
