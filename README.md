@@ -49,6 +49,7 @@
     
     prod-生产环境  
 ## yml
+```yml
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -244,8 +245,10 @@ CREATE TABLE `user` (
 ```         
 ## Running the tests
  
-**启动idea出现如下信息说明运行成功
-o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8000 (http) with context path ''
+**启动idea出现如下信息说明运行成功  
+
+o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8000 (http) with context path ''  
+
 com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds (process running for 5.521)
  
 ### And coding style tests
