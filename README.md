@@ -4,19 +4,19 @@
  
 ## Getting Started
 
-  **JDK>=17 **
+  **JDK>=17
   
-  **MySql>=8.0 **
+  **MySql>=8.0
  
 ### Installing
  
-**1.本地运行配置maven，jdk并检查版本是否兼容  
+1.本地运行配置maven，jdk并检查版本是否兼容  
 
-**2.安装redis  
+2.安装redis  
 
-**3.安装mysql8.0 并创建数据库`gpt`  
+3.安装mysql8.0 并创建数据库`gpt`  
 
-**4.导入sql  
+4.导入sql  
 
  ```sql
  -- Table structure for announcement  
@@ -177,9 +177,10 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户表';  
 
-**5.修改yml种的mysql与redis连接地址与账号密码
+5.修改yml种的mysql与redis连接地址与账号密码
   dev-开发环境
   prod-生产环境  
+  
 ```yml
 spring:
   datasource:
@@ -214,7 +215,7 @@ spring:
           max-active: 1000
           max-wait: -1
           
-          
+```         
 ## Running the tests
  
 启动idea出现如下信息说明运行成功
