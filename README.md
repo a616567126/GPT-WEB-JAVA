@@ -310,6 +310,10 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
 ## 记得点一个Star哦!!!!
 
+## 加入微信群
+<img width="668" alt="WeChata653a42d1eb1aed3137c0c30e3ed1b92" src="https://user-images.githubusercontent.com/43660702/228197837-21fabf93-477a-47a1-afdc-6de427679ac1.png">
+
+
 
 [![Star History Chart](https://api.star-history.com/svg?repos=a616567126/GPT-WEB-JAVA&type=Timeline)](https://star-history.com/#a616567126/GPT-WEB-JAVA&Timeline)
 
