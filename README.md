@@ -264,6 +264,8 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  **后端基于另一个开源项目开发，所用到jdk17特性** 
  
+ **前端项目地址[GPT-WEB-CLIENT](https://github.com/a616567126/GPT-WEB-CLIENT) 
+ 
 ## Express gratitude
  
  **感谢开源作者 [dulaiduwang003](https://github.com/dulaiduwang003/ChatGPT_wechat) 提供的基础GPT功能可以的话点个Star**
