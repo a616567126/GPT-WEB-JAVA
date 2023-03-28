@@ -7,6 +7,31 @@
   **JDK>=17
   
   **MySql>=8.0
+  
+## Major Function
+--客户端  
+
+* **登录**
+* **注册赠送10次对话**
+* **对话记录**
+* **公告查看**
+* **个人信息展示（剩余次数，身份，昵称）**
+* **产品查询购买（支持支付宝，微信，QQ钱包）**
+* **订单查询**
+* **注册验证码（正在开发）**
+* **邀请下单返现（正在开发）**  
+* 
+--管理端  
+
+* **首页（数据统计）**
+* **支付配置**
+* **对KEY配置**
+* **用户管理**
+* **订单管理**
+* **公告管理**
+* **产品管理**
+
+
  
 ### Installing
  
@@ -229,7 +254,7 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  **感谢开原作者 [dulaiduwang003](https://github.com/dulaiduwang003/ChatGPT_wechat) 提供的基础GPT功能
  
-## Put it last
+## Put It Last
  **解释一下pay_config内容，如果自己对接其他支付可忽略  
  
  **系统对接其他支付，需要自己注册账号密码登录查看相关配置  
