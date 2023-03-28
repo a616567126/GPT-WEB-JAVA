@@ -181,7 +181,7 @@ CREATE TABLE `user` (
   dev-开发环境
   prod-生产环境  
   
-```yml
+```java
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
