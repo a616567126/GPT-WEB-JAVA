@@ -47,7 +47,7 @@ public class UserController {
      * @param params 参数
      * @return 返回对象
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+//    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ApiOperation(value = "新增User")
     public B add(@Validated @RequestBody String params) {
         return userService.add(params);

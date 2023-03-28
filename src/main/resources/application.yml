@@ -31,9 +31,9 @@ broker:
 # 微信小程序配置
 we-chat:
   #小程序 ID
-  appId: 'wx720af89b8fdf80c7'
+  appId: ''
   #小程序 密钥
-  secret: '7fbe5a174ce5701a26e4cb2a263a8531'
+  secret: ''
 # Open配置
 open:
   # Key池

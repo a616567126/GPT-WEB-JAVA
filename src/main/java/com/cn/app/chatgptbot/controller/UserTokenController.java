@@ -3,6 +3,7 @@ package com.cn.app.chatgptbot.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.app.chatgptbot.base.B;
 import com.cn.app.chatgptbot.base.ResultEnum;
+import com.cn.app.chatgptbot.config.AvoidRepeatRequest;
 import com.cn.app.chatgptbot.exception.CustomException;
 import com.cn.app.chatgptbot.model.User;
 import com.cn.app.chatgptbot.model.base.UserLogin;
@@ -41,6 +42,7 @@ public class UserTokenController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ApiOperation(value = "用户登录")
+    @AvoidRepeatRequest(intervalTime = 60 * 3L ,msg = "请勿短时间联系登录")
     public B<JSONObject> userLogin(@Validated @RequestBody UserLogin userLogin) {
         List<User> list = userService.lambdaQuery()
                 .eq(User::getMobile, userLogin.getMobile())
@@ -69,6 +71,7 @@ public class UserTokenController {
     }
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ApiOperation(value = "注册")
+    @AvoidRepeatRequest(msg = "请勿短时间内重复注册")
     public B register(@Validated @RequestBody RegisterReq req) {
         return userService.register(req);
     }
