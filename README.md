@@ -2,11 +2,10 @@
  
 **基于Spring Boot 3.0 Mybatis-plus的GPTweb后台
  
-## Getting Started
+## Getting Started  
 
-  **JDK>=17
-  
-  **MySql>=8.0
+* [**JDK>=17**](golang_install_guide)
+* [**MySql>=8.0**](golang_install_guide)
   
 ## Major Function
 --客户端  
