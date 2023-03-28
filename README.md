@@ -1,4 +1,4 @@
-# Project Title
+# **Project Title**
  
 基于Spring Boot 3.0 Mybatis-plus的GPTweb后台
  
@@ -11,11 +11,12 @@
  
 1.本地运行配置maven，jdk并检查版本是否兼容  
 
+2.安装redis  
 
-2.安装mysql8.0 并创建数据库`gpt`  
+3.安装mysql8.0 并创建数据库`gpt`  
 
+4.导入sql  
 
-3.导入sql  
  ```sql
  -- Table structure for announcement  
  
@@ -174,9 +175,6 @@ CREATE TABLE `user` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户表';  
- 
-
-4.安装redis  
 
 5.修改yml种的mysql与redis连接地址与账号密码
   dev-开发环境
@@ -214,6 +212,8 @@ spring:
           min-idle: 1
           max-active: 1000
           max-wait: -1
+          
+          
 ## Running the tests
  
 启动idea出现如下信息说明运行成功
