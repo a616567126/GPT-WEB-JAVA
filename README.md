@@ -19,7 +19,7 @@
 
  -- Table structure for announcement  
  
-  DROP TABLE IF EXISTS `announcement`;
+  DROP TABLE IF EXISTS `announcement`;  
   CREATE TABLE `announcement` (
   `id` bigint NOT NULL,
   `title` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '标题',
@@ -174,6 +174,7 @@ CREATE TABLE `user` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户表';  
+ 
 
 4.安装redis  
 
@@ -216,8 +217,8 @@ spring:
 ## Running the tests
  
 启动idea出现如下信息说明运行成功
-INFO 87213 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8000 (http) with context path ''
-INFO 87213 --- [           main] com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds (process running for 5.521)
+o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8000 (http) with context path ''
+com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds (process running for 5.521)
  
 ### And coding style tests
  
