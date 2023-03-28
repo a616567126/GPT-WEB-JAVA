@@ -300,3 +300,10 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  
 ## 记得点一个Star哦!!!!
+
+--
+[![Star History Chart](https://api.star-history.com/svg?repos=a616567126/GPT-WEB-JAVA&type=Timeline)](https://star-history.com/#a616567126/GPT-WEB-JAVA&Timeline)
+
+## License
+
+AGPL-3.0 License
