@@ -21,7 +21,7 @@ public class RedissonConfig {
         Config config = new Config();
         if ("dev".equals(active)) {
             config.useSingleServer()
-                    .setAddress("redis://107.151.195.233:6380")
+                    .setAddress("redis://127.0.0.1:6380")
                     .setPassword("redispassword")
                     .setDatabase(0);
         } else {
