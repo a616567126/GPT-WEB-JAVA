@@ -259,6 +259,15 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  **感谢开源作者 [dulaiduwang003](https://github.com/dulaiduwang003/ChatGPT_wechat) 提供的基础GPT功能可以的话点个Star**
  
+ 
+ ## Contributors
+
+This project exists thanks to all the people who contribute.
+
+<a href="https://github.com/a616567126/GPT-WEB-JAVA/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=a616567126/GPT-WEB-JAVA" />
+</a>
+ 
 ## Put It Last
  **解释一下pay_config内容，如果自己对接其他支付可忽略**  
  
