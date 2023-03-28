@@ -181,7 +181,7 @@ CREATE TABLE `user` (
 5.修改yml种的mysql与redis连接地址与账号密码
   dev-开发环境
   prod-生产环境  
-  
+```yml
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -228,3 +228,15 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
 感谢开原作者 [dulaiduwang003](https://github.com/dulaiduwang003/ChatGPT_wechat) 提供的基础GPT功能
  
+## Put it last
+解释一下pay_config内容，如果自己对接其他支付可忽略
+系统对接其他支付，需要自己注册账号密码登录查看相关配置
+支付网站地址：https://www.11zhifu.cn/
+![image](https://user-images.githubusercontent.com/43660702/228098543-03e82704-92a6-461e-ae7d-fe30796da435.png)
+此图片与表对应关系
+接口地址：submit_url
+商户Id：pid
+商户秘钥：secret_key
+其他描述
+notify_url：支付成功后回调地址
+return_url：支付成功后跳转页面
