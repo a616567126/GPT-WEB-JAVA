@@ -31,6 +31,10 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse httpServletResponse, Object handler) throws IOException {
         //判断token是否存在
         log.info("请求接口地址：{}", request.getServletPath());
+        if(JwtUtil.getType() != -1 && !PostAdminApiList.list.contains(request.getServletPath())){
+            returnResult(httpServletResponse, 10001, "暂无访问权限");
+            return false;
+        }
         long userId = JwtUtil.getUserId();
         String redisToken = RedisUtil.getCacheObject(CommonConst.REDIS_KEY_PREFIX_TOKEN + userId);
         String handlerToken = request.getHeader("token");

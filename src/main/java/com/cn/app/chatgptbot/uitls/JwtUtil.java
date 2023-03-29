@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 基于Jwt的Token基础操作工具类
- * @author  
+ * @author
  * @date 2022-03-25 11:00
  */
 @Slf4j
@@ -117,6 +117,23 @@ public class JwtUtil {
         }
     }
 
+    public static Integer getType() {
+        JWTVerifier verifier = getJWTVerifier();
+        String token = getRequestToken();
+        if(Strings.isBlank(token)) {
+            return 0;
+        }
+        try {
+            /** 校验Token有效性 **/
+            DecodedJWT decoded = verifier.verify(token);
+            /** 用户类型 **/
+            return decoded.getClaim("userId").asInt();
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return 0;
+        }
+    }
+
 
 
     private static String getTokenString(User user) {
@@ -130,6 +147,7 @@ public class JwtUtil {
                 .withExpiresAt(new Date(date.getTime() + 3600L * 1000L * 8L))
                 .withClaim("userId",user.getId())
                 .withClaim("name",user.getName())
+                .withClaim("type",user.getType())
                 .sign(algorithm);
         RedisUtil.setCacheObject(CommonConst.REDIS_KEY_PREFIX_TOKEN + user.getId(), SecureUtil.md5(token),
                 CommonConst.TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);

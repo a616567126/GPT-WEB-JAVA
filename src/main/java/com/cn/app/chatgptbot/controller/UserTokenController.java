@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.cn.app.chatgptbot.base.B;
 import com.cn.app.chatgptbot.base.ResultEnum;
 import com.cn.app.chatgptbot.config.AvoidRepeatRequest;
-import com.cn.app.chatgptbot.exception.CustomException;
 import com.cn.app.chatgptbot.model.User;
 import com.cn.app.chatgptbot.model.base.UserLogin;
 import com.cn.app.chatgptbot.model.req.RegisterReq;
@@ -15,7 +14,6 @@ import com.cn.app.chatgptbot.uitls.JwtUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +40,7 @@ public class UserTokenController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ApiOperation(value = "用户登录")
-    @AvoidRepeatRequest(intervalTime = 60 * 3L ,msg = "请勿短时间联系登录")
+    @AvoidRepeatRequest(intervalTime = 60 * 3L ,msg = "请勿短时间连续登录")
     public B<JSONObject> userLogin(@Validated @RequestBody UserLogin userLogin) {
         List<User> list = userService.lambdaQuery()
                 .eq(User::getMobile, userLogin.getMobile())
