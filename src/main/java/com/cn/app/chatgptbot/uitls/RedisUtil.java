@@ -1,7 +1,7 @@
 package com.cn.app.chatgptbot.uitls;
 
 import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.*;

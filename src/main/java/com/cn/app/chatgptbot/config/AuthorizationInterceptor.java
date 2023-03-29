@@ -8,16 +8,15 @@ import com.cn.app.chatgptbot.base.B;
 import com.cn.app.chatgptbot.constant.CommonConst;
 import com.cn.app.chatgptbot.uitls.JwtUtil;
 import com.cn.app.chatgptbot.uitls.RedisUtil;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -31,10 +30,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse httpServletResponse, Object handler) throws IOException {
         //判断token是否存在
         log.info("请求接口地址：{}", request.getServletPath());
-        if(JwtUtil.getType() != -1 && !PostAdminApiList.list.contains(request.getServletPath())){
-            returnResult(httpServletResponse, 10001, "暂无访问权限");
-            return false;
-        }
         long userId = JwtUtil.getUserId();
         String redisToken = RedisUtil.getCacheObject(CommonConst.REDIS_KEY_PREFIX_TOKEN + userId);
         String handlerToken = request.getHeader("token");

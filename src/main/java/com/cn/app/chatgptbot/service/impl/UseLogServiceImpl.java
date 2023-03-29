@@ -19,7 +19,7 @@ import com.cn.app.chatgptbot.service.IGptKeyService;
 import com.cn.app.chatgptbot.service.IUseLogService;
 import com.cn.app.chatgptbot.service.IUserService;
 import com.cn.app.chatgptbot.uitls.JwtUtil;
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

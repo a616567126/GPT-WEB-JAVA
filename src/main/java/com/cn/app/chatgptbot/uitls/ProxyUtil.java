@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import reactor.netty.http.client.HttpClient;
-import reactor.netty.transport.ProxyProvider;
 
 import java.net.*;
 

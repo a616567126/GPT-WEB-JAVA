@@ -64,7 +64,7 @@
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1/gpt?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false
+    url: jdbc:mysql://107.151.195.233/gpt?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -83,7 +83,7 @@ spring:
     maxOpenPreparedStatements: 20
   data:
     redis:
-      host: 127.0.0.1
+      host: 107.151.195.233
       port: 6380
       password: password
       database: 0

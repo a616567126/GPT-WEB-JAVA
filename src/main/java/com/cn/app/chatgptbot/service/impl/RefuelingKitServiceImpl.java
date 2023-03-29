@@ -12,7 +12,7 @@ import com.cn.app.chatgptbot.model.req.ReturnUrlReq;
 import com.cn.app.chatgptbot.model.res.CreateOrderRes;
 import com.cn.app.chatgptbot.service.*;
 import com.cn.app.chatgptbot.uitls.JwtUtil;
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

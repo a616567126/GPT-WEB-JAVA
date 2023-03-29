@@ -16,7 +16,7 @@ import com.cn.app.chatgptbot.model.res.OrderUserRes;
 import com.cn.app.chatgptbot.service.IOrderService;
 import com.cn.app.chatgptbot.service.IProductService;
 import com.cn.app.chatgptbot.uitls.JwtUtil;
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

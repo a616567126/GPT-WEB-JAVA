@@ -1,9 +1,9 @@
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1:3307/gpt?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false
-    username: root
-    password: root
+    url: jdbc:mysql://107.151.195.233:3307/gpt?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false
+    username: gpt
+    password: simshen1994
     driver-class-name: com.mysql.cj.jdbc.Driver
     filters: stat
     maxActive: 20
@@ -18,15 +18,14 @@ spring:
     testOnReturn: false
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
-  data:
-    redis:
-      host: 127.0.0.1
-      port: 6380
-      password: redispassword
-      database: 0
-      jedis:
-        pool:
-          max-idle: 100
-          min-idle: 1
-          max-active: 1000
-          max-wait: -1
+  redis:
+    host: 107.151.195.233
+    port: 6380
+    password: simshen1994
+    database: 0
+    jedis:
+      pool:
+        max-idle: 100
+        min-idle: 1
+        max-active: 1000
+        max-wait: -1

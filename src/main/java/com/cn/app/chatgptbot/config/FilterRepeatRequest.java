@@ -1,11 +1,7 @@
 package com.cn.app.chatgptbot.config;
 
 import cn.hutool.crypto.digest.DigestUtil;
-import cn.hutool.extra.servlet.ServletUtil;
 import com.cn.app.chatgptbot.exception.CustomException;
-import com.cn.app.chatgptbot.uitls.JwtUtil;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -18,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 

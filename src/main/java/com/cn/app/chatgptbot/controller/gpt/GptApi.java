@@ -21,7 +21,7 @@ import com.cn.app.chatgptbot.service.IUserService;
 import com.cn.app.chatgptbot.uitls.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;

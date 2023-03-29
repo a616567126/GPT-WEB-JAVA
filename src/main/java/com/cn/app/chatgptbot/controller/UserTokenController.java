@@ -1,9 +1,11 @@
 package com.cn.app.chatgptbot.controller;
 
+import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.app.chatgptbot.base.B;
 import com.cn.app.chatgptbot.base.ResultEnum;
 import com.cn.app.chatgptbot.config.AvoidRepeatRequest;
+import com.cn.app.chatgptbot.constant.CommonConst;
 import com.cn.app.chatgptbot.model.User;
 import com.cn.app.chatgptbot.model.base.UserLogin;
 import com.cn.app.chatgptbot.model.req.RegisterReq;
@@ -11,6 +13,7 @@ import com.cn.app.chatgptbot.model.res.AdminHomeRes;
 import com.cn.app.chatgptbot.model.res.UserInfoRes;
 import com.cn.app.chatgptbot.service.IUserService;
 import com.cn.app.chatgptbot.uitls.JwtUtil;
+import com.cn.app.chatgptbot.uitls.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author
@@ -35,6 +39,8 @@ public class UserTokenController {
 
 
     final IUserService userService;
+
+    final RedisUtil redisUtil;
 
 
 
@@ -112,6 +118,8 @@ public class UserTokenController {
         nweUser.setLastLoginTime(LocalDateTime.now());
         jsonObject.put("lastLoginTime", null == user.getLastLoginTime() ? nweUser.getLastLoginTime() : user.getLastLoginTime());
         userService.updateById(nweUser);
+        redisUtil.setCacheObject(CommonConst.REDIS_KEY_PREFIX_TOKEN + user.getId(), SecureUtil.md5(token),
+                CommonConst.TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);
         return B.build(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg(), jsonObject);
 
     }
