@@ -16,7 +16,7 @@
  
 ## Getting Started  
 
-* [**JDK>=17**](golang_install_guide)
+* [**JDK>=8**](golang_install_guide)
 * [**MySql>=8.0**](golang_install_guide)
   
 ## Major Function
