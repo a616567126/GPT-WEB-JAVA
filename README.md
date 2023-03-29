@@ -10,7 +10,7 @@
 
 # **Project Title**  
 
-**Demo地址：http://gptai.v-wim.xyz**   
+**Demo地址：https://gptai.v-wim.xyz**   
  
 **基于Spring Boot 3.0 Mybatis-plus的GPTweb后台
  
