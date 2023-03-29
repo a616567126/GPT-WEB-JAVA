@@ -34,14 +34,5 @@ we-chat:
   appId: ''
   #小程序 密钥
   secret: ''
-# Open配置
-open:
-  # Key池
-  keys:
-    - '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'
-  thirdPartyKey: 'Xxxxxxx'
-  choose: true
-  isStream: true
-  isRandom: false
 # bing机器人请求路径
 bingUrl: "http://XXXXXXXXX:3000/bing"

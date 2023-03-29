@@ -3,7 +3,6 @@ package com.cn.app.chatgptbot.uitls;
 
 import com.cn.app.chatgptbot.model.PayConfig;
 import com.cn.app.chatgptbot.service.AsyncLogService;
-import com.cn.app.chatgptbot.config.OpenConfig;
 import com.cn.app.chatgptbot.exception.CustomException;
 import com.cn.app.chatgptbot.model.GptKey;
 import com.cn.app.chatgptbot.service.IGptKeyService;
@@ -16,8 +15,6 @@ import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -49,10 +46,6 @@ public final class GptUtil {
 
     private static GptUtil gptUtil;
 
-    /**
-     * disposition
-     */
-    private final OpenConfig openConfig;
 
     /**
      * effective
