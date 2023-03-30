@@ -1,4 +1,4 @@
-package com.cn.app.chatgptbot.uitls;
+package com.cn.app.chatgptbot.utils;
 
 import cn.hutool.crypto.SecureUtil;
 import com.auth0.jwt.JWT;

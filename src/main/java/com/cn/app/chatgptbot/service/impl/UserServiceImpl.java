@@ -1,7 +1,6 @@
 package com.cn.app.chatgptbot.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.exceptions.ValidateException;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -12,7 +11,6 @@ import com.cn.app.chatgptbot.dao.OrderDao;
 import com.cn.app.chatgptbot.dao.RefuelingKitDao;
 import com.cn.app.chatgptbot.dao.UserDao;
 import com.cn.app.chatgptbot.model.Announcement;
-import com.cn.app.chatgptbot.model.RefuelingKit;
 import com.cn.app.chatgptbot.model.UseLog;
 import com.cn.app.chatgptbot.model.User;
 import com.cn.app.chatgptbot.model.base.BaseDeleteEntity;
@@ -22,7 +20,7 @@ import com.cn.app.chatgptbot.model.res.*;
 import com.cn.app.chatgptbot.service.IAnnouncementService;
 import com.cn.app.chatgptbot.service.IUseLogService;
 import com.cn.app.chatgptbot.service.IUserService;
-import com.cn.app.chatgptbot.uitls.JwtUtil;
+import com.cn.app.chatgptbot.utils.JwtUtil;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

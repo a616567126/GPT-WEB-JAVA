@@ -1,5 +1,5 @@
 
-package com.cn.app.chatgptbot.uitls;
+package com.cn.app.chatgptbot.utils;
 
 import com.cn.app.chatgptbot.model.PayConfig;
 import com.cn.app.chatgptbot.service.AsyncLogService;

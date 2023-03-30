@@ -1,24 +1,13 @@
 package com.cn.app.chatgptbot.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.exceptions.ValidateException;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cn.app.chatgptbot.base.B;
-import com.cn.app.chatgptbot.dao.OrderDao;
 import com.cn.app.chatgptbot.dao.RefuelingKitDao;
 import com.cn.app.chatgptbot.model.*;
-import com.cn.app.chatgptbot.model.req.CreateOrderReq;
-import com.cn.app.chatgptbot.model.req.ReturnUrlReq;
-import com.cn.app.chatgptbot.model.res.CreateOrderRes;
 import com.cn.app.chatgptbot.service.*;
-import com.cn.app.chatgptbot.uitls.JwtUtil;
-import javax.annotation.Resource;
+import com.cn.app.chatgptbot.utils.JwtUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 
 @Service("RefuelingKitService")

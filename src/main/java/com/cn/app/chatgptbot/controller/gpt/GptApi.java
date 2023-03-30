@@ -18,7 +18,7 @@ import com.cn.app.chatgptbot.service.IGptKeyService;
 import com.cn.app.chatgptbot.service.IRefuelingKitService;
 import com.cn.app.chatgptbot.service.IUseLogService;
 import com.cn.app.chatgptbot.service.IUserService;
-import com.cn.app.chatgptbot.uitls.*;
+import com.cn.app.chatgptbot.utils.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.annotation.Resource;

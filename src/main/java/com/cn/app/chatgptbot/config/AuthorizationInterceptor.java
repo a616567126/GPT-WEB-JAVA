@@ -6,15 +6,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.cn.app.chatgptbot.base.B;
 import com.cn.app.chatgptbot.constant.CommonConst;
-import com.cn.app.chatgptbot.uitls.JwtUtil;
-import com.cn.app.chatgptbot.uitls.RedisUtil;
+import com.cn.app.chatgptbot.utils.JwtUtil;
+import com.cn.app.chatgptbot.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

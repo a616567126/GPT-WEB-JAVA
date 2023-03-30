@@ -1,5 +1,5 @@
 
-package com.cn.app.chatgptbot.uitls;
+package com.cn.app.chatgptbot.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.app.chatgptbot.exception.CustomException;

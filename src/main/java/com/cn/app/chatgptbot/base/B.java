@@ -1,7 +1,7 @@
 package com.cn.app.chatgptbot.base;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.cn.app.chatgptbot.uitls.DateUtil;
+import com.cn.app.chatgptbot.utils.DateUtil;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;

@@ -1,14 +1,12 @@
 package com.cn.app.chatgptbot.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cn.app.chatgptbot.base.B;
 import com.cn.app.chatgptbot.dao.OrderDao;
-import com.cn.app.chatgptbot.exception.CustomException;
 import com.cn.app.chatgptbot.model.*;
 import com.cn.app.chatgptbot.model.req.CreateOrderReq;
 import com.cn.app.chatgptbot.model.req.OrderCallBackReq;
@@ -18,8 +16,8 @@ import com.cn.app.chatgptbot.model.res.CreateOrderRes;
 import com.cn.app.chatgptbot.model.res.QueryOrderRes;
 import com.cn.app.chatgptbot.model.res.ReturnUrlRes;
 import com.cn.app.chatgptbot.service.*;
-import com.cn.app.chatgptbot.uitls.JwtUtil;
-import com.cn.app.chatgptbot.uitls.RedisUtil;
+import com.cn.app.chatgptbot.utils.JwtUtil;
+import com.cn.app.chatgptbot.utils.RedisUtil;
 import javax.annotation.Resource;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -27,13 +25,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 
 @Service("orderService")

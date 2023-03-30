@@ -1,4 +1,4 @@
-package com.cn.app.chatgptbot.uitls;
+package com.cn.app.chatgptbot.utils;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;

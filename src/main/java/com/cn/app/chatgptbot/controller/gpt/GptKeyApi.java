@@ -1,7 +1,7 @@
 package com.cn.app.chatgptbot.controller.gpt;
 
 import com.cn.app.chatgptbot.base.Result;
-import com.cn.app.chatgptbot.uitls.GptUtil;
+import com.cn.app.chatgptbot.utils.GptUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
