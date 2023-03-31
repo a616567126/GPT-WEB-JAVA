@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/user/token")
 @RequiredArgsConstructor
-@Api(tags = {"用户操作相关表"})
+@Api(tags = {"用户/管理员登录、注册，首页，获取用户类型"})
 public class UserTokenController {
 
 

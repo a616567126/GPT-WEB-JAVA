@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/use/log")
 @RequiredArgsConstructor
+@Api(tags = {"对话管理"})
 public class UseLogController {
 
 

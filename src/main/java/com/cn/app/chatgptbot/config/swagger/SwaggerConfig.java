@@ -28,7 +28,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("defaultApi 1.0")
                 .apiInfo(apiInfo())
-                .enable("dev".equals(active) || "test".equals(active))
+                .enable("dev".equals(active))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.cn.app.chatgptbot.controller"))
                 .paths(PathSelectors.any())

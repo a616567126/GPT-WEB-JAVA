@@ -1,4 +1,4 @@
-package com.cn.app.chatgptbot.config;
+package com.cn.app.chatgptbot.config.interceptor;
 
 
 import cn.hutool.crypto.SecureUtil;

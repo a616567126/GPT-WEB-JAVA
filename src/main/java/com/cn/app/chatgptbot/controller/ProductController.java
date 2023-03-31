@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
-@Api(tags = {"商品表(Product)"})
+@Api(tags = {"商品管理"})
 public class ProductController {
 
 

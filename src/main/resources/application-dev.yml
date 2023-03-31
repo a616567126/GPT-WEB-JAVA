@@ -29,3 +29,4 @@ spring:
         min-idle: 1
         max-active: 1000
         max-wait: -1
+    timeout: 100s
