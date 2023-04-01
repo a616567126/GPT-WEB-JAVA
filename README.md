@@ -314,4 +314,4 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
 
 ## License
 
-AGPL-3.0 License
+Apache License 2.0
