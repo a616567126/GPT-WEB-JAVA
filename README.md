@@ -273,6 +273,14 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  **感谢开源作者 [dulaiduwang003](https://github.com/dulaiduwang003/ChatGPT_wechat) 提供的基础GPT功能可以的话点个Star**
  
+## Contributors
+
+这个项目的存在要感谢所有做出贡献的人.
+
+<a href="https://github.com/a616567126/GPT-WEB-CLIENT/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=a616567126/GPT-WEB-CLIENT" />
+</a>
+ 
 ## Put It Last
  **解释一下pay_config内容，如果自己对接其他支付可忽略**  
  
@@ -307,11 +315,15 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
 ## 记得点一个Star哦!!!!  
 
 ## 加入微信群
-<img width="668" alt="WeChata653a42d1eb1aed3137c0c30e3ed1b92" src="https://user-images.githubusercontent.com/43660702/228197837-21fabf93-477a-47a1-afdc-6de427679ac1.png">
+<img width="668" alt="WeChata653a42d1eb1aed3137c0c30e3ed1b92" src="https://user-images.githubusercontent.com/43660702/228197837-21fabf93-477a-47a1-afdc-6de427679ac1.png">  
+
+## 关注公众号
+![关注公众号](https://user-images.githubusercontent.com/43660702/229270101-4f11a841-51fc-4625-b498-833629fe7934.png)
+
 
 
 [![Star History Chart](https://api.star-history.com/svg?repos=a616567126/GPT-WEB-JAVA&type=Timeline)](https://star-history.com/#a616567126/GPT-WEB-JAVA&Timeline)
 
 ## License
 
-AGPL-3.0 License
+Apache License 2.0
