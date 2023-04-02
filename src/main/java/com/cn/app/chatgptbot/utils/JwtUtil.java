@@ -127,7 +127,7 @@ public class JwtUtil {
             /** 校验Token有效性 **/
             DecodedJWT decoded = verifier.verify(token);
             /** 用户类型 **/
-            return decoded.getClaim("userId").asInt();
+            return decoded.getClaim("type").asInt();
         } catch (Exception exception) {
             log.error(exception.getMessage());
             return 0;
