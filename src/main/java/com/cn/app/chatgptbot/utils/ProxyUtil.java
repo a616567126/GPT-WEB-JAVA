@@ -1,16 +1,13 @@
 /**
  * @author 明明不是下雨天
  */
-package com.cn.app.chatgptbot.uitls;
+package com.cn.app.chatgptbot.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import reactor.netty.http.client.HttpClient;
-import reactor.netty.transport.ProxyProvider;
-
-import java.net.*;
 
 
 /**

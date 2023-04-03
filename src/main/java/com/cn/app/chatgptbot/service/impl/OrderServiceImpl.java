@@ -1,14 +1,12 @@
 package com.cn.app.chatgptbot.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cn.app.chatgptbot.base.B;
 import com.cn.app.chatgptbot.dao.OrderDao;
-import com.cn.app.chatgptbot.exception.CustomException;
 import com.cn.app.chatgptbot.model.*;
 import com.cn.app.chatgptbot.model.req.CreateOrderReq;
 import com.cn.app.chatgptbot.model.req.OrderCallBackReq;
@@ -18,22 +16,20 @@ import com.cn.app.chatgptbot.model.res.CreateOrderRes;
 import com.cn.app.chatgptbot.model.res.QueryOrderRes;
 import com.cn.app.chatgptbot.model.res.ReturnUrlRes;
 import com.cn.app.chatgptbot.service.*;
-import com.cn.app.chatgptbot.uitls.JwtUtil;
-import com.cn.app.chatgptbot.uitls.RedisUtil;
-import jakarta.annotation.Resource;
+import com.cn.app.chatgptbot.utils.JwtUtil;
+import com.cn.app.chatgptbot.utils.RedisUtil;
+import javax.annotation.Resource;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 
 @Service("orderService")
@@ -256,53 +252,5 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
         map.entrySet().stream()
                 .sorted(Map.Entry.<K, V>comparingByKey()).forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
         return result;
-    }
-
-    public static void main(String[] args) {
-
-        String url = "https://www.11zhifu.cn/";//支付地址
-        String pid = "1091";//商户id
-        String type = "wxpay";//支付类型
-        String outTradeNo = "20160806151343353";//商户单号
-        String notifyUrl = "https://401c5023.r3.cpolar.top/order/callback";//异步通知
-        String returnUrl = "https://baidu.com";//跳转地址
-        String name = "test";//商品名
-        String money = "0.02";//价格
-        String signType = "MD5";//签名类型
-        String key = "1RxMSsb6WAngm49JTmw26zSG5GG9m27u";//商户密钥
-
-        Map<String,String> sign = new HashMap<>();
-        sign.put("pid",pid);
-        sign.put("type",type);
-        sign.put("out_trade_no",outTradeNo);
-        sign.put("notify_url",notifyUrl);
-        sign.put("return_url",returnUrl);
-        sign.put("name",name);
-        sign.put("money",money);
-        sign = sortByKey(sign);
-        //遍历map 转成字符串
-        String signStr = "";
-
-        for(Map.Entry<String,String> m :sign.entrySet()){
-            signStr += m.getKey() + "=" +m.getValue()+"&";
-        }
-        //去掉最后一个 &
-        signStr = signStr.substring(0,signStr.length()-1);
-
-        //最后拼接上KEY
-        signStr += key;
-        //转为MD5
-        signStr = DigestUtils.md5DigestAsHex(signStr.getBytes());
-
-        sign.put("sign_type",signType);
-        sign.put("sign",signStr);
-        System.out.println("<form id='paying' action='"+url+"/submit.php' method='post'>");
-        for(Map.Entry<String,String> m :sign.entrySet()){
-            System.out.println("<input type='hidden' name='"+m.getKey()+"' value='"+m.getValue()+"'/>");
-        }
-        System.out.println("<input type='submit' value='正在跳转'>");
-        System.out.println("</form>");
-        System.out.println("<script>document.forms['paying'].submit();</script>");
-
     }
 }

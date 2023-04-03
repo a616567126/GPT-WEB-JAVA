@@ -1,19 +1,22 @@
 <div align="center">
-    <p style="font-size:80px;font-weight: 800;">GPT-WEB-JAVA</p>
+    <p style="font-size:25px;font-weight: 800;">GPT-WEB-CLIENT</p>
 </div>
 <div align="center" style="text-align:center;margin-top:30px;margin-bottom:20px">
    <a style="padding-left:10px"><img src="https://img.shields.io/github/stars/a616567126/GPT-WEB-JAVA"/></a>
-   <a style="padding-left:10px"><img src="https://img.shields.io/github/forks/a616567126/GPT-WEB-JAVA?color=red&logo=red"/></a>
+   <a style="padding-left:10px"><img src="https://img.shields.io/github/forks/a616567126/GPT-WEB-JAVA?color=red&logo=red"/></a>  
+   
+   
 </div>
 
+# **Project Title**  
 
-# **Project Title**
+**Demo地址：https://gptai.v-wim.xyz**   
  
-**基于Spring Boot 3.0 Mybatis-plus的GPTweb后台
+**基于Spring Boot  Mybatis-plus的GPTweb后台**
  
 ## Getting Started  
 
-* [**JDK>=17**](golang_install_guide)
+* [**JDK>=8**](golang_install_guide)
 * [**MySql>=8.0**](golang_install_guide)
   
 ## Major Function
@@ -61,7 +64,7 @@
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1/gpt?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false
+    url: jdbc:mysql://107.151.195.233/gpt?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -80,7 +83,7 @@ spring:
     maxOpenPreparedStatements: 20
   data:
     redis:
-      host: 127.0.0.1
+      host: 107.151.195.233
       port: 6380
       password: password
       database: 0
@@ -262,19 +265,20 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
 ### And coding style tests
  
- **后端基于另一个开源项目开发，所用到jdk17特性** 
+ **后端基于另一个开源项目开发，所用到jdk17特性**  
+ 
+ **Vue2.0前端地址[GPT-WEB-CLIENT](https://github.com/a616567126/GPT-WEB-CLIENT)** 
  
 ## Express gratitude
  
  **感谢开源作者 [dulaiduwang003](https://github.com/dulaiduwang003/ChatGPT_wechat) 提供的基础GPT功能可以的话点个Star**
  
- 
- ## Contributors
+## Contributors
 
 这个项目的存在要感谢所有做出贡献的人.
 
-<a href="https://github.com/a616567126/GPT-WEB-JAVA/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=a616567126/GPT-WEB-JAVA" />
+<a href="https://github.com/a616567126/GPT-WEB-CLIENT/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=a616567126/GPT-WEB-CLIENT" />
 </a>
  
 ## Put It Last
@@ -308,11 +312,18 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  * <img src="https://user-images.githubusercontent.com/43660702/228105188-09c49078-9156-40bc-8327-f2b05c5bc5fa.png" width="100px" height="100px"> 
  
  
-## 记得点一个Star哦!!!!
+## 记得点一个Star哦!!!!  
+
+## 加入微信群
+<img width="668" alt="WeChata653a42d1eb1aed3137c0c30e3ed1b92" src="https://user-images.githubusercontent.com/43660702/228197837-21fabf93-477a-47a1-afdc-6de427679ac1.png">  
+
+## 关注公众号
+![关注公众号](https://user-images.githubusercontent.com/43660702/229270101-4f11a841-51fc-4625-b498-833629fe7934.png)
+
 
 
 [![Star History Chart](https://api.star-history.com/svg?repos=a616567126/GPT-WEB-JAVA&type=Timeline)](https://star-history.com/#a616567126/GPT-WEB-JAVA&Timeline)
 
 ## License
 
-AGPL-3.0 License
+Apache License 2.0

@@ -5,8 +5,14 @@ server:
 spring:
   profiles:
     active: dev
-jackson:
-  default-property-inclusion: non_null
+  mvc:
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${file.uploadPath}
+  jackson:
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 #    设置上传文件大小
 servlet:
   multipart:
@@ -22,8 +28,8 @@ knife4j:
   enable: true
   basic:
     enable: true
-    username: ssp
-    password: simshen
+    username: GPT-WEB-JAVA
+    password: GPT-WEB-JAVA
 #代理ip
 broker:
   ip:
@@ -34,14 +40,5 @@ we-chat:
   appId: ''
   #小程序 密钥
   secret: ''
-# Open配置
-open:
-  # Key池
-  keys:
-    - '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'
-  thirdPartyKey: 'Xxxxxxx'
-  choose: true
-  isStream: true
-  isRandom: false
 # bing机器人请求路径
 bingUrl: "http://XXXXXXXXX:3000/bing"

@@ -1,25 +1,16 @@
 package com.cn.app.chatgptbot.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cn.app.chatgptbot.base.B;
-import com.cn.app.chatgptbot.base.ResultEnum;
-import com.cn.app.chatgptbot.dao.GptKeyDao;
 import com.cn.app.chatgptbot.dao.UseLogDao;
-import com.cn.app.chatgptbot.model.GptKey;
 import com.cn.app.chatgptbot.model.UseLog;
 import com.cn.app.chatgptbot.model.User;
-import com.cn.app.chatgptbot.model.base.BaseDeleteEntity;
-import com.cn.app.chatgptbot.model.base.BasePageHelper;
 import com.cn.app.chatgptbot.model.req.ResetLogReq;
 import com.cn.app.chatgptbot.model.req.UpdateLogReq;
-import com.cn.app.chatgptbot.service.IGptKeyService;
 import com.cn.app.chatgptbot.service.IUseLogService;
 import com.cn.app.chatgptbot.service.IUserService;
-import com.cn.app.chatgptbot.uitls.JwtUtil;
-import jakarta.annotation.Resource;
+import com.cn.app.chatgptbot.utils.JwtUtil;
+import javax.annotation.Resource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/gpt/key")
 @RequiredArgsConstructor
-@Api(tags = {"gptKey"})
+@Api(tags = {"gptkey管理"})
 public class GptKeyController {
 
 

@@ -18,10 +18,12 @@ import com.cn.app.chatgptbot.service.IGptKeyService;
 import com.cn.app.chatgptbot.service.IRefuelingKitService;
 import com.cn.app.chatgptbot.service.IUseLogService;
 import com.cn.app.chatgptbot.service.IUserService;
-import com.cn.app.chatgptbot.uitls.*;
+import com.cn.app.chatgptbot.utils.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.Resource;
+import javax.annotation.Resource;
+
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -43,6 +45,7 @@ import java.util.Objects;
 @RequestMapping("/v1")
 @RequiredArgsConstructor
 @Log4j2
+@Api(tags = {"gpt相关接口"})
 public final class GptApi {
 
     /**

@@ -2,7 +2,7 @@ package com.cn.app.chatgptbot.model.res;
 
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.models.auth.In;
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;

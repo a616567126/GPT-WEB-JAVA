@@ -1,9 +1,8 @@
 
-package com.cn.app.chatgptbot.uitls;
+package com.cn.app.chatgptbot.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.app.chatgptbot.exception.CustomException;
-import com.cn.app.chatgptbot.model.GptKey;
 import com.cn.app.chatgptbot.service.IGptKeyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

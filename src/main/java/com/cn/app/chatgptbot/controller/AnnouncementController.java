@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/announcement")
 @RequiredArgsConstructor
-@Api(tags = {"公告(Product)"})
+@Api(tags = {"公告管理"})
 public class AnnouncementController {
 
 

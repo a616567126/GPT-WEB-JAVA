@@ -1,23 +1,20 @@
 
-package com.cn.app.chatgptbot.uitls;
+package com.cn.app.chatgptbot.utils;
 
 import com.cn.app.chatgptbot.model.PayConfig;
 import com.cn.app.chatgptbot.service.AsyncLogService;
-import com.cn.app.chatgptbot.config.OpenConfig;
 import com.cn.app.chatgptbot.exception.CustomException;
 import com.cn.app.chatgptbot.model.GptKey;
 import com.cn.app.chatgptbot.service.IGptKeyService;
 import com.cn.app.chatgptbot.model.gptvo.CtlDataVo;
 import com.cn.app.chatgptbot.service.IPayConfigService;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -49,10 +46,6 @@ public final class GptUtil {
 
     private static GptUtil gptUtil;
 
-    /**
-     * disposition
-     */
-    private final OpenConfig openConfig;
 
     /**
      * effective
@@ -94,7 +87,7 @@ public final class GptUtil {
         List<GptKey> gptKeyList = gptKeyService.lambdaQuery().eq(GptKey::getState,0).orderByDesc(GptKey::getSort).list();
         gptKeyList.stream().map(GptKey::getKey).collect(Collectors.toList()).forEach(GptUtil::add);
         final Collection<String> allKey = getAllKey();
-        final List<String> list = allKey.stream().toList();
+        final List<String> list = allKey.stream().collect(Collectors.toList());
         // get the first one
         mainKey = list.get(0);
         bingUrl = temp;
@@ -139,7 +132,7 @@ public final class GptUtil {
             throw new CustomException("缓存池中已无可用的Key 请联系管理员_"+useLogId);
         }
         int index = new Random().nextInt(allKey.size());
-        final List<String> list = allKey.stream().toList();
+        final List<String> list = allKey.stream().collect(Collectors.toList());
         final String str = list.get(index);
         if (getMainKey().equals(openKey)) {
             mainKey = cache.get(str);
