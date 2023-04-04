@@ -237,9 +237,12 @@ public final class GptApi {
         gptKey.setUseNumber(gptKey.getUseNumber()+1);
         gptKey.setOperateTime(LocalDateTime.now());
         asyncLogService.saveKeyLog(gptKey,user);
-        useLogService.save(useLog);
-        if(null != logId){
-            useLogService.removeById(logId);
+        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        if(methodName.equals("gptTurbo")){
+            useLogService.save(useLog);
+            if(null != logId){
+                useLogService.removeById(logId);
+            }
         }
         return Result.data(useLog.getId());
     }
