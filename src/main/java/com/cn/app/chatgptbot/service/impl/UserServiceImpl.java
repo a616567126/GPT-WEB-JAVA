@@ -168,7 +168,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements IUser
         userInfo.setKitList(userRefuelingKitRes);
         List<Announcement> list = announcementService.lambdaQuery().select(Announcement::getContent).orderByDesc(Announcement::getSort).last("limit 1").list();
         userInfo.setContent((null != list && list.size() > 0) ? list.get(0).getContent() : "暂无通知公告");
-        List<UseLog> useLogList = useLogService.lambdaQuery().eq(UseLog::getUserId, JwtUtil.getUserId()).orderByDesc(UseLog::getId).last("limit 10").list();
+        List<UseLog> useLogList = useLogService.lambdaQuery()
+                .eq(UseLog::getUserId, JwtUtil.getUserId())
+                .eq(UseLog::getSendType,0)
+                .orderByDesc(UseLog::getId).last("limit 10").list();
         userInfo.setLogList(useLogList);
         return B.okBuild(userInfo);
     }
@@ -192,6 +195,22 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements IUser
     @Override
     public B<UserInfoRes> getType() {
         UserInfoRes userInfo = this.baseMapper.getUserInfo(JwtUtil.getUserId());
+        if(userInfo.getType() == -1){
+            userInfo.setType(2);
+        }
+        if(null == userInfo.getExpirationTime() || LocalDateTime.now().compareTo(userInfo.getExpirationTime()) > 0){
+            userInfo.setType(0);
+        }else if(LocalDateTime.now().compareTo(userInfo.getExpirationTime()) <= 0){
+            userInfo.setType(2);
+        }else {
+            userInfo.setType(0);
+        }
+        return B.okBuild(userInfo);
+    }
+
+    @Override
+    public B<UserInfoRes> getType(Long userId) {
+        UserInfoRes userInfo = this.baseMapper.getUserInfo(userId);
         if(userInfo.getType() == -1){
             userInfo.setType(2);
         }

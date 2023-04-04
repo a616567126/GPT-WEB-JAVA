@@ -50,7 +50,19 @@ public class AsyncLogService {
     }
 
     @Async
+    public void updateKeyNumber(String key,Integer number){
+        GptKey gptKey =  gptKeyService.lambdaQuery().eq(GptKey::getKey, key).one();
+        gptKey.setUseNumber(gptKey.getUseNumber()+number);
+        gptKeyService.saveOrUpdate(gptKey);
+    }
+
+    @Async
     public void updateKeyState(List<String> list){
        gptKeyService.lambdaUpdate().in(GptKey::getKey,list).set(GptKey::getState,1).update();
+    }
+
+    @Async
+    public void saveUseLog(UseLog useLog){
+        this.useLogService.save(useLog);
     }
 }

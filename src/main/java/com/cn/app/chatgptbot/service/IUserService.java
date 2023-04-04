@@ -58,6 +58,7 @@ public interface IUserService extends IService<User> {
     B<AdminHomeRes> adminHome();
     B<UserInfoRes> getType();
 
+    B<UserInfoRes> getType(Long userId);
 
 
 }

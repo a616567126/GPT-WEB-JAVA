@@ -48,11 +48,20 @@ public class UseLog extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "gptKey", position = 7)
     private String gptKey;
 
-    @ApiModelProperty(value = "kitId", position = 7)
+    @ApiModelProperty(value = "加油包id", position = 7)
     private Long kitId;
 
-    @ApiModelProperty(value = "state", position = 7)
+    @ApiModelProperty(value = "是否成功 0成功 1失败", position = 7)
     private Integer state;
+
+    @ApiModelProperty(value = "问题", position = 6)
+    private String question;
+
+    @ApiModelProperty(value = "答案", position = 7)
+    private String answer;
+
+    @ApiModelProperty(value = "消息类型 0-正常 1-流式", position = 7)
+    private Integer sendType;
 
 
 }

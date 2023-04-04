@@ -141,6 +141,27 @@ public final class GptUtil {
         }
     }
 
+    public static synchronized Integer getRandomKey(final String openKey) {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        final Collection<String> allKey = getAllKey();
+        if (CollectionUtils.isEmpty(allKey)) {
+            return -1;
+        }
+        int index = new Random().nextInt(allKey.size());
+        final List<String> list = allKey.stream().collect(Collectors.toList());
+        final String str = list.get(index);
+        if (getMainKey().equals(openKey)) {
+            mainKey = cache.get(str);
+            lapse.put(openKey, openKey);
+            gptUtil.asyncLogService.updateKeyNumber(openKey);
+        }
+        return 0;
+    }
+
     /**
      * Remove key.
      *
