@@ -223,6 +223,9 @@ CREATE TABLE `use_log` (
   `kit_id` bigint DEFAULT NULL COMMENT '加油包id',
   `gpt_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '使用gptkey',
   `state` tinyint DEFAULT '0' COMMENT '是否成功 0成功 1失败',
+  `question` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '问题',
+  `answer` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '答案',
+  `send_type` tinyint DEFAULT '0' COMMENT '消息类型 0-正常 1-流式',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -230,7 +233,7 @@ CREATE TABLE `use_log` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='使用记录表';  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='使用记录表';
 
 -- Table structure for user  
 
