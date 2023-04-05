@@ -289,7 +289,7 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  **系统对接其他支付，需要自己注册账号密码登录查看相关配置**  
  
- **支付网站地址：https://www.11zhifu.cn/**  
+ **支付网站地址：[白晨易支付](https://pay888.mfysc.shop/)**  
  
  ![image](https://user-images.githubusercontent.com/43660702/228098543-03e82704-92a6-461e-ae7d-fe30796da435.png)  
  
