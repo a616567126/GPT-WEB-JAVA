@@ -356,7 +356,9 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
 ## 记得点一个Star哦!!!!  
 
 ## 加入微信群
-![image](https://user-images.githubusercontent.com/43660702/229729173-396c5564-a217-40a0-8c41-f2e3d40dd141.png)
+![image](https://user-images.githubusercontent.com/43660702/230708891-c669131d-923d-425a-9ad3-629670c19638.png)
+
+
 
 ## 关注公众号
 ![关注公众号](https://user-images.githubusercontent.com/43660702/229270101-4f11a841-51fc-4625-b498-833629fe7934.png)
