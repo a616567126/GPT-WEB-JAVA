@@ -276,7 +276,7 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  **proxy_read_timeout   3600s; #超时设置**  
  
- **proxy_send_timeout 12s; **  
+ **proxy_send_timeout 12s;**  
  
  ![image](https://user-images.githubusercontent.com/43660702/230708043-911ea192-dbcd-4c1b-929a-d888be5bd237.png)
  
