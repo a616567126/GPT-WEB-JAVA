@@ -18,6 +18,7 @@
 
 * [**JDK>=8**](golang_install_guide)
 * [**MySql>=8.0**](golang_install_guide)
+* [**Redis>=4.0**](golang_install_guide)
   
 ## Major Function
 --客户端  
