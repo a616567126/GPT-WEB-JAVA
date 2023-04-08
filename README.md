@@ -309,11 +309,17 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  
  ## Precautions For Using Nginx  
- **若使用nginx反向代理到后端需要增加socket支持，与socket长连接时间**
- **proxy_set_header Upgrade $http_upgrade;**
- **proxy_set_header Connection "upgrade";**
- **proxy_read_timeout   3600s; #超时设置**
- **proxy_send_timeout 12s; **
+ 
+ **若使用nginx反向代理到后端需要增加socket支持，与socket长连接时间**  
+ 
+ **proxy_set_header Upgrade $http_upgrade;**  
+ 
+ **proxy_set_header Connection "upgrade";**  
+ 
+ **proxy_read_timeout   3600s; #超时设置**  
+ 
+ **proxy_send_timeout 12s; **  
+ 
  ![image](https://user-images.githubusercontent.com/43660702/230708043-911ea192-dbcd-4c1b-929a-d888be5bd237.png)
 
  
