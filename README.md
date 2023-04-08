@@ -84,18 +84,17 @@ spring:
     testOnReturn: false
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
-  data:
-    redis:
-      host: 127.0.0.1
-      port: 6380
-      password: password
-      database: 0
-      jedis:
-        pool:
-          max-idle: 100
-          min-idle: 1
-          max-active: 1000
-          max-wait: -1  
+redis:
+  host: 127.0.0.1
+  port: 6380
+  password: password
+  database: 0
+  jedis:
+    pool:
+      max-idle: 100
+      min-idle: 1
+      max-active: 1000
+      max-wait: -1  
 ```          
 ## SQL
  ```sql
