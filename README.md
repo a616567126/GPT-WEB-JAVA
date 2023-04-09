@@ -363,6 +363,8 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  **ali_return_url：支付宝页面跳转地址**  
  
+ **pay_type：支付类型 0 易支付 1微信 2支付宝 3支付宝、微信**  
+ 
  
  
 ## 条件允许的情况下可以请作者喝一杯冰阔落
