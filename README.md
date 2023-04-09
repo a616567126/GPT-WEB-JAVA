@@ -351,6 +351,18 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
  **return_url：支付成功后跳转页面**  
  
+ **ali_app_id：支付宝appid**  
+ 
+ **ali_private_key：支付宝应用私钥**  
+ 
+ **ali_public_key：支付宝应用公钥**  
+ 
+ **ali_gateway_url：支付宝接口地址(正式环境写死：openapi.alipay.com)**  
+ 
+ **ali_notify_url：支付宝回调地址**  
+ 
+ **ali_return_url：支付宝页面跳转地址**  
+ 
  
  
 ## 条件允许的情况下可以请作者喝一杯冰阔落
