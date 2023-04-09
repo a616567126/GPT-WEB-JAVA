@@ -329,7 +329,7 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
 
  
 ## Put It Last
- **解释一下pay_config内容，如果自己对接其他支付可忽略**  
+ **解释一下pay_config内容，默认采用白辰支付，先支持支付宝支付，微信支付在开发中**  
  
  **系统对接其他支付，需要自己注册账号密码登录查看相关配置**  
  
