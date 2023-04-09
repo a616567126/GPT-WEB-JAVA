@@ -3,11 +3,18 @@ package com.cn.app.chatgptbot.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.easysdk.factory.Factory;
+import com.alipay.easysdk.kernel.util.ResponseChecker;
+import com.alipay.easysdk.payment.page.models.AlipayTradePagePayResponse;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cn.app.chatgptbot.base.B;
+import com.cn.app.chatgptbot.config.ali.AliPayConfig;
 import com.cn.app.chatgptbot.dao.OrderDao;
+import com.cn.app.chatgptbot.exception.CustomException;
 import com.cn.app.chatgptbot.model.*;
+import com.cn.app.chatgptbot.model.ali.AlipayNotifyParam;
+import com.cn.app.chatgptbot.model.ali.req.AliPayCreateReq;
 import com.cn.app.chatgptbot.model.req.CreateOrderReq;
 import com.cn.app.chatgptbot.model.req.OrderCallBackReq;
 import com.cn.app.chatgptbot.model.req.QueryOrderReq;
@@ -19,6 +26,8 @@ import com.cn.app.chatgptbot.service.*;
 import com.cn.app.chatgptbot.utils.JwtUtil;
 import com.cn.app.chatgptbot.utils.RedisUtil;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -221,6 +230,65 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
         Page<QueryOrderRes> page = new Page<>(req.getPageNumber(), req.getPageSize());
         Page<QueryOrderRes> queryOrderResPage = this.baseMapper.queryOrder(page, req);
         return B.okBuild(queryOrderResPage);
+    }
+
+    @Override
+    public B<String> aliCreateOrder(AliPayCreateReq req) throws Exception {
+        PayConfig payConfig = RedisUtil.getCacheObject("payConfig");
+        if(payConfig.getPayType() < 2){
+            return B.finalBuild("支付宝支付通道关闭");
+        }
+        Product product = productService.getById(req.getProductId());
+        if (null == product) {
+            return B.finalBuild("商品异常");
+        }
+        if(product.getStock() < req.getPayNumber()){
+            return B.finalBuild("库存不足");
+        }
+        Order order = BeanUtil.copyProperties(req, Order.class);
+        order.setUserId(JwtUtil.getUserId());
+        order.setPrice(product.getPrice().multiply(new BigDecimal(req.getPayNumber())));
+        order.setPayType("支付宝");
+        order.setCreateTime(LocalDateTime.now());
+        this.save(order);
+        // 生成系统订单号
+        String outTradeNo = order.getId().toString();
+        AlipayTradePagePayResponse response = Factory.Payment.Page()
+                .pay("商品"+product.getName()+"数量"+order.getPayNumber(), outTradeNo, order.getPrice().toString(),payConfig.getAliReturnUrl());
+        if (!ResponseChecker.success(response)) {
+            throw new CustomException("预订单生成失败");
+        }
+        return B.okBuild(response.getBody().replace("\"","").replace("\n",""));
+    }
+
+    @Override
+    public String aliCallBack(HttpServletRequest request) throws Exception {
+        Map<String, String> stringStringMap = AliPayConfig.convertRequestParamsToMap(request);
+        PayConfig payConfig = RedisUtil.getCacheObject("payConfig");
+        if (Factory.Payment.Common().verifyNotify(stringStringMap)){
+            if(!stringStringMap.get("app_id").equals(payConfig.getAliAppId())){
+                log.info("appId不一致");
+                return "failure";
+            }
+            AlipayNotifyParam param = AliPayConfig.buildAlipayNotifyParam(stringStringMap);
+            // 支付成功
+            Order order = this.getById(param.getOutTradeNo());
+            if(null == order){
+                log.info("订单不存在");
+                return "failure";
+            }else {
+                if(order.getPrice().compareTo(param.getTotalAmount()) != 0){
+                    log.info("订单金额异常");
+                    return "failure";
+                }
+                order.setTradeNo(param.getTradeNo());
+                order.setOperateTime(LocalDateTime.now());
+                this.saveOrUpdate(order);
+            }
+            return "success";
+        }else {
+            return "failure";
+        }
     }
 
     public static String createSign(CreateOrderRes res){

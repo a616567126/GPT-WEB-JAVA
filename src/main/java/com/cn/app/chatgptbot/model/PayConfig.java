@@ -21,23 +21,41 @@ import java.math.BigDecimal;
 public class PayConfig extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 326308725675949330L;
-    /**
-     * pid
-     */
-    @ApiModelProperty(value = "pid", position = 5)
+    @ApiModelProperty(value = "pid")
     private Integer pid;
-    /**
-     * secretKey
-     */
-    @ApiModelProperty(value = "secretKey", position = 7)
+
+    @ApiModelProperty(value = "secretKey")
     private String secretKey;
 
-    @ApiModelProperty(value = "回调地址", position = 7)
+    @ApiModelProperty(value = "回调地址")
     private String notifyUrl;
-    @ApiModelProperty(value = "页面跳转地址", position = 7)
+
+    @ApiModelProperty(value = "页面跳转地址")
     private String returnUrl;
-    @ApiModelProperty(value = "支付请求地址", position = 7)
+
+    @ApiModelProperty(value = "支付请求地址")
     private String submitUrl;
+
+    @ApiModelProperty(value = "支付宝appid")
+    private String aliAppId;
+
+    @ApiModelProperty(value = "支付宝应用私钥")
+    private String aliPrivateKey;
+
+    @ApiModelProperty(value = "支付宝应用公钥")
+    private String aliPublicKey;
+
+    @ApiModelProperty(value = "支付宝接口地址")
+    private String aliGatewayUrl;
+
+    @ApiModelProperty(value = "支付宝回调地址")
+    private String aliNotifyUrl;
+
+    @ApiModelProperty(value = "支付宝页面跳转地址")
+    private String aliReturnUrl;
+
+    @ApiModelProperty(value = "支付类型 0 易支付 1微信 2支付宝 3支付宝、微信")
+    private Integer payType;
 
 
 }
