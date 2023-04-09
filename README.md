@@ -144,6 +144,13 @@ CREATE TABLE `pay_config` (
   `notify_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '回调域名',
   `return_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '跳转通知地址',
   `submit_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '支付请求域名',
+  `ali_app_id` varchar(50) DEFAULT NULL COMMENT '支付宝appid',
+  `ali_private_key` varchar(3000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '支付宝应用私钥',
+  `ali_public_key` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '支付宝应用公钥',
+  `ali_gateway_url` varchar(100) DEFAULT NULL COMMENT '支付宝接口地址',
+  `ali_notify_url` varchar(100) DEFAULT NULL COMMENT '支付宝回调地址',
+  `ali_return_url` varchar(100) DEFAULT NULL COMMENT '支付宝页面跳转地址',
+  `pay_type` tinyint DEFAULT '0' COMMENT '支付类型 0 易支付 1微信 2支付宝 3支付宝、微信',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -151,7 +158,7 @@ CREATE TABLE `pay_config` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='支付配置';    
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='支付配置';  
 
 -- Table structure for product  
 
