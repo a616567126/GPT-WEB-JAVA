@@ -1,8 +1,11 @@
 
 package com.cn.app.chatgptbot.utils;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.cn.app.chatgptbot.constant.CommonConst;
 import com.cn.app.chatgptbot.exception.CustomException;
+import com.cn.app.chatgptbot.model.billing.BillingUsage;
 import com.cn.app.chatgptbot.service.IGptKeyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -109,6 +112,24 @@ public final class WebClientUtil {
         jsonObject.put("logId",useLogId);
         return jsonObject;
     }
-
+    public static BillingUsage build(final String url, final String openKey) {
+        final BillingUsage billingUsage = WebClient.builder()
+                .baseUrl(CommonConst.OPEN_AI_URL)
+                .defaultHeader("Authorization", "Bearer " + openKey)
+                .build()
+                .get()
+                .uri(url)
+                .retrieve()
+                .bodyToMono(BillingUsage.class)
+                .timeout(Duration.ofSeconds(120))
+                .onErrorMap(TimeoutException.class, e -> new CustomException("查询余额失败(超时)"))
+                .onErrorMap(Exception.class, e -> new CustomException("查询余额失败"))
+                .block();
+        assert billingUsage != null;
+        billingUsage.getDailyCosts().forEach(d ->{
+            d.setDate(cn.hutool.core.date.DateUtil.format(DateUtil.date(d.getTimestamp()*1000L), "yyyy-MM-dd"));
+        });
+        return billingUsage;
+    }
 
 }

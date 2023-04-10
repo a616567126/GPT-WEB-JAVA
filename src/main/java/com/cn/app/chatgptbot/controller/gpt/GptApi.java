@@ -1,28 +1,15 @@
 package com.cn.app.chatgptbot.controller.gpt;
 
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
-import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.cn.app.chatgptbot.service.AsyncLogService;
-import com.cn.app.chatgptbot.constant.CommonError;
+import com.cn.app.chatgptbot.base.Result;
+import com.cn.app.chatgptbot.model.*;
 import com.cn.app.chatgptbot.model.gptdto.GptAlphaDto;
 import com.cn.app.chatgptbot.model.gptdto.GptBingDto;
 import com.cn.app.chatgptbot.model.gptdto.GptCreditGrantsDto;
 import com.cn.app.chatgptbot.model.gptdto.GptTurboDto;
-import com.cn.app.chatgptbot.model.*;
-import com.cn.app.chatgptbot.model.billing.CreditGrantsResponse;
-import com.cn.app.chatgptbot.model.billing.OpenAiResponse;
-import com.cn.app.chatgptbot.base.Result;
-import com.cn.app.chatgptbot.service.IGptKeyService;
-import com.cn.app.chatgptbot.service.IRefuelingKitService;
-import com.cn.app.chatgptbot.service.IUseLogService;
-import com.cn.app.chatgptbot.service.IUserService;
+import com.cn.app.chatgptbot.service.*;
 import com.cn.app.chatgptbot.utils.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import javax.annotation.Resource;
-
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,9 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -150,35 +138,56 @@ public final class GptApi {
 
     }
 
+    /**
+     * 余额查询1.0已废弃！！！
+     * @param dto
+     * @return
+     * @throws JsonProcessingException
+     */
     @PostMapping(value = "/creditGrants",produces = MediaType.APPLICATION_JSON_VALUE)
     public Result creditGrants(@Validated @RequestBody final GptCreditGrantsDto dto) throws JsonProcessingException {
-        HttpResponse response = HttpRequest
-                .get("https://api.openai.com/dashboard/billing/credit_grants")
-                .header("Authorization", "Bearer " + dto.getKey())
-                .execute();
-        String body = response.body();
-        if (!response.isOk()) {
-            if (response.getStatus() == CommonError.OPENAI_AUTHENTICATION_ERROR.code()
-                    || response.getStatus() == CommonError.OPENAI_LIMIT_ERROR.code()
-                    || response.getStatus() == CommonError.OPENAI_SERVER_ERROR.code()) {
-                OpenAiResponse openAiResponse = JSONUtil.toBean(response.body(), OpenAiResponse.class);
-                log.error(openAiResponse.getError().getMessage());
-                return Result.error(openAiResponse.getError().getMessage());
-            }
-            String errorMsg = response.body();
-            log.error("询余额请求异常：{}", errorMsg);
-            OpenAiResponse openAiResponse = JSONUtil.toBean(errorMsg, OpenAiResponse.class);
-            if (Objects.nonNull(openAiResponse.getError())) {
-                log.error(openAiResponse.getError().getMessage());
-                return Result.error(openAiResponse.getError().getMessage());
-            }
-            return Result.error(CommonError.RETRY_ERROR.msg());
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        // 读取Json 返回值
-        CreditGrantsResponse completionResponse = mapper.readValue(body, CreditGrantsResponse.class);
-        return Result.data(completionResponse);
+//        HttpResponse response = HttpRequest
+//                .get("https://api.openai.com/dashboard/billing/credit_grants")
+//                .header("Authorization", "Bearer " + dto.getKey())
+//                .execute();
+//        String body = response.body();
+//        if (!response.isOk()) {
+//            if (response.getStatus() == CommonError.OPENAI_AUTHENTICATION_ERROR.code()
+//                    || response.getStatus() == CommonError.OPENAI_LIMIT_ERROR.code()
+//                    || response.getStatus() == CommonError.OPENAI_SERVER_ERROR.code()) {
+//                OpenAiResponse openAiResponse = JSONUtil.toBean(response.body(), OpenAiResponse.class);
+//                log.error(openAiResponse.getError().getMessage());
+//                return Result.error(openAiResponse.getError().getMessage());
+//            }
+//            String errorMsg = response.body();
+//            log.error("询余额请求异常：{}", errorMsg);
+//            OpenAiResponse openAiResponse = JSONUtil.toBean(errorMsg, OpenAiResponse.class);
+//            if (Objects.nonNull(openAiResponse.getError())) {
+//                log.error(openAiResponse.getError().getMessage());
+//                return Result.error(openAiResponse.getError().getMessage());
+//            }
+//            return Result.error(CommonError.RETRY_ERROR.msg());
+//        }
+//        ObjectMapper mapper = new ObjectMapper();
+//        // 读取Json 返回值
+//        CreditGrantsResponse completionResponse = mapper.readValue(body, CreditGrantsResponse.class);
+        return Result.data(null);
 
+    }
+
+    /**
+     * 余额查询2.0与之前版本返回内容完全不一致(查询100天之内的)
+     * @param dto
+     * @return
+     */
+    @PostMapping(value = "/billing/usage",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Result billingUsage(@Validated @RequestBody final GptCreditGrantsDto dto) throws JsonProcessingException {
+        return Result.data(
+                WebClientUtil.build(
+                        "/v1/dashboard/billing/usage?start_date="
+                                +LocalDate.now().plusDays(-99)
+                                +"&end_date="+LocalDate.now()
+                        , dto.getKey()));
     }
 
     public Result checkUser(Integer type, String mainKey,String message,Long logId){

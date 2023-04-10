@@ -24,4 +24,9 @@ public class CommonConst {
      */
     public static final String REDIS_KEY_PREFIX_TOKEN = "TOKEN:";
 
+    /**
+     * openid接口地址
+     */
+    public static final String OPEN_AI_URL = "https://api.openai.com/";
+
 }
