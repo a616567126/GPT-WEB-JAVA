@@ -31,6 +31,7 @@ public class ChatModel {
      * 这里分别代表密钥，请求的地址，编码
      */
     private String url="https://api.openai.com/v1/chat/completions";
+
     private Charset charset = StandardCharsets.UTF_8;
 
     /**
@@ -92,31 +93,86 @@ public class ChatModel {
                 return Integer.MAX_VALUE;
             }
 
+//            @Override
+//            protected void data(CharBuffer src, boolean endOfStream) throws IOException {
+//                // 收到一个请求就进行处理
+//                String ss = src.toString();
+//                // 通过data:进行分割，如果不进行此步，可能返回的答案会少一些内容
+//                for (String s : ss.split("data:")) {
+//                    // 去除掉data:
+//                    if (s.startsWith("data:")) {
+//                        s = s.substring(5);
+//                    }
+//                    // 返回的数据可能是（DONE）
+//                    if (s.length() > 8) {
+//                        // 转换为对象
+//                        ChatResponseParameter responseParameter = objectMapper.readValue(s, ChatResponseParameter.class);
+//                        // 处理结果
+//                        for (Choice choice : responseParameter.getChoices()) {
+//                            String content = choice.getDelta().getContent();
+//                            if (content != null && !"".equals(content)) {
+//                                // 保存结果
+//                                sb.append(content);
+//                                // 将结果使用webSocket传送过去
+//                                session.getBasicRemote().sendText(content);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+
+
             @Override
             protected void data(CharBuffer src, boolean endOfStream) throws IOException {
-                // 收到一个请求就进行处理
-                String ss = src.toString();
-                // 通过data:进行分割，如果不进行此步，可能返回的答案会少一些内容
-                for (String s : ss.split("data:")) {
-                    // 去除掉data:
-                    if (s.startsWith("data:")) {
-                        s = s.substring(5);
+                StringBuilder dataBuffer = new StringBuilder();
+                // 将接收到的数据添加到数据缓冲区中
+                dataBuffer.append(src);
+                // 搜索数据缓冲区中的所有完整数据块并进行处理
+                int start = 0;
+                int nextStart;
+                while ((nextStart = dataBuffer.indexOf("data:", start)) >= 0) {
+                    // 提取完整的数据块并进行处理
+                    nextStart += 5; // 跳过 "data:"
+                    int end = dataBuffer.indexOf("\n\n", nextStart);
+                    if (end < 0) {
+                        // 如果找不到数据块的结尾标志，则继续等待接收到更多数据
+                        break;
                     }
-                    // 返回的数据可能是（DONE）
-                    if (s.length() > 8) {
-                        // 转换为对象
-                        ChatResponseParameter responseParameter = objectMapper.readValue(s, ChatResponseParameter.class);
-                        // 处理结果
-                        for (Choice choice : responseParameter.getChoices()) {
-                            String content = choice.getDelta().getContent();
-                            if (content != null && !"".equals(content)) {
-                                // 保存结果
-                                sb.append(content);
-                                // 将结果使用webSocket传送过去
-                                session.getBasicRemote().sendText(content);
-                            }
+                    String data = dataBuffer.substring(nextStart, end);
+                    process(data);
+                    // 更新下一个搜索的起始位置
+                    start = end + 2; // 跳过 "\n\n"
+                }
+                // 移除已经处理过的数据
+                dataBuffer.delete(0, start);
+                if (endOfStream) {
+                    // 如果已经到达数据流的末尾，则对剩余的数据进行处理
+                    if (dataBuffer.length() > 0) {
+                        process(dataBuffer.toString());
+                        dataBuffer.setLength(0);
+                    }
+                }
+            }
+
+
+            private void process(String data) {
+                try {
+                    // 解析 JSON 数据
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    ChatResponseParameter responseParameter = objectMapper.readValue(data, ChatResponseParameter.class);
+                    // 处理选择
+                    for (Choice choice : responseParameter.getChoices()) {
+                        String content = choice.getDelta().getContent();
+                        if (content != null && !"".equals(content)) {
+                            // 保存结果
+                            sb.append(content);
+                            // 将结果使用WebSocket传送过去
+                            session.getBasicRemote().sendText(content);
                         }
                     }
+                } catch (IOException e) {
+                    // 处理解析异常
+                    e.printStackTrace();
                 }
             }
 
