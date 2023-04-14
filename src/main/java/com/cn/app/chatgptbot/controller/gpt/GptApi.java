@@ -95,7 +95,7 @@ public final class GptApi {
             return Result.error(result.getMsg());
         }
         // execute the request
-        return Result.data( WebClientUtil.build(proxyUtil.getProxy(), "chat/completions", gptTurboModel, mainKey,(Long)result.getData()));
+        return Result.data( WebClientUtil.build(proxyUtil.getProxy(), "/v1/chat/completions", gptTurboModel, mainKey,(Long)result.getData()));
 
     }
 
