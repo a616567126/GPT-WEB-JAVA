@@ -44,11 +44,11 @@ public class AliPayConfig implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args){
-        PayConfig payConfig = payConfigService.getById(1L);
-        if(payConfig.getPayType() > 1){
-            Factory.setOptions(getOptions(payConfig));
-            log.info("********支付宝SDK初始化完成!******");
-        }
+//        PayConfig payConfig = payConfigService.getById(1L);
+//        if(payConfig.getPayType() > 1){
+//            Factory.setOptions(getOptions(payConfig));
+//            log.info("********支付宝SDK初始化完成!******");
+//        }
     }
     public Config getOptions(PayConfig payConfig) {
         Config config = new Config();
