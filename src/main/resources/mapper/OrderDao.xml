@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cn.app.chatgptbot.dao.OrderDao">
+<mapper namespace="com.chat.java.dao.OrderDao">
 
 
-    <select id="getUserOrderList" resultType="com.cn.app.chatgptbot.model.res.OrderUserRes">
+    <select id="getUserOrderList" resultType="com.chat.java.model.res.OrderUserRes">
         SELECT
             t.id,
             p.`name` as productName,
@@ -20,7 +20,7 @@
         WHERE t.user_id = #{userId}
         order by t.id desc
     </select>
-    <select id="queryOrder" resultType="com.cn.app.chatgptbot.model.res.QueryOrderRes">
+    <select id="queryOrder" resultType="com.chat.java.model.res.QueryOrderRes">
         SELECT
             t.id,
             t.create_time,
@@ -49,7 +49,7 @@
         </if>
         order by t.id desc
     </select>
-    <select id="queryHomeOrder" resultType="com.cn.app.chatgptbot.model.res.AdminHomeOrder">
+    <select id="queryHomeOrder" resultType="com.chat.java.model.res.AdminHomeOrder">
         SELECT
             count( 1 ) AS orderNumber,
             date_format ( create_time, '%Y-%m-%d' ) as days
@@ -65,7 +65,7 @@
                     '%Y-%m-%d'
                 )
     </select>
-    <select id="queryHomeOrderPrice" resultType="com.cn.app.chatgptbot.model.res.AdminHomeOrderPrice">
+    <select id="queryHomeOrderPrice" resultType="com.chat.java.model.res.AdminHomeOrderPrice">
         SELECT
             sum( price ) AS price,
             date_format ( create_time, '%Y-%m-%d' ) AS days

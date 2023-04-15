@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cn.app.chatgptbot.dao.UserDao">
+<mapper namespace="com.chat.java.dao.UserDao">
 
 
-    <select id="getUserInfo" resultType="com.cn.app.chatgptbot.model.res.UserInfoRes">
+    <select id="getUserInfo" resultType="com.chat.java.model.res.UserInfoRes">
         SELECT
             u.expiration_time,
             u.remaining_times,
@@ -17,7 +17,7 @@
 
         where u.id = #{userId}
     </select>
-    <select id="adminHome" resultType="com.cn.app.chatgptbot.model.res.AdminHomeRes">
+    <select id="adminHome" resultType="com.chat.java.model.res.AdminHomeRes">
         SELECT
             ifnull( u.dayUserNumber, 0 ) AS dayUserNumber,
             ifnull( o1.dayOrderNumber, 0 ) AS dayOrderNumber,

@@ -8,11 +8,11 @@
 		<version>2.3.2.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.cn.app</groupId>
-	<artifactId>ChatGPT-BOT</artifactId>
+	<groupId>com.chat.java</groupId>
+	<artifactId>ChatGPT-JAVA</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ChatGPT-BOT</name>
-	<description>ChatGPT-BOT</description>
+	<name>ChatGPT-JAVA</name>
+	<description>ChatGPT-JAVA</description>
 	<properties>
 		<java.version>8</java.version>
 	</properties>
@@ -137,6 +137,16 @@
 			<groupId>com.alipay.sdk</groupId>
 			<artifactId>alipay-easysdk</artifactId>
 			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-mp</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>wx-java-mp-spring-boot-starter</artifactId>
+			<version>4.0.0</version>
 		</dependency>
 	</dependencies>
 

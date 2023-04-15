@@ -273,7 +273,7 @@ CREATE TABLE `user` (
 
 o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8000 (http) with context path ''  
 
-com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds (process running for 5.521)
+com.chat.java.Application        : Started Application in 5.138 seconds (process running for 5.521)
 
  ## Precautions For Using Nginx  
  

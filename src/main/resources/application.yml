@@ -40,5 +40,9 @@ we-chat:
   appId: ''
   #小程序 密钥
   secret: ''
-# bing机器人请求路径
-bingUrl: "http://XXXXXXXXX:3000/bing"
+wx:
+  mp:
+    app-id: 微信appid
+    secret: 微信secret
+    config-storage:
+      type: redistemplate
