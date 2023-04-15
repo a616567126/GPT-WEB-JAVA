@@ -391,8 +391,8 @@ com.chat.java.Application        : Started Application in 5.138 seconds (process
  
 ## 记得点一个Star哦!!!!  
 
-## 加入微信群
-<img width="398" alt="image" src="https://user-images.githubusercontent.com/43660702/231703678-e3f6f99c-445c-4675-a768-05966efde1fe.png">
+## 扫码添加好友
+![IMG_60D5DE670485-1](https://user-images.githubusercontent.com/43660702/232187172-9d971a97-b7a3-407f-9ba1-a35516505733.jpeg)
 
 
 
