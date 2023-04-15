@@ -14,9 +14,11 @@ import com.cn.app.chatgptbot.model.base.BaseDeleteEntity;
 import com.cn.app.chatgptbot.model.base.BasePageHelper;
 import com.cn.app.chatgptbot.service.IGptKeyService;
 import com.cn.app.chatgptbot.service.IPayConfigService;
+import com.cn.app.chatgptbot.utils.RedisUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
 /**
@@ -29,7 +31,8 @@ import java.time.LocalDateTime;
 @Transactional(rollbackFor = Exception.class)
 public class PayConfigServiceImpl extends ServiceImpl<PayConfigDao, PayConfig> implements IPayConfigService {
 
-
+    @Resource
+    RedisUtil redisUtil;
 
     @Override
     public B queryPage() {
@@ -44,6 +47,7 @@ public class PayConfigServiceImpl extends ServiceImpl<PayConfigDao, PayConfig> i
         PayConfig payConfig = JSONObject.parseObject(params, PayConfig.class);
         payConfig.setOperateTime(LocalDateTime.now());
         this.updateById(payConfig);
+        redisUtil.setCacheObject("payConfig",payConfig);
         return B.build(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg());
     }
 
