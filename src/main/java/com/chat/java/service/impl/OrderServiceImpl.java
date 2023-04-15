@@ -288,6 +288,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
                 }
                 order.setTradeNo(param.getTradeNo());
                 order.setOperateTime(LocalDateTime.now());
+                order.setState(1);
                 this.saveOrUpdate(order);
             }
             return "success";
