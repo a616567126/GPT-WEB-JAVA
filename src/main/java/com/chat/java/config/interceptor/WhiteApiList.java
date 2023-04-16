@@ -17,6 +17,7 @@ public class WhiteApiList {
         list.add("/user/token/admin/login");
         //注册
         list.add("/user/token/register");
+        list.add("/user/token/register/msm");
         //支付回调
         list.add("/order/callback");
         list.add("/order/ali/callBack");
@@ -25,6 +26,11 @@ public class WhiteApiList {
         list.add("/swagger-resources");
         list.add("/doc.html");
         list.add("/webjars/**");
+
+        //短信
+        list.add("/user/token/send/msg");
+        //获取注册方式
+        list.add("/user/token/get/register/method");
     }
 
 }
