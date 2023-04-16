@@ -9,7 +9,7 @@ import com.chat.java.exception.CustomException;
 import com.chat.java.model.GptKey;
 import com.chat.java.model.req.GptKeyAddReq;
 import com.chat.java.model.req.UpdateKeyStateReq;
-import com.chat.java.utils.GptUtil;
+import com.chat.java.utils.InitUtil;
 import com.chat.java.base.B;
 import com.chat.java.base.ResultEnum;
 import com.chat.java.dao.GptKeyDao;
@@ -62,8 +62,8 @@ public class GptKeyServiceImpl extends ServiceImpl<GptKeyDao, GptKey> implements
         gptKey.setCreateTime(LocalDateTime.now());
         gptKey.setOperateTime(LocalDateTime.now());
         this.save(gptKey);
-        GptUtil.add(gptKey.getKey());
-        log.error("新增key：{}======缓存key信息：{}",gptKey.getKey(),GptUtil.getAllKey());
+        InitUtil.add(gptKey.getKey());
+        log.error("新增key：{}======缓存key信息：{}",gptKey.getKey(), InitUtil.getAllKey());
         return B.build(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg());
     }
 
@@ -75,7 +75,7 @@ public class GptKeyServiceImpl extends ServiceImpl<GptKeyDao, GptKey> implements
         }
         gptKey.setState(gptKey.getState());
         this.saveOrUpdate(gptKey);
-        GptUtil.add(gptKey.getKey());
+        InitUtil.add(gptKey.getKey());
         return B.build(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg());
     }
 
@@ -83,8 +83,8 @@ public class GptKeyServiceImpl extends ServiceImpl<GptKeyDao, GptKey> implements
     public B delete(BaseDeleteEntity params) {
         List<GptKey> list = this.lambdaQuery().in(GptKey::getId, params.getIds()).list();
         this.removeByIds(params.getIds());
-        GptUtil.removeKey(list.stream().map(GptKey::getKey).collect(Collectors.toList()));
-        log.error("删除：{}======缓存key信息：{}",list,GptUtil.getAllKey());
+        InitUtil.removeKey(list.stream().map(GptKey::getKey).collect(Collectors.toList()));
+        log.error("删除：{}======缓存key信息：{}",list, InitUtil.getAllKey());
         return B.build(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg());
     }
 

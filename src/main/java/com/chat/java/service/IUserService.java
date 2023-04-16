@@ -6,10 +6,7 @@ import com.chat.java.base.B;
 import com.chat.java.model.User;
 import com.chat.java.model.base.BaseDeleteEntity;
 import com.chat.java.model.base.BasePageHelper;
-import com.chat.java.model.req.RegisterReq;
-import com.chat.java.model.req.UserAddReq;
-import com.chat.java.model.req.UserPageReq;
-import com.chat.java.model.req.UserUpdateReq;
+import com.chat.java.model.req.*;
 import com.chat.java.model.res.UserInfoRes;
 import com.chat.java.model.res.AdminHomeRes;
 
@@ -35,6 +32,8 @@ public interface IUserService extends IService<User> {
     B<Void> delete(BaseDeleteEntity params);
 
     B<Void> register(RegisterReq req);
+
+    B<String> registerMsm(MsmRegisterReq req);
     B<UserInfoRes> home();
 
     B<AdminHomeRes> adminHome();

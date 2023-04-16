@@ -2,6 +2,7 @@
 package com.chat.java.utils;
 
 import com.chat.java.model.PayConfig;
+import com.chat.java.model.SysConfig;
 import com.chat.java.service.AsyncLogService;
 import com.chat.java.exception.CustomException;
 import com.chat.java.model.GptKey;
@@ -10,10 +11,13 @@ import com.chat.java.model.gptvo.CtlDataVo;
 import com.chat.java.service.IPayConfigService;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+
+import com.chat.java.service.ISysConfigService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -26,7 +30,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 @Log4j2
-public final class GptUtil {
+public final class InitUtil {
 
     @Autowired
     IGptKeyService gptKeyService;
@@ -34,11 +38,13 @@ public final class GptUtil {
     AsyncLogService asyncLogService;
     @Resource
     IPayConfigService payConfigService;
+    @Resource
+    ISysConfigService sysConfigService;
 
     @Resource
     RedisUtil redisUtil;
 
-    private static GptUtil gptUtil;
+    private static InitUtil initUtil;
 
 
     /**
@@ -63,24 +69,26 @@ public final class GptUtil {
 
 
 
+
     /**
      * Init.
      */
     @PostConstruct
     public void init() {
         // traverse the insert
-        List<GptKey> gptKeyList = gptKeyService.lambdaQuery().eq(GptKey::getState,0).orderByDesc(GptKey::getSort).list();
-        gptKeyList.stream().map(GptKey::getKey).collect(Collectors.toList()).forEach(GptUtil::add);
+        List<GptKey> gptKeyList = gptKeyService.lambdaQuery().eq(GptKey::getState, 0).orderByDesc(GptKey::getSort).list();
+        gptKeyList.stream().map(GptKey::getKey).collect(Collectors.toList()).forEach(InitUtil::add);
         final Collection<String> allKey = getAllKey();
         final List<String> list = allKey.stream().collect(Collectors.toList());
-        if(!list.isEmpty()){
-            mainKey = list.get(0);
-        }
-        gptUtil = this;
-        gptUtil.gptKeyService = this.gptKeyService;
-        gptUtil.asyncLogService = this.asyncLogService;
+        // get the first one
+        mainKey = list.get(0);
+        initUtil = this;
+        initUtil.gptKeyService = this.gptKeyService;
+        initUtil.asyncLogService = this.asyncLogService;
         PayConfig payConfig = payConfigService.getById(1);
-        redisUtil.setCacheObject("payConfig",payConfig);
+        SysConfig sysConfig = sysConfigService.getById(1);
+        redisUtil.setCacheObject("payConfig", payConfig);
+        redisUtil.setCacheObject("sysConfig", sysConfig);
     }
 
     /**
@@ -106,7 +114,7 @@ public final class GptUtil {
     /**
      * Gets random key.
      */
-    public static synchronized void getRandomKey(final String openKey,Long useLogId) {
+    public static synchronized void getRandomKey(final String openKey, Long useLogId) {
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
@@ -114,7 +122,7 @@ public final class GptUtil {
         }
         final Collection<String> allKey = getAllKey();
         if (CollectionUtils.isEmpty(allKey)) {
-            throw new CustomException("缓存池中已无可用的Key 请联系管理员_"+useLogId);
+            throw new CustomException("缓存池中已无可用的Key 请联系管理员_" + useLogId);
         }
         int index = new Random().nextInt(allKey.size());
         final List<String> list = allKey.stream().collect(Collectors.toList());
@@ -122,7 +130,7 @@ public final class GptUtil {
         if (getMainKey().equals(openKey)) {
             mainKey = cache.get(str);
             lapse.put(openKey, openKey);
-            gptUtil.asyncLogService.updateKeyNumber(openKey);
+            initUtil.asyncLogService.updateKeyNumber(openKey);
         }
     }
 
@@ -142,9 +150,30 @@ public final class GptUtil {
         if (getMainKey().equals(openKey)) {
             mainKey = cache.get(str);
             lapse.put(openKey, openKey);
-            gptUtil.asyncLogService.updateKeyNumber(openKey);
+            initUtil.asyncLogService.updateKeyNumber(openKey);
         }
         return 0;
+    }
+
+    public static synchronized String wxGetRandomKey(final String openKey) {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        final Collection<String> allKey = getAllKey();
+        if (CollectionUtils.isEmpty(allKey)) {
+            return "缓存池中已无可用的Key 请联系管理员";
+        }
+        int index = new Random().nextInt(allKey.size());
+        final List<String> list = allKey.stream().collect(Collectors.toList());
+        final String str = list.get(index);
+        if (getMainKey().equals(openKey)) {
+            mainKey = cache.get(str);
+            lapse.put(openKey, openKey);
+            initUtil.asyncLogService.updateKeyNumber(openKey);
+        }
+        return null;
     }
 
     /**
@@ -154,7 +183,10 @@ public final class GptUtil {
      */
     public static void removeKey(final List<String> list) {
         list.forEach(cache::remove);
-        gptUtil.asyncLogService.updateKeyState(list);
+        SysConfig config = RedisUtil.getCacheObject("sysConfig");
+        if (config.getKeySwitch() == 1) {
+            initUtil.asyncLogService.updateKeyState(list);
+        }
     }
 
     /**

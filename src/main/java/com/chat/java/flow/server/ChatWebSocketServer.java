@@ -8,7 +8,7 @@ import com.chat.java.flow.model.ChatModel;
 import com.chat.java.flow.service.CheckService;
 import com.chat.java.model.UseLog;
 import com.chat.java.service.AsyncLogService;
-import com.chat.java.utils.GptUtil;
+import com.chat.java.utils.InitUtil;
 import com.chat.java.utils.RedisUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
@@ -115,7 +115,7 @@ public class ChatWebSocketServer {
 
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
-        final String mainKey = GptUtil.getMainKey();
+        final String mainKey = InitUtil.getMainKey();
         B result = checkService.checkUser(mainKey, this.userId,session);
         if(result.getStatus() != 20000){
             session.getBasicRemote().sendText(result.getMessage());
@@ -132,8 +132,8 @@ public class ChatWebSocketServer {
         String answer = chatModel.getAnswer(session, chatRequestParameter, message,mainKey);
         if(StringUtils.isEmpty(answer)){
             //将key删除
-            GptUtil.removeKey(Collections.singletonList(mainKey));
-            Integer resulCode = GptUtil.getRandomKey(mainKey);
+            InitUtil.removeKey(Collections.singletonList(mainKey));
+            Integer resulCode = InitUtil.getRandomKey(mainKey);
             if(resulCode == -1){
                 session.getBasicRemote().sendText("暂无可使用的key，请联系管理员");
             }else {

@@ -50,17 +50,17 @@ public final class WebClientUtil {
                             final String type = jsonObject.getString("type");
                             final String code = jsonObject.getString("code");
                             if ("access_terminated".equals(type)) {
-                                GptUtil.removeKey(Collections.singletonList(openKey));
-                                GptUtil.getRandomKey(openKey,useLogId);
+                                InitUtil.removeKey(Collections.singletonList(openKey));
+                                InitUtil.getRandomKey(openKey,useLogId);
                                 return Mono.error(new CustomException("目前分配的OpenKey已遭封禁(系统已重新分配KEY),请尝试重新发送消息_"+useLogId));
                             } else if ("invalid_request_error".equals(type)) {
                                 if ("invalid_api_key".equals(code)) {
-                                    GptUtil.removeKey(Collections.singletonList(openKey));
-                                    GptUtil.getRandomKey(openKey,useLogId);
+                                    InitUtil.removeKey(Collections.singletonList(openKey));
+                                    InitUtil.getRandomKey(openKey,useLogId);
                                     return Mono.error(new CustomException("目前分配的OpenKey已经失效(系统已重新分配KEY),请尝试请重新发送消息_"+useLogId));
                                 } else {
-                                    GptUtil.removeKey(Collections.singletonList(openKey));
-                                    GptUtil.getRandomKey(openKey,useLogId);
+                                    InitUtil.removeKey(Collections.singletonList(openKey));
+                                    InitUtil.getRandomKey(openKey,useLogId);
                                     return Mono.error(new CustomException("请求已被OpenAi拒绝受理(系统已重新分配KEY),请尝试重新发送消息_"+useLogId));
                                 }
                             } else {

@@ -98,7 +98,7 @@ public class RedisUtil {
      *
      * @param key
      */
-    public boolean deleteObject(final String key) {
+    public static boolean deleteObject(final String key) {
         return redisUtils.redisTemplate.delete(key);
     }
 

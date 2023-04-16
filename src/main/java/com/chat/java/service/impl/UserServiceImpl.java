@@ -10,15 +10,14 @@ import com.chat.java.base.ResultEnum;
 import com.chat.java.dao.OrderDao;
 import com.chat.java.dao.RefuelingKitDao;
 import com.chat.java.dao.UserDao;
+import com.chat.java.exception.CustomException;
 import com.chat.java.model.Announcement;
+import com.chat.java.model.SysConfig;
 import com.chat.java.model.UseLog;
 import com.chat.java.model.User;
 import com.chat.java.model.base.BaseDeleteEntity;
 import com.chat.java.model.base.BasePageHelper;
-import com.chat.java.model.req.RegisterReq;
-import com.chat.java.model.req.UserAddReq;
-import com.chat.java.model.req.UserPageReq;
-import com.chat.java.model.req.UserUpdateReq;
+import com.chat.java.model.req.*;
 import com.chat.java.model.res.*;
 import com.chat.java.service.IAnnouncementService;
 import com.chat.java.service.IUseLogService;
@@ -27,8 +26,11 @@ import com.chat.java.utils.JwtUtil;
 import com.chat.java.model.res.*;
 
 import javax.annotation.Resource;
+
+import com.chat.java.utils.RedisUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -116,6 +118,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements IUser
 
     @Override
     public  B<Void> register(RegisterReq req) {
+        SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+        if(sysConfig.getRegistrationMethod() != 1){
+            throw new CustomException("暂未开放账号密码注册");
+        }
         User user = BeanUtil.copyProperties(req, User.class);
         Long count = this.lambdaQuery().eq(null != user.getName(), User::getName, user.getName())
                 .eq(null != user.getMobile(), User::getMobile, user.getMobile())
@@ -125,9 +131,36 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements IUser
         }
         user.setCreateTime(LocalDateTime.now());
         user.setOperateTime(LocalDateTime.now());
-        user.setRemainingTimes(10);
+        user.setRemainingTimes(sysConfig.getDefaultTimes());
         this.save(user);
         return B.okBuild();
+    }
+
+    @Override
+    public B<String> registerMsm(MsmRegisterReq req) {
+        SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+        if(sysConfig.getRegistrationMethod() != 2){
+            throw new CustomException("暂未开放账号密码注册");
+        }
+        String code = RedisUtil.getCacheObject("MSM:" + req.getMobile());
+        if(StringUtils.isEmpty(code) || !code.equals(req.getMsgCode())){
+            throw new CustomException("验证码错误");
+        }else {
+            RedisUtil.deleteObject("MSM:" + req.getMobile());
+        }
+        User user = BeanUtil.copyProperties(req, User.class);
+        Long count = this.lambdaQuery().eq(null != user.getName(), User::getName, user.getName())
+                .eq(null != user.getMobile(), User::getMobile, user.getMobile())
+                .count();
+        if(count > 0){
+            return B.finalBuild("用户已存在");
+        }
+        user.setPassword("123456");
+        user.setCreateTime(LocalDateTime.now());
+        user.setOperateTime(LocalDateTime.now());
+        user.setRemainingTimes(sysConfig.getDefaultTimes());
+        this.save(user);
+        return B.okBuild("密码：123456");
     }
 
     @Override

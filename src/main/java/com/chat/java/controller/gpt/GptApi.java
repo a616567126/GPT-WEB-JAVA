@@ -7,7 +7,7 @@ import com.chat.java.model.gptdto.GptAlphaDto;
 import com.chat.java.model.gptdto.GptCreditGrantsDto;
 import com.chat.java.model.gptdto.GptTurboDto;
 import com.chat.java.service.*;
-import com.chat.java.utils.GptUtil;
+import com.chat.java.utils.InitUtil;
 import com.chat.java.utils.JwtUtil;
 import com.chat.java.utils.ProxyUtil;
 import com.chat.java.utils.WebClientUtil;
@@ -70,7 +70,7 @@ public final class GptApi {
 //        weChatDetectUtils.filtration(messages.get(messages.size() - 1).getContent(), dto.getOpenId());
         // switch to the OpenAPI model
         final GptTurboModel gptTurboModel = GptTurboDto.convertToGptTurboModel(dto);
-        final String mainKey = GptUtil.getMainKey();
+        final String mainKey = InitUtil.getMainKey();
         B result = checkUser(dto.getType(), mainKey, JSONObject.toJSONString(gptTurboModel.getMessages()),dto.getLogId());
         if(result.getStatus() != 20000){
             return B.buildGptErr(result.getMessage());
@@ -92,7 +92,7 @@ public final class GptApi {
         // to DTO
         final GptAlphaModel gptAlphaModel = GptAlphaDto.convertToGptAlphaModel(dto);
         // get  key at random
-        final String mainKey = GptUtil.getMainKey();
+        final String mainKey = InitUtil.getMainKey();
         B result = checkUser(dto.getType(), mainKey, gptAlphaModel.getPrompt(),dto.getLogId());
         if(result.getStatus() != 20000){
             return B.buildGptErr(result.getMessage());

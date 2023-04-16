@@ -1,13 +1,20 @@
 package com.chat.java.controller;
 
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.aliyuncs.exceptions.ClientException;
 import com.chat.java.constant.CommonConst;
+import com.chat.java.exception.CustomException;
+import com.chat.java.model.SysConfig;
 import com.chat.java.model.User;
 import com.chat.java.model.base.UserLogin;
+import com.chat.java.model.req.MsmRegisterReq;
 import com.chat.java.model.req.RegisterReq;
+import com.chat.java.model.req.SendMsgReq;
 import com.chat.java.model.res.UserInfoRes;
 import com.chat.java.utils.JwtUtil;
+import com.chat.java.utils.MsmServiceUtil;
 import com.chat.java.utils.RedisUtil;
 import com.chat.java.base.B;
 import com.chat.java.base.ResultEnum;
@@ -80,6 +87,13 @@ public class BaseController {
         return userService.register(req);
     }
 
+    @RequestMapping(value = "/register/msm", method = RequestMethod.POST)
+    @ApiOperation(value = "短信验证码注册")
+    @AvoidRepeatRequest(msg = "请勿短时间内重复注册")
+    public B<String> registerMsm(@Validated @RequestBody MsmRegisterReq req) {
+        return userService.registerMsm(req);
+    }
+
     @RequestMapping(value = "/home", method = RequestMethod.POST)
     @ApiOperation(value = "首页信息")
     public B<UserInfoRes> home() {
@@ -128,6 +142,29 @@ public class BaseController {
     @ApiOperation(value = "管理端首页信息")
     public B<AdminHomeRes> adminHome() {
         return userService.adminHome();
+    }
+
+
+    @RequestMapping(value = "/send/msg", method = RequestMethod.POST)
+    @ApiOperation(value = "发送短信")
+    @AvoidRepeatRequest(intervalTime = 180,msg = "请勿频繁发送验证码")
+    public B<Void> sendMsg(@Validated @RequestBody SendMsgReq req) throws ClientException {
+        Long count = this.userService.lambdaQuery().eq(User::getMobile, req.getMobile()).count();
+        if(count > 0){
+            throw new CustomException("用户已存在，请勿重复注册");
+        }
+        String code = RandomUtil.randomNumbers(6);
+        boolean result = MsmServiceUtil.send(req.getMobile(),code);
+        if(result){
+            RedisUtil.setCacheObject("MSM:"+req.getMobile(),code, 3L, TimeUnit.MINUTES);
+        }
+        return B.okBuild();
+    }
+    @RequestMapping(value = "/get/register/method", method = RequestMethod.POST)
+    @ApiOperation(value = "查询注册方式")
+    public B<Integer> getRegisterMethod() {
+        SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+        return B.okBuild(sysConfig.getRegistrationMethod());
     }
 
 }
