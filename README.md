@@ -303,7 +303,7 @@ CREATE TABLE `sys_config` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='支付配置';  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='系统配置';  
 
 
           
