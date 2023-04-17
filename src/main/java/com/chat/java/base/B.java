@@ -18,6 +18,8 @@ public class B<T> implements Serializable {
     private Date timestamp;
     @JSONField(ordinal= 4)
     private T data;
+    @JSONField(ordinal= 5)
+    private int code;
 
     private B(int status) {
         this.status = status;
@@ -27,6 +29,13 @@ public class B<T> implements Serializable {
         this.status = status;
         this.message = message;
         this.timestamp = DateUtil.getCurrentDateTime();
+    }
+
+    private B(int status, String message,int code) {
+        this.status = status;
+        this.message = message;
+        this.timestamp = DateUtil.getCurrentDateTime();
+        this.code = code;
     }
 
     private B(int status, T data) {
@@ -40,6 +49,15 @@ public class B<T> implements Serializable {
         this.message = message;
         this.timestamp = DateUtil.getCurrentDateTime();
         this.data = data;
+    }
+
+
+    private B(int status, String message, T data,int code) {
+        this.status = status;
+        this.message = message;
+        this.timestamp = DateUtil.getCurrentDateTime();
+        this.data = data;
+        this.code = code;
     }
 
     private B(int status, String message, Date timestamp, T data) {
@@ -65,6 +83,8 @@ public class B<T> implements Serializable {
         return data;
     }
 
+    public int getCode() {return code;}
+
     public static <T> B<T> build(int status, String message, T data) {
         return new B<>(status,message,data);
     }
@@ -88,11 +108,11 @@ public class B<T> implements Serializable {
     }
 
     public static <T> B<T> buildGptData( T data) {
-        return new B<>(20000, "ok",data);
+        return new B<>(20000, "ok",data,2000);
     }
 
     public static <T> B<T> buildGptErr( String message) {
-        return new B<>(50000, message);
+        return new B<>(50000, message,50000);
     }
 
 }
