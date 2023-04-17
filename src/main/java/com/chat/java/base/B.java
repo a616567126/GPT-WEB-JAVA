@@ -108,7 +108,7 @@ public class B<T> implements Serializable {
     }
 
     public static <T> B<T> buildGptData( T data) {
-        return new B<>(20000, "ok",data,2000);
+        return new B<>(20000, "ok",data,20000);
     }
 
     public static <T> B<T> buildGptErr( String message) {
