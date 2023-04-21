@@ -364,7 +364,7 @@ com.chat.java.Application        : Started Application in 5.138 seconds (process
 这个项目的存在要感谢所有做出贡献的人.
 
 <a href="https://github.com/a616567126/GPT-WEB-CLIENT/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=a616567126/GPT-WEB-CLIENT" />
+<img src="https://contrib.rocks/image?repo=a616567126/GPT-WEB-JAVA" />
 </a>  
 
 
