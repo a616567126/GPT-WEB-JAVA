@@ -153,6 +153,13 @@ CREATE TABLE `pay_config` (
   `ali_notify_url` varchar(100) DEFAULT NULL COMMENT '支付宝回调地址',
   `ali_return_url` varchar(100) DEFAULT NULL COMMENT '支付宝页面跳转地址',
   `pay_type` tinyint DEFAULT '0' COMMENT '支付类型 0 易支付 1微信 2支付宝 3支付宝、微信',
+  `wx_appid` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '微信支付的appid',
+  `wx_mchid` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '微信支付直连商户号',
+  `wx_native_url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '微信nativepostapi地址',
+  `wx_native_return_url` varchar(100) DEFAULT NULL COMMENT '微信native回调地址',
+  `wx_v3_secret` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '微信apiv3秘钥',
+  `wx_serial_no` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '商户api序列号',
+  `wx_private_key` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '商户证书内容apiclient_key.pem',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -160,7 +167,7 @@ CREATE TABLE `pay_config` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='支付配置';  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='支付配置';
 
 -- Table structure for product  
 
@@ -267,6 +274,31 @@ CREATE TABLE `user` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户表';  
+
+-- Table structure for sys_config  
+
+DROP TABLE IF EXISTS `sys_config`;
+CREATE TABLE `sys_config` (
+  `id` bigint NOT NULL,
+  `registration_method` tinyint DEFAULT '1' COMMENT '注册模式 1账号密码  2 短信注册 3 关闭注册',
+  `key_switch` tinyint DEFAULT '0' COMMENT '是否禁用自动禁用key 0关闭 1开启',
+  `default_times` int DEFAULT '10' COMMENT '默认注册次数',
+  `ali_access_key_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '阿里云accessKeyId',
+  `ali_secret` varchar(100) DEFAULT NULL COMMENT '阿里云secret',
+  `ali_sign_name` varchar(50) DEFAULT NULL COMMENT '阿里云短信签名',
+  `ali_template_code` varchar(50) DEFAULT NULL COMMENT '阿里云短信模版id',
+  `img_upload_url` varchar(50) DEFAULT NULL COMMENT '图片上传地址',
+  `img_return_url` varchar(50) DEFAULT NULL COMMENT '图片域名前缀',
+  `sd_url` varchar(50) DEFAULT NULL COMMENT 'Sd接口地址',
+  `is_open_sd` tinyint DEFAULT '0' COMMENT '是否开启sd 0未开启 1开启',
+  `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
+  `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
+  `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间（默认为创建时服务器时间）',
+  `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
+  `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='系统配置';
           
 ```         
 ## Running the tests
