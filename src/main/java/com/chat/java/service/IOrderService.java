@@ -9,8 +9,12 @@ import com.chat.java.model.req.QueryOrderReq;
 import com.chat.java.model.req.ReturnUrlReq;
 import com.chat.java.model.res.CreateOrderRes;
 import com.chat.java.base.B;
+import com.chat.java.model.wx.req.WxPayCreateReq;
+import com.chat.java.model.wx.res.NativeCallBackRes;
+import com.chat.java.model.wx.res.WxPayCreateRes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 用户表(User)表服务接口
@@ -32,6 +36,10 @@ public interface IOrderService extends IService<Order> {
     B<String> aliCreateOrder(AliPayCreateReq req) throws Exception;
 
     String  aliCallBack(HttpServletRequest request) throws Exception;
+
+    B<WxPayCreateRes> wxCreateOrder(WxPayCreateReq req) throws Exception;
+
+    NativeCallBackRes wxCallBack(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
 
 

@@ -21,6 +21,7 @@ public class WhiteApiList {
         //支付回调
         list.add("/order/callback");
         list.add("/order/ali/callBack");
+        list.add("/order/wx/callBack");
 
         //swagger
         list.add("/swagger-resources");

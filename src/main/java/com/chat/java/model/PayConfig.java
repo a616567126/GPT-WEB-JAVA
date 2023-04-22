@@ -53,5 +53,25 @@ public class PayConfig extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "支付类型 0 易支付 1微信 2支付宝 3支付宝、微信")
     private Integer payType;
 
+    @ApiModelProperty(value = "微信支付的appid")
+    private String wxAppid;
+
+    @ApiModelProperty(value = "微信支付直连商户号")
+    private String wxMchid;
+
+    @ApiModelProperty(value = "微信NativePostApi地址")
+    private String wxNativeUrl;
+
+    @ApiModelProperty(value = "微信native回调地址")
+    private String wxNativeReturnUrl;
+
+    @ApiModelProperty(value = "微信apiV3秘钥")
+    private String wxV3Secret;
+
+    @ApiModelProperty(value = "商户api序列号")
+    private String wxSerialNo;
+
+    @ApiModelProperty(value = "商户证书内容apiclient_key.pem")
+    private String wxPrivateKey;
 
 }

@@ -7,6 +7,9 @@ import com.chat.java.model.req.CreateOrderReq;
 import com.chat.java.model.req.OrderCallBackReq;
 import com.chat.java.model.req.QueryOrderReq;
 import com.chat.java.model.req.ReturnUrlReq;
+import com.chat.java.model.wx.req.WxPayCreateReq;
+import com.chat.java.model.wx.res.NativeCallBackRes;
+import com.chat.java.model.wx.res.WxPayCreateRes;
 import com.chat.java.service.IOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @RestController
@@ -68,5 +72,17 @@ public class OrderController {
     @ApiOperation(value = "支付宝支付回调")
     public synchronized String aliCallBack(HttpServletRequest request) throws Exception {
         return orderService.aliCallBack(request);
+    }
+
+    @RequestMapping(value = "/wx/create", method = RequestMethod.POST)
+    @ApiOperation(value = "微信创建预订单")
+    public synchronized  B<WxPayCreateRes> wxCreateOrder(@Validated @RequestBody WxPayCreateReq req) throws Exception {
+        return orderService.wxCreateOrder(req);
+    }
+
+    @RequestMapping(value = "/wx/callBack", method = RequestMethod.POST)
+    @ApiOperation(value = "微信支付回调")
+    public synchronized NativeCallBackRes wxCallBack(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return orderService.wxCallBack(request,response);
     }
 }

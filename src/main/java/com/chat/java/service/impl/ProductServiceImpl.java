@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.chat.java.model.PayConfig;
 import com.chat.java.model.Product;
 import com.chat.java.model.req.ProductAddReq;
 import com.chat.java.model.req.ProductPageReq;
@@ -20,6 +21,8 @@ import com.chat.java.model.base.BasePageHelper;
 import com.chat.java.service.IProductService;
 
 import javax.annotation.Resource;
+
+import com.chat.java.utils.RedisUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -116,6 +119,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("productList",list);
         jsonObject.put("orderList",userOrderList);
+        PayConfig payConfig = RedisUtil.getCacheObject("payConfig");
+        jsonObject.put("payType",payConfig.getPayType());
         return B.okBuild(jsonObject);
     }
 }

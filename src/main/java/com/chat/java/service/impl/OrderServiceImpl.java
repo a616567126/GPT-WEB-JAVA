@@ -1,11 +1,14 @@
 package com.chat.java.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.easysdk.factory.Factory;
 import com.alipay.easysdk.kernel.util.ResponseChecker;
 import com.alipay.easysdk.payment.page.models.AlipayTradePagePayResponse;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chat.java.model.*;
@@ -17,6 +20,9 @@ import com.chat.java.base.B;
 import com.chat.java.config.ali.AliPayConfig;
 import com.chat.java.dao.OrderDao;
 import com.chat.java.exception.CustomException;
+import com.chat.java.model.wx.req.WxPayCreateReq;
+import com.chat.java.model.wx.res.NativeCallBackRes;
+import com.chat.java.model.wx.res.WxPayCreateRes;
 import com.chat.java.service.IOrderService;
 import com.chat.java.service.IProductService;
 import com.chat.java.service.IRefuelingKitService;
@@ -28,19 +34,28 @@ import com.chat.java.model.req.QueryOrderReq;
 import com.chat.java.model.req.ReturnUrlReq;
 import com.chat.java.model.res.ReturnUrlRes;
 import com.chat.java.service.*;
+import com.chat.java.utils.HttpUtils;
 import com.chat.java.utils.JwtUtil;
 import com.chat.java.utils.RedisUtil;
 import javax.annotation.Resource;
+import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import com.chat.java.utils.WxPayUtil;
 import lombok.extern.log4j.Log4j2;
+import okhttp3.HttpUrl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -295,6 +310,90 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
         }else {
             return "failure";
         }
+    }
+
+    @Override
+    public B<WxPayCreateRes> wxCreateOrder(WxPayCreateReq req) throws Exception {
+        PayConfig payConfig = RedisUtil.getCacheObject("payConfig");
+        if(payConfig.getPayType() != 1 &&  payConfig.getPayType() != 3 ){
+            throw new CustomException("微信支付通道关闭");
+        }
+        Product product = productService.getById(req.getProductId());
+        if (null == product) {
+            throw new CustomException("商品异常");
+        }
+        if(product.getStock() < req.getPayNumber()){
+            throw new CustomException("库存不足");
+        }
+        WxPayCreateRes res = new WxPayCreateRes();
+        Order order = BeanUtil.copyProperties(req, Order.class);
+        order.setUserId(JwtUtil.getUserId());
+        order.setPrice(product.getPrice().multiply(new BigDecimal(req.getPayNumber())));
+        order.setPayType("微信");
+        order.setCreateTime(LocalDateTime.now());
+        this.save(order);
+        //生成请求参数
+        String bodyParam = WxPayUtil.buildNativePayJson(order.getPrice(),
+                order.getId().toString(),
+                product.getName() + "*" + order.getPayNumber());
+        HttpUrl httpurl = HttpUrl.parse(payConfig.getWxNativeUrl());
+        String sign = WxPayUtil.getToken("POST", httpurl, bodyParam);
+        String body = HttpUtil.createPost(payConfig.getWxNativeUrl())
+                .header(Header.AUTHORIZATION, sign)
+                .header(Header.CONTENT_TYPE, "application/json")
+                .body(bodyParam)
+                .execute()
+                .body();
+        if(!body.contains("code_url")){
+            throw new CustomException("微信预订单生成失败");
+        }
+        res.setCodeUrl(JSONObject.parseObject(body).getString("code_url"));
+        res.setPrice(order.getPrice());
+        return B.okBuild(res);
+    }
+
+    @Override
+    public NativeCallBackRes wxCallBack(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        cn.hutool.json.JSONObject requestData = HttpUtils.readData(request);
+        PayConfig payConfig = RedisUtil.getCacheObject("payConfig");
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        String key = payConfig.getWxV3Secret();
+        cn.hutool.json.JSONObject resource = requestData.getJSONObject("resource");
+        String associatedData = resource.getStr("associated_data");
+        String nonce = resource.getStr("nonce");
+        String content = resource.getStr("ciphertext");
+        byte[] decode = Base64.getDecoder().decode(content);
+        cipher.init(2, new SecretKeySpec(key.getBytes(), "AES"), new GCMParameterSpec(128, nonce.getBytes()));
+        if (StringUtils.isNotEmpty(associatedData)) {
+            cipher.updateAAD(associatedData.getBytes());
+        }
+        JSONObject ciphertext = JSONObject.parseObject(new String(cipher.doFinal(decode), StandardCharsets.UTF_8));
+        String tradeState = ciphertext.getString("trade_state");
+        if(tradeState.equals("SUCCESS")){
+            BigDecimal total = ciphertext.getJSONObject("amount").getBigDecimal("total");
+            String outTradeNo = ciphertext.getString("out_trade_no");
+            String transactionId = ciphertext.getString("transaction_id");
+            String successTime = ciphertext.getString("success_time");
+            JSONArray promotionDetail = ciphertext.getJSONArray("promotion_detail");
+            BigDecimal promotionPrice = new BigDecimal("0");
+            if(promotionDetail.size() > 0){
+                for (int i = 0; i < promotionDetail.size(); i++) {
+                    JSONObject promotion = promotionDetail.getJSONObject(i);
+                    promotionPrice = promotionPrice.add(promotion.getBigDecimal("amount"));
+                }
+            }
+            Order order = this.getById(Long.valueOf(outTradeNo));
+            if(null != order && order.getState() == 0){
+                if(order.getPrice().compareTo(total.add(promotionPrice)) != 0){
+                    order.setState(1);
+                    order.setTradeNo(transactionId);
+                    order.setOperateTime(LocalDateTime.parse(successTime));
+                    this.saveOrUpdate(order);
+                }
+            }
+        }
+        response.setStatus(200);
+        return new NativeCallBackRes();
     }
 
     public static String createSign(CreateOrderRes res){
