@@ -373,10 +373,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
             BigDecimal total = ciphertext.getJSONObject("amount").getBigDecimal("total");
             String outTradeNo = ciphertext.getString("out_trade_no");
             String transactionId = ciphertext.getString("transaction_id");
-            String successTime = ciphertext.getString("success_time");
             JSONArray promotionDetail = ciphertext.getJSONArray("promotion_detail");
             BigDecimal promotionPrice = new BigDecimal("0");
-            if(promotionDetail.size() > 0){
+            if(null != promotionDetail && promotionDetail.size() > 0){
                 for (int i = 0; i < promotionDetail.size(); i++) {
                     JSONObject promotion = promotionDetail.getJSONObject(i);
                     promotionPrice = promotionPrice.add(promotion.getBigDecimal("amount"));
@@ -387,7 +386,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
                 if(order.getPrice().compareTo(total.add(promotionPrice)) != 0){
                     order.setState(1);
                     order.setTradeNo(transactionId);
-                    order.setOperateTime(LocalDateTime.parse(successTime));
+                    order.setOperateTime(LocalDateTime.now());
                     this.saveOrUpdate(order);
                 }
             }
