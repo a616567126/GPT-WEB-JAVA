@@ -252,15 +252,13 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` bigint NOT NULL,
   `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '姓名',
-  `mobile` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '手机号',
-  `password` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '123456' COMMENT '密码',
+  `mobile` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '1' COMMENT '手机号',
+  `password` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '密码',
   `last_login_time` datetime DEFAULT NULL COMMENT '上次登录时间',
   `type` tinyint DEFAULT '0' COMMENT '类型 0 次数用户 1 月卡用户 -1 管理员',
   `expiration_time` datetime DEFAULT NULL COMMENT '月卡到期日期',
-  `remaining_times` int DEFAULT '5' COMMENT '剩余次数',
+  `remaining_times` int DEFAULT '0' COMMENT '剩余次数',
   `card_day_max_number` int DEFAULT '0' COMMENT '月卡当日使用最大次数',
-  `from_user_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '微信用户账号',
-  `is_event` tinyint DEFAULT '0' COMMENT '是否关注公众号 0未关注 1关注',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -269,45 +267,6 @@ CREATE TABLE `user` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户表';  
-
--- Table structure for wx_log  
-
-DROP TABLE IF EXISTS `wx_log`;
-CREATE TABLE `wx_log` (
-  `id` bigint NOT NULL,
-  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '请求内容',
-  `from_user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '微信用户账号',
-  `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
-  `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
-  `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
-  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间（默认为创建时服务器时间）',
-  `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
-  `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='微信日志';  
-
--- Table structure for sys_config  
-
-DROP TABLE IF EXISTS `sys_config`;
-CREATE TABLE `sys_config` (
-  `id` bigint NOT NULL,
-  `registration_method` tinyint DEFAULT '1' COMMENT '注册模式 1账号密码  2 短信注册 3 关闭注册',
-  `key_switch` tinyint DEFAULT '0' COMMENT '是否禁用自动禁用key 0关闭 1开启',
-  `default_times` int DEFAULT '10' COMMENT '默认注册次数',
-  `ali_access_key_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '阿里云accessKeyId',
-  `ali_secret` varchar(100) DEFAULT NULL COMMENT '阿里云secret',
-  `ali_sign_name` varchar(50) DEFAULT NULL COMMENT '阿里云短信签名',
-  `ali_template_code` varchar(50) DEFAULT NULL COMMENT '阿里云短信模版id',
-  `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
-  `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
-  `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
-  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间（默认为创建时服务器时间）',
-  `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
-  `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='系统配置';  
-
-
           
 ```         
 ## Running the tests
@@ -316,7 +275,7 @@ CREATE TABLE `sys_config` (
 
 o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8000 (http) with context path ''  
 
-com.chat.java.Application        : Started Application in 5.138 seconds (process running for 5.521)
+com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds (process running for 5.521)
 
  ## Precautions For Using Nginx  
  
@@ -349,23 +308,15 @@ com.chat.java.Application        : Started Application in 5.138 seconds (process
 
 ### And coding style tests
  
- **后端基于另一个开源项目开发，所用到jdk17特性**  
- 
  **Vue2.0前端地址[GPT-WEB-CLIENT](https://github.com/a616567126/GPT-WEB-CLIENT)**  
  
- 
- 
-## Express gratitude
- 
- **感谢开源作者 [dulaiduwang003](https://github.com/dulaiduwang003/ChatGPT_wechat) 提供的基础GPT功能可以的话点个Star**  
- 
- 
+
  
 ## Contributors
 
 这个项目的存在要感谢所有做出贡献的人.
 
-<a href="https://github.com/a616567126/GPT-WEB-CLIENT/graphs/contributors">
+<a href="https://github.com/a616567126/GPT-WEB-JAVA/graphs/contributors">
 <img src="https://contrib.rocks/image?repo=a616567126/GPT-WEB-JAVA" />
 </a>  
 
