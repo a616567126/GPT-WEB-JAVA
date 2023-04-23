@@ -37,5 +37,17 @@ public class SysConfig extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "阿里云短信模版id")
     private String aliTemplateCode;
 
+    @ApiModelProperty(value = "图片上传路径")
+    private String imgUploadUrl;
+
+    @ApiModelProperty(value = "图片返回前缀地址")
+    private String imgReturnUrl;
+
+    @ApiModelProperty(value = "sd接口地址")
+    private String sdUrl;
+
+    @ApiModelProperty(value = "是否开启sd 0未开启 1开启")
+    private Integer isOpenSd;
+
 
 }
