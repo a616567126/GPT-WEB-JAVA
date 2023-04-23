@@ -98,7 +98,7 @@ public final class GptApi {
             return B.buildGptErr(result.getMessage());
         }
         return B.buildGptData(
-                WebClientUtil.build(proxyUtil.getProxy(), "images/generations", gptAlphaModel, mainKey,(Long)result.getData())
+                WebClientUtil.build(proxyUtil.getProxy(), "/v1/images/generations", gptAlphaModel, mainKey,(Long)result.getData())
         );
     }
 
