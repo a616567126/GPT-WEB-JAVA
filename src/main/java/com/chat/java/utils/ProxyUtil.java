@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.tcp.ProxyProvider;
 
 
 
@@ -35,9 +36,10 @@ public class ProxyUtil {
      * @return the proxy
      */
     public ReactorClientHttpConnector getProxy() {
-        HttpClient httpClient = HttpClient.create().tcpConfiguration((tcpClient) -> {
-            return tcpClient;
-        });
+        HttpClient httpClient = HttpClient.create().tcpConfiguration((tcpClient) -> tcpClient.proxy(proxy -> proxy
+            .type(ProxyProvider.Proxy.HTTP)
+            .host("1081")
+            .port(1081)));
         return new ReactorClientHttpConnector(httpClient);
     }
 }
