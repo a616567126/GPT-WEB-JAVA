@@ -259,13 +259,16 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` bigint NOT NULL,
   `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '姓名',
-  `mobile` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '1' COMMENT '手机号',
-  `password` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '密码',
+  `mobile` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '手机号',
+  `password` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '123456' COMMENT '密码',
   `last_login_time` datetime DEFAULT NULL COMMENT '上次登录时间',
   `type` tinyint DEFAULT '0' COMMENT '类型 0 次数用户 1 月卡用户 -1 管理员',
   `expiration_time` datetime DEFAULT NULL COMMENT '月卡到期日期',
-  `remaining_times` int DEFAULT '0' COMMENT '剩余次数',
+  `remaining_times` int DEFAULT '5' COMMENT '剩余次数',
   `card_day_max_number` int DEFAULT '0' COMMENT '月卡当日使用最大次数',
+  `from_user_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '微信用户账号',
+  `is_event` tinyint DEFAULT '0' COMMENT '是否关注公众号 0未关注 1关注',
+  `email` varchar(80) DEFAULT NULL COMMENT 'email地址',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -273,7 +276,7 @@ CREATE TABLE `user` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户表';  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户表';
 
 -- Table structure for sys_config  
 
@@ -298,7 +301,27 @@ CREATE TABLE `sys_config` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='系统配置';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='系统配置';  
+
+
+-- Table structure for email_config  
+
+DROP TABLE IF EXISTS `email_config`;
+CREATE TABLE `email_config` (
+  `id` bigint NOT NULL,
+  `host` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '邮件提供商地址',
+  `port` int DEFAULT NULL COMMENT '端口号',
+  `username` varchar(50) DEFAULT NULL COMMENT '邮件账号',
+  `password` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'SMTP授权密码',
+  `protocol` varchar(20) DEFAULT NULL COMMENT '邮件协议',
+  `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
+  `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
+  `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间（默认为创建时服务器时间）',
+  `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
+  `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='邮件配置表';
           
 ```         
 ## Running the tests
