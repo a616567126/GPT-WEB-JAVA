@@ -63,6 +63,7 @@ public class GptKeyServiceImpl extends ServiceImpl<GptKeyDao, GptKey> implements
         gptKey.setOperateTime(LocalDateTime.now());
         this.save(gptKey);
         InitUtil.add(gptKey.getKey());
+        this.save(gptKey);
         log.error("新增key：{}======缓存key信息：{}",gptKey.getKey(), InitUtil.getAllKey());
         return B.build(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg());
     }
