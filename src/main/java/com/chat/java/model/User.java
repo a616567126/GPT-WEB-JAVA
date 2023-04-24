@@ -51,4 +51,6 @@ public class User extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "是否关注公众号 0未关注 1关注", position = 14)
     private Integer isEvent;
 
+    @ApiModelProperty(value = "邮件", position = 14)
+    private String email;
 }

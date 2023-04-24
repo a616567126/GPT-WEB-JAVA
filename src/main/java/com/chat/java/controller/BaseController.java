@@ -9,10 +9,9 @@ import com.chat.java.exception.CustomException;
 import com.chat.java.model.SysConfig;
 import com.chat.java.model.User;
 import com.chat.java.model.base.UserLogin;
-import com.chat.java.model.req.MsmRegisterReq;
-import com.chat.java.model.req.RegisterReq;
-import com.chat.java.model.req.SendMsgReq;
+import com.chat.java.model.req.*;
 import com.chat.java.model.res.UserInfoRes;
+import com.chat.java.utils.EmailServiceUtil;
 import com.chat.java.utils.JwtUtil;
 import com.chat.java.utils.MsmServiceUtil;
 import com.chat.java.utils.RedisUtil;
@@ -48,6 +47,8 @@ public class BaseController {
     final IUserService userService;
 
     final RedisUtil redisUtil;
+
+    final EmailServiceUtil emailServiceUtil;
 
 
 
@@ -92,6 +93,14 @@ public class BaseController {
     @AvoidRepeatRequest(msg = "请勿短时间内重复注册")
     public B<String> registerMsm(@Validated @RequestBody MsmRegisterReq req) {
         return userService.registerMsm(req);
+    }
+
+
+    @RequestMapping(value = "/register/email", method = RequestMethod.POST)
+    @ApiOperation(value = "邮件验证码注册")
+    @AvoidRepeatRequest(msg = "请勿短时间内重复注册")
+    public B<String> registerEmail(@Validated @RequestBody EmailRegisterReq req) {
+        return userService.registerEmail(req);
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.POST)
@@ -149,6 +158,10 @@ public class BaseController {
     @ApiOperation(value = "发送短信")
     @AvoidRepeatRequest(intervalTime = 180,msg = "请勿频繁发送验证码")
     public B<Void> sendMsg(@Validated @RequestBody SendMsgReq req) throws ClientException {
+        SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+        if(sysConfig.getRegistrationMethod() != 2 ){
+            throw new ClientException("短信注册暂未开启");
+        }
         Long count = this.userService.lambdaQuery().eq(User::getMobile, req.getMobile()).count();
         if(count > 0){
             throw new CustomException("用户已存在，请勿重复注册");
@@ -165,6 +178,22 @@ public class BaseController {
     public B<Integer> getRegisterMethod() {
         SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
         return B.okBuild(sysConfig.getRegistrationMethod());
+    }
+
+    @RequestMapping(value = "/send/mail", method = RequestMethod.POST)
+    @ApiOperation(value = "发送邮件")
+    @AvoidRepeatRequest(intervalTime = 180,msg = "请勿频繁发送验证码")
+    public B<Void> sendEmail(@Validated @RequestBody SendEmailReq req) throws ClientException {
+        SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+        if(sysConfig.getRegistrationMethod() != 4 ){
+            throw new ClientException("邮件注册暂未开启");
+        }
+        Long count = this.userService.lambdaQuery().eq(User::getEmail, req.getEmail()).count();
+        if(count > 0){
+            throw new ClientException("用户已存在，请勿重复注册");
+        }
+        emailServiceUtil.sendEmail(req.getEmail());
+        return B.okBuild();
     }
 
 }

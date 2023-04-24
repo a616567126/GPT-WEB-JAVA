@@ -18,6 +18,7 @@ public class WhiteApiList {
         //注册
         list.add("/user/token/register");
         list.add("/user/token/register/msm");
+        list.add("/user/token/register/email");
         //支付回调
         list.add("/order/callback");
         list.add("/order/ali/callBack");
@@ -30,6 +31,8 @@ public class WhiteApiList {
 
         //短信
         list.add("/user/token/send/msg");
+        //邮箱
+        list.add("/user/token/send/mail");
         //获取注册方式
         list.add("/user/token/get/register/method");
     }

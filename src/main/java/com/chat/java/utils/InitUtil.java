@@ -1,18 +1,17 @@
 
 package com.chat.java.utils;
 
+import com.chat.java.model.EmailConfig;
 import com.chat.java.model.PayConfig;
 import com.chat.java.model.SysConfig;
-import com.chat.java.service.AsyncLogService;
+import com.chat.java.service.*;
 import com.chat.java.exception.CustomException;
 import com.chat.java.model.GptKey;
-import com.chat.java.service.IGptKeyService;
 import com.chat.java.model.gptvo.CtlDataVo;
-import com.chat.java.service.IPayConfigService;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import com.chat.java.service.ISysConfigService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +42,9 @@ public final class InitUtil {
 
     @Resource
     RedisUtil redisUtil;
+
+    @Resource
+    IEmailService emailService;
 
     private static InitUtil initUtil;
 
@@ -89,6 +91,12 @@ public final class InitUtil {
         SysConfig sysConfig = sysConfigService.getById(1);
         redisUtil.setCacheObject("payConfig", payConfig);
         redisUtil.setCacheObject("sysConfig", sysConfig);
+        if(sysConfig.getRegistrationMethod() == 4){
+            List<EmailConfig> emailConfigList = emailService.list();
+            if(null != emailConfigList && emailConfigList.size() > 0){
+                redisUtil.setCacheObject("emailList",emailConfigList);
+            }
+        }
     }
 
     /**

@@ -164,6 +164,34 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements IUser
     }
 
     @Override
+    public B<String> registerEmail(EmailRegisterReq req) {
+        SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+        if(sysConfig.getRegistrationMethod() != 4){
+            throw new CustomException("暂未开放邮件注册");
+        }
+        String code = RedisUtil.getCacheObject("EMAIL:" + req.getEmail());
+        if(StringUtils.isEmpty(code) || !code.equals(req.getEmailCode())){
+            throw new CustomException("验证码错误");
+        }else {
+            RedisUtil.deleteObject("EMAIL:" + req.getEmail());
+        }
+        User user = BeanUtil.copyProperties(req, User.class);
+        Long count = this.lambdaQuery().eq(null != user.getName(), User::getName, user.getName())
+                .eq(null != user.getMobile(), User::getMobile, user.getMobile())
+                .count();
+        if(count > 0){
+            return B.finalBuild("用户已存在");
+        }
+        user.setPassword("123456");
+        user.setCreateTime(LocalDateTime.now());
+        user.setOperateTime(LocalDateTime.now());
+        user.setRemainingTimes(sysConfig.getDefaultTimes());
+        user.setEmail(req.getEmail());
+        this.save(user);
+        return B.okBuild("密码：123456");
+    }
+
+    @Override
     public B<UserInfoRes> home() {
         UserInfoRes userInfo = this.baseMapper.getUserInfo(JwtUtil.getUserId());
         if(userInfo.getType() == -1){
