@@ -283,7 +283,7 @@ CREATE TABLE `user` (
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config` (
   `id` bigint NOT NULL,
-  `registration_method` tinyint DEFAULT '1' COMMENT '注册模式 1账号密码  2 短信注册 3 关闭注册',
+  `registration_method` tinyint DEFAULT '1' COMMENT '注册模式 1账号密码  2 短信注册 3 关闭注册 4邮件注册',
   `key_switch` tinyint DEFAULT '0' COMMENT '是否禁用自动禁用key 0关闭 1开启',
   `default_times` int DEFAULT '10' COMMENT '默认注册次数',
   `ali_access_key_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '阿里云accessKeyId',
@@ -294,6 +294,9 @@ CREATE TABLE `sys_config` (
   `img_return_url` varchar(50) DEFAULT NULL COMMENT '图片域名前缀',
   `sd_url` varchar(50) DEFAULT NULL COMMENT 'Sd接口地址',
   `is_open_sd` tinyint DEFAULT '0' COMMENT '是否开启sd 0未开启 1开启',
+  `is_open_proxy` tinyint DEFAULT '0' COMMENT '是否开启代理 0关闭 1开启',
+  `proxy_ip` varchar(20) DEFAULT NULL COMMENT '代理ip',
+  `proxy_port` int DEFAULT NULL COMMENT '代理端口',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -301,7 +304,7 @@ CREATE TABLE `sys_config` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='系统配置';  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='系统配置';
 
 
 -- Table structure for email_config  
