@@ -30,10 +30,6 @@ knife4j:
     enable: true
     username: GPT-WEB-JAVA
     password: GPT-WEB-JAVA
-#代理ip
-broker:
-  ip:
-  port:
 # 微信小程序配置
 we-chat:
   #小程序 ID

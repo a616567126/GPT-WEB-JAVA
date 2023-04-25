@@ -49,5 +49,14 @@ public class SysConfig extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "是否开启sd 0未开启 1开启")
     private Integer isOpenSd;
 
+    @ApiModelProperty(value = "是否开启代理 0未开启 1开启")
+    private Integer isOpenProxy;
+
+    @ApiModelProperty(value = "代理ip")
+    private String proxyIp;
+
+    @ApiModelProperty(value = "代理端口")
+    private Integer proxyPort;
+
 
 }
