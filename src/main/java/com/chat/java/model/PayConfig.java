@@ -17,20 +17,23 @@ public class PayConfig extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 326308725675949330L;
 
-    @ApiModelProperty(value = "pid")
+    @ApiModelProperty(value = "易支付pid")
     private Integer pid;
 
-    @ApiModelProperty(value = "secretKey")
+    @ApiModelProperty(value = "易支付secretKey")
     private String secretKey;
 
-    @ApiModelProperty(value = "回调地址")
+    @ApiModelProperty(value = "易支付回调地址")
     private String notifyUrl;
 
-    @ApiModelProperty(value = "页面跳转地址")
+    @ApiModelProperty(value = "易支付页面跳转地址")
     private String returnUrl;
 
-    @ApiModelProperty(value = "支付请求地址")
+    @ApiModelProperty(value = "易支付支付请求地址")
     private String submitUrl;
+
+    @ApiModelProperty(value = "易支付订单查询api")
+    private String apiUrl;
 
     @ApiModelProperty(value = "支付宝appid")
     private String aliAppId;

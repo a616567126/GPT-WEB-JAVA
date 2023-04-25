@@ -120,7 +120,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
         map.put("pid",payConfig.getPid());
         map.put("key",payConfig.getSecretKey());
         map.put("out_trade_no",req.getOrderId());
-        String orderPayInfo = HttpUtil.get("https://www.11zhifu.cn/api.php", map);
+        String orderPayInfo = HttpUtil.get(payConfig.getApiUrl(), map);
         ReturnUrlRes returnUrlRes = JSONObject.parseObject(orderPayInfo, ReturnUrlRes.class);
         if (returnUrlRes.getCode() != 1) {
             return B.finalBuild("订单支付异常");
