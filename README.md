@@ -381,8 +381,10 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
 
 
  
-## Put It Last
- 
+## Put It Last  
+**易支付网站地址：[白晨易支付](https://pay888.mfysc.shop/)**  
+***默认启动时需配置gpt_key,pay_config,sys_config,因为项目启动时会加载对应参数到redis中，如果手动修改数据库，需要在redis中修改对应参数，防止不生效*
+
  **支付配置(pay_config)**
  字段|描述|注意
 -|:-:|-:
@@ -406,7 +408,24 @@ wx_native_return_url|微信native回调地址|微信支付成功后回调地址�
 wx_v3_secret|微信apiv3秘钥|注意区分v2 v3区别，本系统采用v3方式
 wx_serial_no|商户api序列号|无
 wx_private_key|商户证书内容apiclient_key.pem|无  
- **易支付网站地址：[白晨易支付](https://pay888.mfysc.shop/)**  
+
+ **系统配置(sys_config)**
+ 字段|描述|注意
+-|:-:|-:
+registration_method|注册模式 1账号密码  2 短信注册 3 关闭注册 4邮件注册|开启短信注册需配置阿里短信相关参数，具体参数在下面，开启邮件注册后需要在emil_config中配置邮件相关参数
+key_switch|是否禁用自动禁用key 0关闭 1开启|开启后请求异常时会自动禁用key
+default_times|默认注册次数|用户注册时默认赠送请求次数
+ali_access_key_id|阿里云accessKeyId|无
+ali_secret|阿里云secret|无
+ali_sign_name|阿里云短信签名|无
+ali_template_code|阿里云短信模版id|无
+img_upload_url|图片上传地址|例如：/usr/local 配置图片上传路径
+img_return_url|图片域名前缀|上传图片后与图片名组合成可访问的url 例如：https://baidu.com 图片上传成功后 则返回 https://baidu.com /2023/04/26/2222.jpg 
+sd_url|Sd接口地址|开启sd时需配置这个地址
+is_open_sd|是否开启sd 0未开启 1开启|无
+is_open_proxy|是否开启代理 0关闭 1开启|无
+proxy_ip|代理ip|无
+proxy_port|代理端口|无
  
  
  
