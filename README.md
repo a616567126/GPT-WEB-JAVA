@@ -383,7 +383,7 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
  
 ## Put It Last  
 **易支付网站地址：[白晨易支付](https://pay888.mfysc.shop/)**  
-***默认启动时需配置gpt_key,pay_config,sys_config,因为项目启动时会加载对应参数到redis中，如果手动修改数据库，需要在redis中修改对应参数，防止不生效*
+***默认启动时需配置gpt_key,pay_config,sys_config,因为项目启动时会加载对应参数到redis中，如果手动修改数据库，需要在redis中修改对应参数，防止不生效**
 
  **支付配置(pay_config)**
  字段|描述|注意
