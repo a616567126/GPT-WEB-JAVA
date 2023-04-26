@@ -390,7 +390,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
             //加油包
             RefuelingKit kit = new RefuelingKit();
             kit.setProductId(product.getId());
-            kit.setNumberTimes(product.getNumberTimes());
+            kit.setNumberTimes(product.getNumberTimes() * order.getPayNumber());
             kit.setUserId(order.getUserId());
             refuelingKitService.save(kit);
         }
