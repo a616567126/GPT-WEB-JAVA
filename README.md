@@ -382,41 +382,16 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
 
  
 ## Put It Last
- **解释一下pay_config内容，默认采用白辰支付，现支持支付宝支付，微信支付在开发中**  
  
- **系统对接其他支付，需要自己注册账号密码登录查看相关配置**  
- 
+ **支付配置(pay_config)**
+ 学号|姓名|分数
+-|:-:|-:
+小明|男|75
+小红|女|79
+小陆|男|92
  **支付网站地址：[白晨易支付](https://pay888.mfysc.shop/)**  
  
- ![image](https://user-images.githubusercontent.com/43660702/228098543-03e82704-92a6-461e-ae7d-fe30796da435.png)  
  
- **此图片与表对应关系**  
- 
- **接口地址：submit_url**  
- 
- **商户Id：pid**  
- 
- **商户秘钥：secret_key**  
- 
- **其他描述**  
- 
- **notify_url：支付成功后回调地址**  
- 
- **return_url：支付成功后跳转页面**  
- 
- **ali_app_id：支付宝appid**  
- 
- **ali_private_key：支付宝应用私钥**  
- 
- **ali_public_key：支付宝应用公钥**  
- 
- **ali_gateway_url：支付宝接口地址(正式环境写死：openapi.alipay.com)**  
- 
- **ali_notify_url：支付宝回调地址**  
- 
- **ali_return_url：支付宝页面跳转地址**  
- 
- **pay_type：支付类型 0 易支付 1微信 2支付宝 3支付宝、微信**  
  
  
  
