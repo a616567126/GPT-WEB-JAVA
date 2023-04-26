@@ -11,15 +11,20 @@ import com.alipay.easysdk.payment.page.models.AlipayTradePagePayResponse;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.chat.java.model.*;
-import com.chat.java.model.ali.AlipayNotifyParam;
-import com.chat.java.model.ali.req.AliPayCreateReq;
-import com.chat.java.model.res.CreateOrderRes;
-import com.chat.java.model.res.QueryOrderRes;
 import com.chat.java.base.B;
 import com.chat.java.config.ali.AliPayConfig;
 import com.chat.java.dao.OrderDao;
 import com.chat.java.exception.CustomException;
+import com.chat.java.model.*;
+import com.chat.java.model.ali.AlipayNotifyParam;
+import com.chat.java.model.ali.req.AliPayCreateReq;
+import com.chat.java.model.req.CreateOrderReq;
+import com.chat.java.model.req.OrderCallBackReq;
+import com.chat.java.model.req.QueryOrderReq;
+import com.chat.java.model.req.ReturnUrlReq;
+import com.chat.java.model.res.CreateOrderRes;
+import com.chat.java.model.res.QueryOrderRes;
+import com.chat.java.model.res.ReturnUrlRes;
 import com.chat.java.model.wx.req.WxPayCreateReq;
 import com.chat.java.model.wx.res.NativeCallBackRes;
 import com.chat.java.model.wx.res.WxPayCreateRes;
@@ -27,30 +32,24 @@ import com.chat.java.service.IOrderService;
 import com.chat.java.service.IProductService;
 import com.chat.java.service.IRefuelingKitService;
 import com.chat.java.service.IUserService;
-import com.chat.java.model.*;
-import com.chat.java.model.req.CreateOrderReq;
-import com.chat.java.model.req.OrderCallBackReq;
-import com.chat.java.model.req.QueryOrderReq;
-import com.chat.java.model.req.ReturnUrlReq;
-import com.chat.java.model.res.ReturnUrlRes;
-import com.chat.java.service.*;
 import com.chat.java.utils.HttpUtils;
 import com.chat.java.utils.JwtUtil;
 import com.chat.java.utils.RedisUtil;
+import com.chat.java.utils.WxPayUtil;
+import lombok.extern.log4j.Log4j2;
+import okhttp3.HttpUrl;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import javax.annotation.Resource;
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.chat.java.utils.WxPayUtil;
-import lombok.extern.log4j.Log4j2;
-import okhttp3.HttpUrl;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
-
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -74,6 +73,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
 
     @Resource
     private IRefuelingKitService refuelingKitService;
+
+
+
+
 
     @Override
     public synchronized  B<CreateOrderRes> createOrder(CreateOrderReq req) {
@@ -145,42 +148,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
             LocalDateTime endTime = LocalDateTime.parse(returnUrlRes.getEndtime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             order.setOperateTime(endTime);
         }
-       if(null != returnUrlRes.getAddtime()){
-           LocalDateTime addTime = LocalDateTime.parse(returnUrlRes.getAddtime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-           order.setCreateTime(addTime);
-       }
-        this.saveOrUpdate(order);
-        if (order.getState() == 1) {
-            Product product = productService.getById(order.getProductId());
-            User user = userService.getById(order.getUserId());
-            if (product.getType() == 0) {
-                //次数
-                user.setRemainingTimes(user.getRemainingTimes() + product.getNumberTimes());
-            }
-            if (product.getType() == 1) {
-                //月卡
-                if (LocalDateTime.now().compareTo(user.getExpirationTime()) < 0) {
-                    user.setExpirationTime(user.getExpirationTime().plusDays(30L));
-                } else {
-                    user.setExpirationTime(LocalDateTime.now().plusDays(30L));
-                }
-                user.setCardDayMaxNumber(product.getMonthlyNumber());
-                user.setType(1);
-            }
-            if (product.getType() == 2) {
-                //加油包
-                RefuelingKit kit = new RefuelingKit();
-                kit.setProductId(product.getId());
-                kit.setNumberTimes(product.getNumberTimes());
-                kit.setUserId(order.getUserId());
-                refuelingKitService.save(kit);
-            }
-            userService.updateById(user);
-            if(order.getState() == 1){
-                product.setStock(product.getStock() - order.getPayNumber());
-                productService.saveOrUpdate(product);
-            }
+        if(null != returnUrlRes.getAddtime()){
+            LocalDateTime addTime = LocalDateTime.parse(returnUrlRes.getAddtime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            order.setCreateTime(addTime);
         }
+        this.saveOrUpdate(order);
+        okOrder(order);
         return B.okBuild();
     }
 
@@ -209,39 +182,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
         }
         order.setOperateTime(LocalDateTime.now());
         this.saveOrUpdate(order);
-        if (order.getState() == 1) {
-            Product product = productService.getById(order.getProductId());
-            User user = userService.getById(order.getUserId());
-            if (product.getType() == 0) {
-                //次数
-                user.setRemainingTimes(user.getRemainingTimes() + product.getNumberTimes());
-            }
-            if (product.getType() == 1) {
-                //月卡
-                if(null == user.getExpirationTime()){
-                    user.setExpirationTime(LocalDateTime.now().plusDays(30L * order.getPayNumber()));
-                } else if (LocalDateTime.now().compareTo(user.getExpirationTime()) < 0) {
-                    user.setExpirationTime(user.getExpirationTime().plusDays(30L * order.getPayNumber()));
-                } else {
-                    user.setExpirationTime(LocalDateTime.now().plusDays(30L * order.getPayNumber()));
-                }
-                user.setCardDayMaxNumber(product.getMonthlyNumber());
-                user.setType(1);
-            }
-            if (product.getType() == 2) {
-                //加油包
-                RefuelingKit kit = new RefuelingKit();
-                kit.setProductId(product.getId());
-                kit.setNumberTimes(product.getNumberTimes());
-                kit.setUserId(order.getUserId());
-                refuelingKitService.save(kit);
-            }
-            userService.saveOrUpdate(user);
-            if(order.getState() == 1){
-                product.setStock(product.getStock() - order.getPayNumber());
-                productService.saveOrUpdate(product);
-            }
-        }
+        okOrder(order);
         return "success";
     }
 
@@ -276,7 +217,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
         AlipayTradePagePayResponse response = Factory.Payment.Page()
                 .pay("商品"+product.getName()+"数量"+order.getPayNumber(), outTradeNo, order.getPrice().toString(),payConfig.getAliReturnUrl());
         if (!ResponseChecker.success(response)) {
-            throw new CustomException("预订单生成失败");
+            throw new CustomException("支付宝预订单生成失败");
         }
         return B.okBuild(response.getBody().replace("\"","").replace("\n",""));
     }
@@ -305,6 +246,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
                 order.setOperateTime(LocalDateTime.now());
                 order.setState(1);
                 this.saveOrUpdate(order);
+                okOrder(order);
             }
             return "success";
         }else {
@@ -388,6 +330,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
                     order.setTradeNo(transactionId);
                     order.setOperateTime(LocalDateTime.now());
                     this.saveOrUpdate(order);
+                    okOrder(order);
                 }
             }
         }
@@ -424,5 +367,37 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
         map.entrySet().stream()
                 .sorted(Map.Entry.<K, V>comparingByKey()).forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
         return result;
+    }
+
+    private void okOrder(Order order){
+        Product product = productService.getById(order.getProductId());
+        User user = userService.getById(order.getUserId());
+        if (product.getType() == 0) {
+            //次数
+            user.setRemainingTimes(user.getRemainingTimes() + product.getNumberTimes() * order.getPayNumber());
+        }
+        if (product.getType() == 1) {
+            //月卡
+            if (null != user.getExpirationTime() && LocalDateTime.now().isBefore(user.getExpirationTime())) {
+                user.setExpirationTime(user.getExpirationTime().plusDays(30L * order.getPayNumber()));
+            } else {
+                user.setExpirationTime(LocalDateTime.now().plusDays(30L * order.getPayNumber()));
+            }
+            user.setCardDayMaxNumber(product.getMonthlyNumber());
+            user.setType(1);
+        }
+        if (product.getType() == 2) {
+            //加油包
+            RefuelingKit kit = new RefuelingKit();
+            kit.setProductId(product.getId());
+            kit.setNumberTimes(product.getNumberTimes());
+            kit.setUserId(order.getUserId());
+            refuelingKitService.save(kit);
+        }
+        userService.updateById(user);
+        if(order.getState() == 1){
+            product.setStock(product.getStock() - order.getPayNumber());
+            productService.saveOrUpdate(product);
+        }
     }
 }
