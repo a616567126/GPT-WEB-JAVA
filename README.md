@@ -405,8 +405,8 @@ wx_native_url|微信nativepostapi地址|写死：https://api.mch.weixin.qq.com/v
 wx_native_return_url|微信native回调地址|微信支付成功后回调地址，例如：https://baidu.com/order/wx/callBack baidu.com为后台接口地址，记得带上http/https://
 wx_v3_secret|微信apiv3秘钥|注意区分v2 v3区别，本系统采用v3方式
 wx_serial_no|商户api序列号|无
-wx_private_key|商户证书内容apiclient_key.pem|无
- **支付网站地址：[白晨易支付](https://pay888.mfysc.shop/)**  
+wx_private_key|商户证书内容apiclient_key.pem|无  
+ **易支付网站地址：[白晨易支付](https://pay888.mfysc.shop/)**  
  
  
  
