@@ -218,7 +218,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements IUser
                 .eq(UseLog::getUserId, JwtUtil.getUserId())
                 .eq(UseLog::getSendType,0)
                 .orderByDesc(UseLog::getId).last("limit 10").list();
-        useLogList.forEach( u -> u.setGptKey(""));
+        useLogList.forEach(u -> u.setGptKey(null));
         userInfo.setLogList(useLogList);
         return B.okBuild(userInfo);
     }
