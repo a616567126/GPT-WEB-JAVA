@@ -39,7 +39,7 @@ public class PayConfigServiceImpl extends ServiceImpl<PayConfigDao, PayConfig> i
         PayConfig payConfig = BeanUtil.copyProperties(req, PayConfig.class);
         payConfig.setOperateTime(LocalDateTime.now());
         this.updateById(payConfig);
-        redisUtil.setCacheObject("payConfig",payConfig);
+        redisUtil.setCacheObject("payConfig",this.getById(payConfig.getId()));
         return B.build(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg());
     }
 
