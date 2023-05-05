@@ -36,7 +36,7 @@ public interface IUserService extends IService<User> {
     B<String> registerMsm(MsmRegisterReq req);
 
     B<String> registerEmail(EmailRegisterReq req);
-    B<UserInfoRes> home();
+    B<UserInfoRes> home(UserHomeReq req);
 
     B<AdminHomeRes> adminHome();
     B<UserInfoRes> getType();

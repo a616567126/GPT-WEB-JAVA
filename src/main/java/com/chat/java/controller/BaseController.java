@@ -10,6 +10,7 @@ import com.chat.java.model.SysConfig;
 import com.chat.java.model.User;
 import com.chat.java.model.base.UserLogin;
 import com.chat.java.model.req.*;
+import com.chat.java.model.res.GetFunctionState;
 import com.chat.java.model.res.UserInfoRes;
 import com.chat.java.utils.EmailServiceUtil;
 import com.chat.java.utils.JwtUtil;
@@ -105,8 +106,8 @@ public class BaseController {
 
     @RequestMapping(value = "/home", method = RequestMethod.POST)
     @ApiOperation(value = "首页信息")
-    public B<UserInfoRes> home() {
-        return userService.home();
+    public B<UserInfoRes> home(@Validated @RequestBody UserHomeReq req) {
+        return userService.home(req);
     }
 
     @RequestMapping(value = "/getType", method = RequestMethod.POST)
@@ -194,6 +195,13 @@ public class BaseController {
         }
         emailServiceUtil.sendEmail(req.getEmail());
         return B.okBuild();
+    }
+
+    @RequestMapping(value = "/getFunctionState", method = RequestMethod.POST)
+    @ApiOperation(value = "获取配置开启状态")
+    public B<GetFunctionState> getOpenSdState() {
+        SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+        return B.okBuild( GetFunctionState.builder().isOpenBing(sysConfig.getIsOpenBing()).isOpenSd(sysConfig.getIsOpenSd()).build());
     }
 
 }
