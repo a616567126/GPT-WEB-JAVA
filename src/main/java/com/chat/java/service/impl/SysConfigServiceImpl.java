@@ -35,7 +35,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfig> i
         SysConfig sysConfig = JSONObject.parseObject(params, SysConfig.class);
         sysConfig.setOperateTime(LocalDateTime.now());
         this.updateById(sysConfig);
-        redisUtil.setCacheObject("payConfig",this.getById(sysConfig.getId()));
+        redisUtil.setCacheObject("sysConfig",this.getById(sysConfig.getId()));
         return B.build(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg());
     }
 
