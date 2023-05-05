@@ -58,5 +58,11 @@ public class SysConfig extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "代理端口")
     private Integer proxyPort;
 
+    @ApiModelProperty(value = "微软bing cookie")
+    private String bingCookie;
+
+    @ApiModelProperty(value = "是否开启bing 0-未开启 1开启")
+    private Integer isOpenBing;
+
 
 }

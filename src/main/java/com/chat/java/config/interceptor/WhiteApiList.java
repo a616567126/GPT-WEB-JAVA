@@ -24,10 +24,17 @@ public class WhiteApiList {
         list.add("/order/ali/callBack");
         list.add("/order/wx/callBack");
 
+
         //swagger
         list.add("/swagger-resources");
         list.add("/doc.html");
         list.add("/webjars/**");
+
+        //wx
+        list.add("/wx/callBack");
+        list.add("/wx/getTicket");
+//        list.add("/wx/uploadPermanent");
+//        list.add("/wx/uploadTemp");
 
         //短信
         list.add("/user/token/send/msg");

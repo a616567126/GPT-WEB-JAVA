@@ -42,16 +42,32 @@ public class CheckService {
 
     @Resource
     AsyncLogService asyncLogService;
-    public B checkUser(String mainKey, Long userId, Session session) throws IOException {
+
+    /**
+     * @param mainKey gptKey
+     * @param userId 当前用户id
+     * @param session session会话
+     * @param isGpt 是否gpt请求 true：是  false:否
+     * @param useNumber 请求对话消耗次数
+     * @return
+     * @throws IOException
+     */
+    public B checkUser(String mainKey, Long userId, Session session,boolean isGpt,Integer useNumber) throws IOException {
         String redisToken  = RedisUtil.getCacheObject(CommonConst.REDIS_KEY_PREFIX_TOKEN + userId);
         if(StringUtils.isEmpty(redisToken)){
             session.getBasicRemote().sendText("请先登录");
             return B.buildGptErr("请先登录");
         }
-        List<GptKey> gptKeyList = gptKeyService.lambdaQuery().eq(GptKey::getKey, mainKey).last("limit 1").list();
-        if(null == gptKeyList || gptKeyList.size() == 0){
-            session.getBasicRemote().sendText("Key 异常 请稍后重试");
-            return B.buildGptErr("Key 异常 请稍后重试");
+        GptKey gptKey = null;
+        if(isGpt){
+            List<GptKey> gptKeyList = gptKeyService.lambdaQuery().eq(GptKey::getKey, mainKey).last("limit 1").list();
+            if(null == gptKeyList || gptKeyList.size() == 0){
+                session.getBasicRemote().sendText("Key 异常 请稍后重试");
+                return B.buildGptErr("Key 异常 请稍后重试");
+            }
+            gptKey = gptKeyList.get(0);
+            gptKey.setUseNumber(gptKey.getUseNumber()+1);
+            gptKey.setOperateTime(LocalDateTime.now());
         }
         //查询当前用户信息
         UseLog useLog = new UseLog();
@@ -63,12 +79,12 @@ public class CheckService {
         if(type != 2){
             if(type == 0){
                 //判断剩余次数
-                if(user.getRemainingTimes() < 1){
+                if(user.getRemainingTimes() < useNumber){
                     session.getBasicRemote().sendText("剩余次数不足请充值");
                     return B.buildGptErr("剩余次数不足请充值");
                 }
                 useLog.setUseType(1);
-                user.setRemainingTimes(user.getRemainingTimes() - 1);
+                user.setRemainingTimes(user.getRemainingTimes() - useNumber);
             }
             if(type == 1){
                 //月卡用户 先查询是否有可用的加油包
@@ -78,14 +94,14 @@ public class CheckService {
                     useLog.setUseType(3);
                 }else {
                     //判断月卡是否到期
-                    if(user.getExpirationTime().compareTo(LocalDateTime.now()) < 0){
+                    if(user.getExpirationTime().isBefore(LocalDateTime.now())){
                         //次数用户 查询用户次数
-                        if(user.getRemainingTimes() < 1){
+                        if(user.getRemainingTimes() < useNumber){
                             session.getBasicRemote().sendText("月卡过期或当日已超过最大访问次数");
                             return B.buildGptErr("月卡过期或当日已超过最大访问次数");
                         }
                         useLog.setUseType(1);
-                        user.setRemainingTimes(user.getRemainingTimes() - 1);
+                        user.setRemainingTimes(user.getRemainingTimes() - useNumber);
                     }else {
                         //是否已达今日已达上线
                         Integer dayUseNumber = useLogService.getDayUseNumber();
@@ -96,7 +112,7 @@ public class CheckService {
                                 return B.buildGptErr("月卡过期或当日已超过最大访问次数");
                             }
                             useLog.setUseType(1);
-                            user.setRemainingTimes(user.getRemainingTimes() - 1);
+                            user.setRemainingTimes(user.getRemainingTimes() - useNumber);
                         }else {
                             useLog.setUseType(2);
                         }
@@ -104,9 +120,6 @@ public class CheckService {
                 }
             }
         }
-        GptKey gptKey = gptKeyList.get(0);
-        gptKey.setUseNumber(gptKey.getUseNumber()+1);
-        gptKey.setOperateTime(LocalDateTime.now());
         asyncLogService.saveKeyLog(gptKey,user);
         return B.buildGptData(useLog);
     }

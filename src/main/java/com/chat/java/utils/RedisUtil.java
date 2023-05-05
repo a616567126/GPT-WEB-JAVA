@@ -93,6 +93,12 @@ public class RedisUtil {
         return operation.get(key);
     }
 
+    public  <T> T getObject(final String key) {
+        ValueOperations<String, T> operation = redisUtils.redisTemplate.opsForValue();
+        return operation.get(key);
+    }
+
+
     /**
      * 删除单个对象
      *
