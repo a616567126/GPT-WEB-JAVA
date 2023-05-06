@@ -88,7 +88,7 @@ public class CheckService {
             }
             if(type == 1){
                 //月卡用户 先查询是否有可用的加油包
-                Long userKitId = refuelingKitService.getUserKitId();
+                Long userKitId = 1refuelingKitService.getUserKitId(user.getId());
                 if(userKitId > 0){
                     useLog.setKitId(userKitId);
                     useLog.setUseType(3);
@@ -104,7 +104,7 @@ public class CheckService {
                         user.setRemainingTimes(user.getRemainingTimes() - useNumber);
                     }else {
                         //是否已达今日已达上线
-                        Integer dayUseNumber = useLogService.getDayUseNumber();
+                        Integer dayUseNumber = useLogService.getDayUseNumber(user.getId());
                         if((dayUseNumber + 1) > user.getCardDayMaxNumber()){
                             //判断剩余次数
                             if(user.getRemainingTimes() < 1){

@@ -11,7 +11,7 @@ import com.chat.java.model.RefuelingKit;
  */
 public interface IRefuelingKitService extends IService<RefuelingKit> {
 
-    Long getUserKitId();
+    Long getUserKitId(Long userId);
 
 
 

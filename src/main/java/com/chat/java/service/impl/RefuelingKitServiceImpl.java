@@ -18,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class RefuelingKitServiceImpl extends ServiceImpl<RefuelingKitDao, RefuelingKit> implements IRefuelingKitService {
 
     @Override
-    public Long getUserKitId() {
-        Long kitId = this.baseMapper.getUserKitId(JwtUtil.getUserId());
+    public Long getUserKitId(Long userId) {
+        Long kitId = this.baseMapper.getUserKitId(userId);
         return  kitId == null ? 0 : kitId;
     }
 }

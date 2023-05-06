@@ -30,8 +30,8 @@ public class UseLogServiceImpl extends ServiceImpl<UseLogDao, UseLog> implements
     @Lazy
     IUserService userService;
     @Override
-    public Integer getDayUseNumber() {
-        return this.baseMapper.getDayUseNumber(JwtUtil.getUserId());
+    public Integer getDayUseNumber(Long userId) {
+        return this.baseMapper.getDayUseNumber(userId);
     }
 
     @Override

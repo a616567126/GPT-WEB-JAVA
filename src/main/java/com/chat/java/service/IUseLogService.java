@@ -15,7 +15,7 @@ import com.chat.java.base.B;
 public interface IUseLogService extends IService<UseLog> {
 
 
-    Integer getDayUseNumber();
+    Integer getDayUseNumber(Long userId);
 
     B updateLog(UpdateLogReq req);
 
