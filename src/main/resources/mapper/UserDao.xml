@@ -10,7 +10,7 @@
             u.type,
             u.`name`,
             date_format(create_time,'%Y-%m-%d'),
-            ifnull(l.dayRemainingTimes,0) as dayRemainingTimes
+            ifnull((SELECT monthly_number from product where type = 1 and deleted = 0),0) - ifnull(l.dayRemainingTimes,0) as dayRemainingTimes
         FROM
             `user` u
                 LEFT JOIN (SELECT count(1) as dayRemainingTimes,user_id FROM use_log WHERE user_id = #{userId} and use_type = 2 and date_format(create_time,'%Y-%m-%d') >= curdate() GROUP BY user_id) l on l.user_id = u.id

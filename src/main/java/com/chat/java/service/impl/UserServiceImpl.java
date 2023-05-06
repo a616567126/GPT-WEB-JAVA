@@ -245,10 +245,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements IUser
         if(userInfo.getType() == -1){
             userInfo.setType(2);
         }
-        if(null == userInfo.getExpirationTime() || LocalDateTime.now().compareTo(userInfo.getExpirationTime()) > 0){
+        if(null == userInfo.getExpirationTime() || LocalDateTime.now().isAfter(userInfo.getExpirationTime())){
             userInfo.setType(0);
-        }else if(LocalDateTime.now().compareTo(userInfo.getExpirationTime()) <= 0){
-            userInfo.setType(2);
+        }else if(!LocalDateTime.now().isAfter(userInfo.getExpirationTime())){
+            userInfo.setType(1);
         }else {
             userInfo.setType(0);
         }
@@ -261,10 +261,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements IUser
         if(userInfo.getType() == -1){
             userInfo.setType(2);
         }
-        if(null == userInfo.getExpirationTime() || LocalDateTime.now().compareTo(userInfo.getExpirationTime()) > 0){
+        if(null == userInfo.getExpirationTime() || LocalDateTime.now().isAfter(userInfo.getExpirationTime())){
             userInfo.setType(0);
-        }else if(LocalDateTime.now().compareTo(userInfo.getExpirationTime()) <= 0){
-            userInfo.setType(2);
+        }else if(!LocalDateTime.now().isAfter(userInfo.getExpirationTime())){
+            userInfo.setType(1);
         }else {
             userInfo.setType(0);
         }
