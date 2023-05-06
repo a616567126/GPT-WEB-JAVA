@@ -88,7 +88,7 @@ public class CheckService {
             }
             if(type == 1){
                 //月卡用户 先查询是否有可用的加油包
-                Long userKitId = 1refuelingKitService.getUserKitId(user.getId());
+                Long userKitId = refuelingKitService.getUserKitId(user.getId());
                 if(userKitId > 0){
                     useLog.setKitId(userKitId);
                     useLog.setUseType(3);
