@@ -190,9 +190,9 @@ public final class InitUtil {
      * @param list the list
      */
     public static void removeKey(final List<String> list) {
-        list.forEach(cache::remove);
         SysConfig config = RedisUtil.getCacheObject("sysConfig");
         if (config.getKeySwitch() == 1) {
+            list.forEach(cache::remove);
             initUtil.asyncLogService.updateKeyState(list);
         }
     }
