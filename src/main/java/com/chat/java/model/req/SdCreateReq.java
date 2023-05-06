@@ -33,14 +33,17 @@ public class SdCreateReq {
     @Max(value = 4)
     private Integer batchSize = 1;
 
-    @ApiModelProperty("seed")
-    private Integer seed = -1;
+    @ApiModelProperty("种子数")
+    private Long seed = -1L;
 
-    @ApiModelProperty("sampler_index")
+    @ApiModelProperty("采样方法")
     private String samplerIndex = "Euler a";
 
-    @ApiModelProperty("eta")
-    private String eta ;
+    @ApiModelProperty("脸部修复")
+    private Boolean restoreFaces = false;
+
+    @ApiModelProperty("模型")
+    private String sdModelCheckpoint;
 
 
 }

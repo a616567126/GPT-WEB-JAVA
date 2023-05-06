@@ -3,6 +3,7 @@ package com.chat.java.controller.sd;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chat.java.base.B;
 import com.chat.java.exception.CustomException;
@@ -42,7 +43,7 @@ public class SdController {
         }
         JSONObject params = new JSONObject();
         params.put("prompt",req.getPrompt());
-        params.put("negative_prompt",req.getPrompt());
+        params.put("negative_prompt",req.getNegativePrompt());
         params.put("width",req.getWidth());
         params.put("height",req.getHeight());
         params.put("steps",req.getSteps());
@@ -50,7 +51,10 @@ public class SdController {
         params.put("cfg_scale",req.getCfgScale());
         params.put("seed",req.getSeed());
         params.put("sampler_index",req.getSamplerIndex());
-        params.put("eta",req.getEta());
+        params.put("restoreFaces",req.getRestoreFaces());
+        JSONObject override_settings = new JSONObject();
+        override_settings.put("sd_model_checkpoint",req.getSdModelCheckpoint());
+        params.put("override_settings",override_settings);
         log.info("sd请求地址：{}",cacheObject.getSdUrl()+"/sdapi/v1/txt2img");
         String body = HttpUtil.createPost(cacheObject.getSdUrl()+"/sdapi/v1/txt2img")
                 .header(Header.CONTENT_TYPE, "application/json")
@@ -69,6 +73,39 @@ public class SdController {
         return B.okBuild(imgUrlList);
     }
 
+    @RequestMapping(value = "/getModel", method = RequestMethod.POST)
+    @ApiOperation(value = "获取模型列表")
+    public B<List<String>> getModel() {
+        List<String> modelList = new ArrayList<String>();
+        SysConfig cacheObject = RedisUtil.getCacheObject("sysConfig");
+        if(null == cacheObject.getIsOpenSd() || cacheObject.getIsOpenSd() == 0){
+            throw new CustomException("暂未开启sd");
+        }
+        String body = HttpUtil.createGet(cacheObject.getSdUrl()+"/sdapi/v1/sd-models").execute().body();
+        JSONArray jsonArray = JSONObject.parseArray(body);
+        for (int i = 0; i < jsonArray.size(); i++) {
+            String title = jsonArray.getJSONObject(i).getString("title");
+            modelList.add(title);
+        }
+        return B.okBuild(modelList);
+    }
+
+    @RequestMapping(value = "/getSamplers", method = RequestMethod.POST)
+    @ApiOperation(value = "获取采样方法列表")
+    public B<List<String>> getSamplers() {
+        List<String> samplers = new ArrayList<String>();
+        SysConfig cacheObject = RedisUtil.getCacheObject("sysConfig");
+        if(null == cacheObject.getIsOpenSd() || cacheObject.getIsOpenSd() == 0){
+            throw new CustomException("暂未开启sd");
+        }
+        String body = HttpUtil.createGet(cacheObject.getSdUrl()+"/sdapi/v1/samplers").execute().body();
+        JSONArray jsonArray = JSONObject.parseArray(body);
+        for (int i = 0; i < jsonArray.size(); i++) {
+            String title = jsonArray.getJSONObject(i).getString("name");
+            samplers.add(title);
+        }
+        return B.okBuild(samplers);
+    }
     public static String base64ToImage(String base64) throws IOException {
         SysConfig cacheObject = RedisUtil.getCacheObject("sysConfig");
         // JDK8以上
