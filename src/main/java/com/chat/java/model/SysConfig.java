@@ -65,4 +65,13 @@ public class SysConfig extends BaseEntity implements Serializable {
     private Integer isOpenBing;
 
 
+    @ApiModelProperty(value = "是否开启FlagStudio 0-未开启 1开启")
+    private Integer isOpenFlagStudio;
+
+    @ApiModelProperty(value = "FlagStudio key")
+    private String flagStudioKey;
+
+    @ApiModelProperty(value = "FlagStudio接口地址")
+    private String flagStudioUrl;
+
 }
