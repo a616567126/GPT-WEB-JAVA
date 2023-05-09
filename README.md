@@ -35,6 +35,7 @@
 * **支付 易支付，支付宝支付，微信支付**  
 * **stable-diffusion画图**  
 * **flagstudio画图**
+* **Midjourney画图**
 
 
 --管理端  
