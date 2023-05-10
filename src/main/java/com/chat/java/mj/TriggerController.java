@@ -3,6 +3,7 @@ package com.chat.java.mj;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.chat.java.base.B;
 import com.chat.java.controller.sd.SdController;
@@ -82,7 +83,7 @@ public class TriggerController {
             }
             key = task.getId();
             task.setPrompt(prompt);
-            promptEn = Validator.isChinese(prompt) ? prompt : this.translateService.translateToEnglish(prompt).trim();
+            promptEn = Validator.isChinese(StrUtil.removeAllLineBreaks(prompt)) ? prompt : this.translateService.translateToEnglish(prompt).trim();
             task.setFinalPrompt("[" + task.getId() + "]" + promptEn);
             task.setDescription("/imagine " + submitReq.getPrompt());
             this.taskHelper.putTask(task.getId(), task);
