@@ -446,6 +446,22 @@ is_open_sd|是否开启sd 0未开启 1开启|无
 is_open_proxy|是否开启代理 0关闭 1开启|无
 proxy_ip|代理ip|无
 proxy_port|代理端口|无
+bing_cookie|微软bing cookie|无
+is_open_bing|是否开启bing 0-未开启 1开启|无
+is_open_flag_studio|是否开启FlagStudio 0-未开启 1开启|无
+flag_studio_key|FlagStudio key|登录之后api获得每天500次请求
+flag_studio_url|FlagStudio 接口地址|暂时写死https://flagopen.baai.ac.cn/flagStudio
+baidu_appid|百度appid|用于百度翻译
+baidu_secret|百度Secret|用于百度翻译
+baidu_key|百度应用key|用于敏感词检查
+baidu_secret_key|百度应用Secret|用于敏感词检查
+is_open_mj|是否开启mj 0-未开启 1开启|无
+mj_guild_id|Mj服务器id|url地址中获得
+mj_channel_id|Mj频道id|url地址中获得
+mj_user_token|mj用户token|F12查看network中的Authorization参数
+mj_bot_token|机器人token|https://discord.com/developers/applications中获取
+mj_bot_name|机器人名称|默认Midjourney Bot若其他自行修改
+mj_notify_hook|m机器人回调通知地址|无
  
  
  
