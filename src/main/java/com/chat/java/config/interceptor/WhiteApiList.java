@@ -42,6 +42,8 @@ public class WhiteApiList {
         list.add("/user/token/send/mail");
         //获取注册方式
         list.add("/user/token/get/register/method");
+        //mj回调
+        list.add("/trigger/callBack");
     }
 
 }

@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>5.2.4</version>
+			<version>5.8.12</version>
 		</dependency>
 		<!-- Mybatis PLUS -->
 		<dependency>
@@ -161,6 +161,17 @@
 			<groupId>org.java-websocket</groupId>
 			<artifactId>Java-WebSocket</artifactId>
 			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>net.dv8tion</groupId>
+			<artifactId>JDA</artifactId>
+			<version>5.0.0-beta.9</version>
+			<exclusions>
+				<exclusion>
+					<groupId>club.minnced</groupId>
+					<artifactId>opus-java</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 

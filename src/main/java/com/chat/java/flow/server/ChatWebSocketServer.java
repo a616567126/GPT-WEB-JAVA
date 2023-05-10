@@ -194,7 +194,7 @@ public class ChatWebSocketServer {
         this.session.getBasicRemote().sendText(message);
     }
 
-    public static void sendInfo(String message, String toUserId) throws IOException {
+    public static void sendInfo(String message, Long toUserId) throws IOException {
         chatWebSocketMap.get(toUserId).sendMessage(message);
     }
 }
