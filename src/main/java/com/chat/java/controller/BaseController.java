@@ -201,7 +201,11 @@ public class BaseController {
     @ApiOperation(value = "获取配置开启状态")
     public B<GetFunctionState> getOpenSdState() {
         SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
-        return B.okBuild( GetFunctionState.builder().isOpenBing(sysConfig.getIsOpenBing()).isOpenSd(sysConfig.getIsOpenSd()).build());
+        return B.okBuild( GetFunctionState.builder().isOpenBing(sysConfig.getIsOpenBing())
+                .isOpenSd(sysConfig.getIsOpenSd())
+                .isOpenFlagStudio(sysConfig.getIsOpenFlagStudio())
+                .isOpenMj(sysConfig.getIsOpenMj()).build()
+        );
     }
 
 }
