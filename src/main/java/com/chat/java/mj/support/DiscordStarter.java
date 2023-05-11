@@ -19,10 +19,13 @@ public class DiscordStarter implements ApplicationListener<ApplicationStartedEve
 	@Override
 	public void onApplicationEvent(ApplicationStartedEvent event) {
 		SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
-		DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(sysConfig.getMjBotToken(),
-				GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT);
-		builder.addEventListeners(this.discordMessageListener);
-		builder.build();
+		if(null != sysConfig.getIsOpenMj() && sysConfig.getIsOpenMj() == 1){
+			DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(sysConfig.getMjBotToken(),
+					GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT);
+			builder.addEventListeners(this.discordMessageListener);
+			builder.build();
+		}
+
 	}
 
 }
