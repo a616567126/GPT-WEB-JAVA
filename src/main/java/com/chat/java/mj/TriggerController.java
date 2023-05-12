@@ -75,10 +75,10 @@ public class TriggerController {
         task.setAction(submitReq.getAction());
         String key;
         Message<Void> result;
-        String promptEn;
+        String promptEn ="";
         if (Action.IMAGINE.equals(submitReq.getAction())) {
             String prompt = submitReq.getPrompt();
-            if (!StringUtils.isEmpty(prompt)) {
+            if (StringUtils.isEmpty(prompt)) {
                 throw new CustomException("prompt 不能为空");
             }
             key = task.getId();
@@ -99,7 +99,6 @@ public class TriggerController {
             if (!TaskStatus.SUCCESS.equals(targetTask.getStatus())) {
                 throw new CustomException("关联任务状态错误");
             }
-            promptEn = targetTask.getPrompt();
             task.setPrompt(targetTask.getPrompt());
             task.setFinalPrompt(targetTask.getFinalPrompt());
             task.setRelatedTaskId(ConvertUtils.findTaskIdByFinalPrompt(targetTask.getFinalPrompt()));
