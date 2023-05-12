@@ -83,7 +83,7 @@ public class TriggerController {
             }
             key = task.getId();
             task.setPrompt(prompt);
-            promptEn = Validator.isChinese(StrUtil.removeAllLineBreaks(prompt)) ? this.translateService.translateToEnglish(prompt).trim() : prompt;
+            promptEn = Validator.hasChinese(StrUtil.removeAllLineBreaks(prompt)) ? this.translateService.translateToEnglish(prompt).trim() : prompt;
             task.setFinalPrompt("[" + task.getId() + "]" + promptEn);
             task.setDescription("/imagine " + submitReq.getPrompt());
             this.taskHelper.putTask(task.getId(), task);
