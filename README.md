@@ -400,7 +400,9 @@ com.cn.app.chatgptbot.Application        : Started Application in 5.138 seconds 
 
  
 ## Put It Last  
-**易支付网站地址：[白晨易支付](https://pay999.11zhifu.cn/)**  
+**易支付网站地址：[白晨易支付](https://my.mmywl.cn/)**  
+**作者使用服务器地址：[浅夏云](https://www.qxqxo.com/aff/ZGWPEDLQ)**  
+**作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)**  
 **默认启动时需配置gpt_key,pay_config,sys_config,因为项目启动时会加载对应参数到redis中，如果手动修改数据库，需要在redis中修改对应参数，防止不生效**
 **FlagStudio地址：http://flagstudio.baai.ac.cn/
 
