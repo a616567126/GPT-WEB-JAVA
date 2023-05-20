@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.mail.*;
 import javax.mail.internet.*;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -23,11 +24,13 @@ public class EmailServiceUtil {
 
     public String emailForm = "";
 
+    public String title = "AI";
+
     public void sendEmail(String email)  {
         Session session = createSession();
         MimeMessage msg = new MimeMessage(session);
         try {
-            msg.setFrom(new InternetAddress(emailForm));
+            msg.setFrom(new InternetAddress(emailForm,title));
             msg.setRecipients(Message.RecipientType.TO, email);
             msg.setSubject("注册验证码","utf-8");
             BodyPart textPart = new MimeBodyPart();
@@ -44,6 +47,8 @@ public class EmailServiceUtil {
             emailList.removeIf((EmailConfig config)-> config.getUsername().equals(emailForm));
             redisUtil.setCacheObject("emailList",emailList);
             sendEmail(email);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
     }
 
