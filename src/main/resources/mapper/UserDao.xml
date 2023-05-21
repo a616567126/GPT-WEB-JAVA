@@ -1,59 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.chat.java.dao.UserDao">
+<mapper namespace="com.intelligent.bot.dao.UserDao">
 
 
-    <select id="getUserInfo" resultType="com.chat.java.model.res.UserInfoRes">
-        SELECT
-            u.expiration_time,
-            u.remaining_times,
-            u.type,
-            u.`name`,
-            date_format(create_time,'%Y-%m-%d'),
-            ifnull((SELECT monthly_number from product where type = 1 and deleted = 0),0) - ifnull(l.dayRemainingTimes,0) as dayRemainingTimes
-        FROM
-            `user` u
-                LEFT JOIN (SELECT count(1) as dayRemainingTimes,user_id FROM use_log WHERE user_id = #{userId} and use_type = 2 and date_format(create_time,'%Y-%m-%d') >= curdate() GROUP BY user_id) l on l.user_id = u.id
-
-        where u.id = #{userId}
+    <select id="checkTempUser" resultType="com.intelligent.bot.model.User">
+        select
+            id,
+            name,
+            mobile,
+            type,
+            remaining_times
+            from
+            t_user
+        where type = 2 and (ip_address = #{ipAddress} or browser_fingerprint = #{browserFingerprint}) and deleted = 0
+        ORDER BY  browser_fingerprint
+        limit 1
     </select>
-    <select id="adminHome" resultType="com.chat.java.model.res.AdminHomeRes">
+    <select id="queryUserPage" resultType="com.intelligent.bot.model.res.sys.admin.UserQueryPageRes">
         SELECT
-            ifnull( u.dayUserNumber, 0 ) AS dayUserNumber,
-            ifnull( o1.dayOrderNumber, 0 ) AS dayOrderNumber,
-            ifnull( o2.dayOkOrderNumber, 0 ) AS dayOkOrderNumber,
-            ifnull( o3.dayPrice, 0 ) AS dayPrice,
-            ifnull( u1.expirationNumber, 0 ) AS expirationNumber
+            id,
+            `name`,
+            mobile,
+            last_login_time,
+            type,
+            remaining_times,
+            from_user_name,
+            is_event,
+            email,
+            browser_fingerprint,
+            ip_address,
+            avatar,
+            create_time
         FROM
-            (
-                SELECT
-                    count( 1 ) AS dayUserNumber
-                FROM
-                    `user`
-                WHERE
-                    date_format( create_time, '%Y-%m-%d' ) = CURDATE()) u,
-            (
-                SELECT
-                    count( 1 ) AS dayOrderNumber
-                FROM
-                    t_order
-                WHERE
-                    date_format( create_time, '%Y-%m-%d' ) = CURDATE()) o1,
-            ( SELECT count( 1 ) AS dayOkOrderNumber FROM t_order WHERE date_format( create_time, '%Y-%m-%d' ) = CURDATE() AND state = 1 ) o2,
-            (
-                SELECT
-                    sum( price ) AS dayPrice
-                FROM
-                    t_order
-                WHERE
-                    state = 1
-                  AND date_format( create_time, '%Y-%m-%d' ) = CURDATE()) o3,
-            (
-                SELECT
-                    count( 1 ) AS expirationNumber
-                FROM
-                    `user`
-                WHERE
-                    date_format( expiration_time, '%Y-%m-%d' ) = CURDATE()) u1
+            t_user
+        where deleted = 0
+        <if test="req.name != null and req.name != ''">
+            <bind name="name" value="'%'+req.name+'%'"/>
+            and name like #{name}
+        </if>
+        <if test="req.mobile != null and req.mobile != ''">
+            <bind name="mobile" value="'%'+req.mobile+'%'"/>
+            and mobile like #{mobile}
+        </if>
+        order by id desc
     </select>
 </mapper>

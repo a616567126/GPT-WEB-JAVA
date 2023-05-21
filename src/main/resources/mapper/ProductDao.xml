@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.intelligent.bot.dao.ProductDao">
+
+    <select id="queryPage" resultType="com.intelligent.bot.model.res.sys.admin.ProductQueryRes">
+        SELECT
+            id,
+            `name`,
+            price,
+            number_times,
+            sort,
+            stock,
+            create_time
+        FROM
+            product
+        where deleted = 0
+        <if test="req.name != null and req.name != ''">
+            and name like #{name}
+        </if>
+        order by id desc
+    </select>
+
+    <select id="getProductList" resultType="com.intelligent.bot.model.res.sys.ClientProductRes">
+        select id,name,price,number_times,stock from product where deleted = 0 and  stock > 0 order by sort desc
+    </select>
+</mapper>

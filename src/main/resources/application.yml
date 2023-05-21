@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 8081
   tomcat:
     uri-encoding: utf-8
 spring:
@@ -16,29 +16,18 @@ spring:
 #    设置上传文件大小
 servlet:
   multipart:
-    max-file-size: 1000000Mb
-    max-request-size: 1000000Mb
+    max-file-size: 10Mb
+    max-request-size: 10Mb
+  maxHttpHeaderSize: 10Mb
+  maxHttpPostSize: 10Mb
 #配置mybatis-plus 开启日志
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
   mapper-locations: classpath:mapper/*.xml
-#swgger加密
-knife4j:
-  enable: true
-  basic:
-    enable: true
-    username: GPT-WEB-JAVA
-    password: GPT-WEB-JAVA
-# 微信小程序配置
-we-chat:
-  #小程序 ID
-  appId: ''
-  #小程序 密钥
-  secret: ''
 wx:
   mp:
-    app-id: 微信appid
-    secret: 微信secret
+    app-id:
+    secret:
     config-storage:
       type: redistemplate

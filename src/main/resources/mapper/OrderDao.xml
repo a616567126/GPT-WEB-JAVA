@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.chat.java.dao.OrderDao">
+<mapper namespace="com.intelligent.bot.dao.OrderDao">
 
 
-    <select id="getUserOrderList" resultType="com.chat.java.model.res.OrderUserRes">
-        SELECT
+    <select id="userOrderList" resultType="com.intelligent.bot.model.res.sys.ClientOrderRes">
+        select
             t.id,
-            p.`name` as productName,
             t.price,
+            t.pay_number,
             t.state,
             t.pay_type,
-            t.pay_number,
-            t.create_time,
-            t.operate_time,
-            t.state
-        FROM
-            t_order t
-                LEFT JOIN product p on p.id = t.product_id
-        WHERE t.user_id = #{userId}
+            t.trade_no ,
+            p.name as productName,
+            t.create_time
+        from t_order t
+        left join product p on p.id = t.product_id
+        where user_id = #{userId}
         order by t.id desc
     </select>
-    <select id="queryOrder" resultType="com.chat.java.model.res.QueryOrderRes">
+    <select id="queryOrder" resultType="com.intelligent.bot.model.res.sys.admin.OrderQueryRes">
         SELECT
             t.id,
             t.create_time,
@@ -30,12 +28,13 @@
             t.price,
             t.pay_number,
             t.pay_type,
-            t.operate_time,
-            t.state
+            t.state,
+            t.trade_no,
+            t.msg
         FROM
             t_order t
                 LEFT JOIN product p ON p.id = t.product_id
-                LEFT JOIN `user` u ON u.id = t.user_id
+                LEFT JOIN `t_user` u ON u.id = t.user_id
         where t.deleted = 0
         <if test="req.mobile != null and req.mobile != ''">
             <bind name="mobile" value="'%'+req.mobile+'%'"/>
@@ -44,42 +43,6 @@
         <if test="req.state != null ">
             and t.state like #{req.state}
         </if>
-        <if test="req.id != null ">
-            and t.id like #{req.id}
-        </if>
-        order by t.id desc
-    </select>
-    <select id="queryHomeOrder" resultType="com.chat.java.model.res.AdminHomeOrder">
-        SELECT
-            count( 1 ) AS orderNumber,
-            date_format ( create_time, '%Y-%m-%d' ) as days
-        FROM
-            t_order
-        WHERE
-                YEAR ( create_time ) = YEAR (
-                    now())
-          AND MONTH ( create_time )
-        GROUP BY
-            date_format(
-                    create_time,
-                    '%Y-%m-%d'
-                )
-    </select>
-    <select id="queryHomeOrderPrice" resultType="com.chat.java.model.res.AdminHomeOrderPrice">
-        SELECT
-            sum( price ) AS price,
-            date_format ( create_time, '%Y-%m-%d' ) AS days
-        FROM
-            t_order
-        WHERE
-                YEAR ( create_time ) = YEAR (
-                    now())
-          AND MONTH ( create_time )
-          and state = 1
-        GROUP BY
-            date_format(
-                    create_time,
-                    '%Y-%m-%d'
-                )
+        order by u.id desc
     </select>
 </mapper>

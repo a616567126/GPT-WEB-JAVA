@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.intelligent.bot.dao.EmailConfigDao">
+
+
+    <select id="queryEmailConfig" resultType="com.intelligent.bot.model.res.sys.admin.EmailConfigQueryRes">
+        select id,port,host,username,password,protocol,create_time from email_config
+        where deleted = 0
+        <if test="username != null and username != ''">
+            <bind name="username" value="'%'+username+'%'"/>
+            and username like #{username}
+        </if>
+        order by id desc
+    </select>
+</mapper>

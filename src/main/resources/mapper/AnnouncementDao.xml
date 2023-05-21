@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.intelligent.bot.dao.AnnouncementDao">
+
+
+    <select id="queryAnnouncement" resultType="com.intelligent.bot.model.res.sys.admin.AnnouncementQueryRes">
+        select id,title,content,sort,create_time from announcement
+        where  deleted = 0
+        <if test="title != null and title != ''">
+            <bind name="title" value="'%'+title+'%'"/>
+            and title like #{title}
+        </if>
+        order by sort desc
+    </select>
+</mapper>
