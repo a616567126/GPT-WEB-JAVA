@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/intelligent_bot?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    filters: stat
+    maxActive: 30
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 2
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 25200000
+    validationQuery: select '1'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    maxOpenPreparedStatements: 20
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 1
+    password: 123456
+    jedis:
+      pool:
+        max-idle: 100
+        min-idle: 1
+        max-active: 1000
+        max-wait: -1
+    timeout: 10000s
+  servlet:
+    multipart:
+      location: /Users/sim/Desktop/logs/data
