@@ -51,7 +51,9 @@ public class BingChatService {
     public void init() {
         try {
             SysConfig sysConfig = sysConfigService.getById(1);
-            create(sysConfig);
+            if(null != sysConfig && null != sysConfig.getIsOpenBing()  && sysConfig.getIsOpenBing() == 1){
+                create(sysConfig);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
