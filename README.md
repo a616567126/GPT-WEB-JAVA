@@ -36,7 +36,7 @@
 * **个人信息修改（头像，密码）**
 * **产品查询购买**
 * **订单查询**
-* **支付方式 易支付、卡密对话**
+* **支付方式 易支付、卡密兑换**
 
 
 
@@ -110,8 +110,6 @@ vip进群资格500RMB包含（1.0全部源码，2.0管理端源码，java源码�
 -|:-:|-:
 pid|易支付商户id|无
 secret_key|易支付商户秘钥|无
-notify_url|易支付回调域名|后台接口地址：例如https://baidu.com 记得带上'http/https://'
-return_url|易支付跳转通知地址|支付成功后返回的前端页面：例如https://baidu.com/#/user/product !!!此域名是客户端地址，#/user/product为客户端路由地址
 submit_url|易支付支付请求域名|易支付发起支付的api地址，例如：https://pay888.mfysc.shop/submit.php
 api_url|易支付订单查询api|后端核对订单时，易支付使用订单查询的api地址例如：https://pay888.mfysc.shop/api.php
 pay_type|支付类型 0 易支付 1卡密|开启对应类型之后记得配置相关支付参数
