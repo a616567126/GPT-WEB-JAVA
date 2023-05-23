@@ -13,13 +13,11 @@ spring:
     default-property-inclusion: non_null
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-#    设置上传文件大小
-servlet:
-  multipart:
-    max-file-size: 10Mb
-    max-request-size: 10Mb
-  maxHttpHeaderSize: 10Mb
-  maxHttpPostSize: 10Mb
+  #    设置上传文件大小
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 #配置mybatis-plus 开启日志
 mybatis-plus:
   configuration:
