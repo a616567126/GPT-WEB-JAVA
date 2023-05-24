@@ -2,11 +2,12 @@ package com.intelligent.bot.service.bing;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.model.req.bing.BingChatReq;
 import com.intelligent.bot.server.SseEmitterServer;
+import com.intelligent.bot.service.sys.AsyncService;
 import com.intelligent.bot.service.sys.ISysConfigService;
-import com.intelligent.bot.utils.sys.JwtUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
 import lombok.Data;
 import lombok.SneakyThrows;
@@ -17,11 +18,16 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -29,6 +35,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 @Service
@@ -45,30 +52,44 @@ public class BingChatService {
     RedisUtil redisUtil;
     @Resource
     ISysConfigService sysConfigService;
+    @Resource
+    AsyncService asyncService;
+
+    @Value("${spring.profiles.active}")
+    private String active;
 
 
     @PostConstruct
     public void init() {
         try {
             SysConfig sysConfig = sysConfigService.getById(1);
-            if(null != sysConfig && null != sysConfig.getIsOpenBing()  && sysConfig.getIsOpenBing() == 1){
-                create(sysConfig);
+            if(null != sysConfig && null != sysConfig.getIsOpenBing() && sysConfig.getIsOpenBing() == 1){
+                create(sysConfig,active);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void create(SysConfig sysConfig) throws IOException {
-        JSONObject conversation = createConversation(sysConfig);
+    public void create(SysConfig sysConfig,String active) throws IOException {
+        JSONObject conversation = createConversation(sysConfig,active);
         chatHub = new ChatHub(conversation);
     }
 
-    public CompletableFuture<String> ask(BingChatReq req) {
+    @Async
+    public void ask(BingChatReq req,Long logId) throws ExecutionException, InterruptedException {
         CompletableFuture<String> result = new CompletableFuture<>();
         chatHub.ask(req, result::complete);
-        return result;
+        String bingMessage = "会话异常，请稍后重试";
+        if(!StringUtils.isEmpty(result.get())){
+            bingMessage = result.get();
+        }else {
+            SseEmitterServer.sendMessage(req.getUserId(), bingMessage);
+            asyncService.updateRemainingTimes(req.getUserId(), CommonConst.BING_NUMBER);
+        }
+        asyncService.endOfAnswer(logId,bingMessage);
     }
+
     private static String generateRandomIP() {
         Random random = new Random();
         int a = random.nextInt(4) + 104;
@@ -104,14 +125,19 @@ public class BingChatService {
                 .add("Cookie","_U="+sysConfig.getBingCookie())
                 .build();
     }
-    private static JSONObject createConversation(SysConfig sysConfig) throws IOException {
+    private static JSONObject createConversation(SysConfig sysConfig,String active) throws IOException {
         Headers headers = generateHeaders(sysConfig);
-        OkHttpClient client = new OkHttpClient();
+        Proxy proxy = null ;
+        if(active.equals(CommonConst.ACTIVE)){
+            proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(sysConfig.getProxyIp(), sysConfig.getProxyPort()));
+        }
+        OkHttpClient client = new OkHttpClient.Builder()
+                .proxy(proxy)
+                .build();
         Request request = new Request.Builder()
                 .url("https://www.bing.com/turing/conversation/create")
                 .headers(headers)
                 .build();
-
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected response code:" + response.code());
@@ -183,11 +209,12 @@ public class BingChatService {
                                     JSONArray messagesArray = responseObject.getJSONArray("messages");
                                     JSONObject adaptiveCard = messagesArray.getJSONObject(0).getJSONArray("adaptiveCards").getJSONObject(0);
                                     String responseText = adaptiveCard.getJSONArray("body").getJSONObject(0).getString("text");
-                                    SseEmitterServer.sendMessage(JwtUtil.getUserId(),responseText);
+                                    SseEmitterServer.sendMessage(req.getUserId(),responseText);
                                     bot[0] =responseText;
                                 }
                             }else if (response.getInteger("type") == 2){
-                                  completionHandler.accept(bot[0]);
+                                SseEmitterServer.sendMessage(req.getUserId(),"[DONE]");
+                                completionHandler.accept(bot[0]);
                             }
                         }
                     }
@@ -224,7 +251,7 @@ public class BingChatService {
             optionsSets.add("disable_emoji_spoken_text");
             optionsSets.add("responsible_ai_policy_235");
             optionsSets.add("enablemm");
-                  //  .put("enable_debug_commands")
+            //  .put("enable_debug_commands")
             optionsSets.add(req.getMode());
             optionsSets.add("dtappid");
             optionsSets.add("trn8req120");

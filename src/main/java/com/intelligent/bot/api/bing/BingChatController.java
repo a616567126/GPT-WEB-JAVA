@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/bing")
@@ -45,6 +45,7 @@ public class BingChatController {
     @Resource
     IMessageLogService messageLogService;
 
+
     @RequestMapping(value = "/chat", name = "bing对话")
     public B<String> bingChat(@Validated @RequestBody BingChatReq req) throws ExecutionException, InterruptedException {
         SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
@@ -57,14 +58,30 @@ public class BingChatController {
                 .sendType(SendType.BING.getType())
                 .useValue(JSONObject.toJSONString(messages))
                 .userId(JwtUtil.getUserId()).build());
-        CompletableFuture<String> completableFuture = bingChatService.ask(req);
-        String bingMessage = "异常对话，请稍后重试";
-        if(!StringUtils.isEmpty(completableFuture.get())){
-            bingMessage = completableFuture.get();
-        }else {
-            asyncService.updateRemainingTimes(JwtUtil.getUserId(), CommonConst.BING_NUMBER);
+        req.setUserId(JwtUtil.getUserId());
+        String bingMessage = "";
+        if(req.getIsOk() == 0){
+            List<MessageLog> list = messageLogService.lambdaQuery()
+                    .like(MessageLog::getUseValue, req.getPrompt())
+                    .eq(MessageLog::getSendType, SendType.BING.getType())
+                    .list();
+            for (MessageLog m : list) {
+                List<Message> messageList = JSONObject.parseArray(m.getUseValue(), Message.class);
+                for (Message l : messageList) {
+                    if(l.getRole().equals("assistant") && !l.getContent().contains("会话异常，请稍后重试") && l.getContent().equals(req.getPrompt())){
+                        bingMessage = l.getContent();
+                    }
+                }
+            }
         }
-        asyncService.endOfAnswer(logId,bingMessage);
+        if(!StringUtils.isEmpty(bingMessage)){
+            Stream.of(bingMessage.split("")).forEach( m ->{
+                SseEmitterServer.sendMessage(JwtUtil.getUserId(),m);
+            });
+            asyncService.endOfAnswer(logId,bingMessage);
+        }else {
+            bingChatService.ask(req,logId);
+        }
         return B.okBuild("请求成功，请稍后");
     }
 }
