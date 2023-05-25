@@ -100,7 +100,7 @@ vip进群资格500RMB包含（1.0全部源码，2.0管理端源码，java源码�
 
 ## Put It Last
 **易支付网站地址：[白辰易支付](https://my.mmywl.cn/)**  
-**作者使用服务器地址：[浅夏云](https://www.qxqxo.com/aff/ZGWPEDLQ)**  
+**作者使用服务器地址：[浅夏云](https://www.qxqxa.com/aff/ZGWPEDLQ)**  
 **作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)**  
 **默认启动时需配置gpt_key,pay_config,sys_config,因为项目启动时会加载对应参数到redis中，如果手动修改数据库，需要在redis中修改对应参数，防止不生效**
 **FlagStudio地址：http://flagstudio.baai.ac.cn/
