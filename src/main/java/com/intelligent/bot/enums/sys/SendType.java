@@ -9,12 +9,14 @@ public enum SendType {
     FS(4,"fs"),
 
     MJ(5,"mj"),
-    BING(6,"bing");
+    BING(6,"bing"),
+    STABLE_STUDIO(7,"stableStudio"),
+    GPT_4(8,"gpt-4");
 
 
-    private Integer type;
+    private final Integer type;
 
-    private String remark;
+    private final String remark;
 
     SendType(Integer type,String remark){
         this.type = type;

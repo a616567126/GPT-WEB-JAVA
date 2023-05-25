@@ -70,11 +70,11 @@ public final class GptController {
         if(null != cacheObject.getIsOpenProxy() && cacheObject.getIsOpenProxy() == 1){
             proxy = Proxys.http(cacheObject.getProxyIp(), cacheObject.getProxyPort());
         }
-        String gptKey = InitUtil.getRandomKey();
+        String gptKey = InitUtil.getRandomKey(req.getType());
         List<Message> messages = messageLogService.createMessageLogList(req.getLogId(),req.getProblem());
         Long logId = checkService.checkUser(MessageLog.builder()
-                .useNumber(CommonConst.GPT_NUMBER)
-                .sendType(SendType.GPT.getType())
+                .useNumber(req.getType() == 3 ? CommonConst.GPT_NUMBER : CommonConst.GPT_4_NUMBER)
+                .sendType(req.getType() == 3 ? SendType.GPT.getType() : SendType.GPT_4.getType())
                 .useValue(JSONObject.toJSONString(messages))
                 .gptKey(gptKey)
                 .userId(JwtUtil.getUserId()).build(),req.getLogId());
@@ -90,15 +90,14 @@ public final class GptController {
                 .userService(userService)
                 .asyncService(asyncService).build();
         listener.setOnComplate(msg -> {
-            log.info("msg:{}",msg);
             asyncService.endOfAnswer(logId,msg.toString());
         });
-        chatGPTStream.streamChatCompletion(messages, listener);
+        chatGPTStream.streamChatCompletion(messages, listener,req.getType());
         return B.okBuild(logId);
     }
     @PostMapping(value = "/official", name = "GPT-画图")
     public B<MessageLogSave> gptAlpha(@Validated @RequestBody GptAlphaReq req) throws IOException {
-        final String randomKey = InitUtil.getRandomKey();
+        final String randomKey = InitUtil.getRandomKey(req.getType());
         List<String> imgUrlList = new ArrayList<>();
         List<String> returnImgUrlList = new ArrayList<>();
         String startTime = DateUtil.getLocalDateTimeNow();

@@ -16,10 +16,9 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Component
 @Log4j2
@@ -47,7 +46,7 @@ public class InitUtil {
     /**
      * key缓存池
      */
-    private static final ConcurrentHashMap<String, String> cache = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, GptKey> cache = new ConcurrentHashMap<>();
 
 
     /**
@@ -57,7 +56,10 @@ public class InitUtil {
     public void init() {
         //获取启用的key
         List<GptKey> gptKeyList = gptKeyService.lambdaQuery().eq(GptKey::getState,0).orderByDesc(GptKey::getSort).list();
-        gptKeyList.stream().map(GptKey::getKey).collect(Collectors.toList()).forEach(InitUtil::add);
+//        gptKeyList.stream().map(GptKey::getKey).collect(Collectors.toList()).forEach(InitUtil::add);
+        gptKeyList.forEach( g ->{
+            InitUtil.add(g.getKey(),g);
+        });
         initUtil = this;
         initUtil.gptKeyService = this.gptKeyService;
         initUtil.asyncService = this.asyncService;
@@ -77,8 +79,8 @@ public class InitUtil {
      * 添加key到缓存
      * @param str
      */
-    public static void add(String str) {
-        cache.putIfAbsent(str, str);
+    public static void add(String str,GptKey gptKey) {
+        cache.putIfAbsent(str, gptKey);
     }
 
 
@@ -87,19 +89,27 @@ public class InitUtil {
      * 获取全部的key
      * @return
      */
-    public static Collection<String> getAllKey() {
+    public static Collection<GptKey> getAllKey() {
         return cache.values();
     }
 
 
-    public static synchronized String getRandomKey() {
-        final Collection<String> allKey = getAllKey();
+    public static synchronized String getRandomKey(Integer type) {
+        final Collection<GptKey> allKey = getAllKey();
         if (CollectionUtils.isEmpty(allKey)) {
             throw new E("缓存池中已无可用的Key 请联系管理员");
         }
-        int index = new Random().nextInt(allKey.size());
-        final List<String> list = new ArrayList<>(allKey);
-        String key = list.get(index);
+        final List<String> list = new ArrayList<>();
+        allKey.forEach( key ->{
+            if(key.getType().equals(type)){
+                list.add(key.getKey());
+            }
+        });
+        if (CollectionUtils.isEmpty(list)) {
+            throw new E("缓存池中已无可用的Key 请联系管理员");
+        }
+        Collections.shuffle(list);
+        String key = list.get(0);
         initUtil.asyncService.updateKeyNumber(key);
         return key;
     }

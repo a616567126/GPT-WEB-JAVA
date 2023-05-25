@@ -10,4 +10,6 @@ public class GptStreamReq {
 
     private Long logId;
 
+    private Integer type = 3;
+
 }

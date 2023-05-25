@@ -29,4 +29,6 @@ public class GptAlphaReq {
      * imageType
      */
     private String response_format = "url";
+
+    private Integer type = 3;
 }

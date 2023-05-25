@@ -36,4 +36,11 @@ public class GptKey extends BaseEntity implements Serializable {
      */
     private Integer state;
 
+
+    /**
+     * key类型 3-gpt3.5 4-gpt4
+     */
+    private Integer type;
+
+
 }

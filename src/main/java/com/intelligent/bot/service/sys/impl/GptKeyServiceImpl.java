@@ -46,7 +46,7 @@ public class GptKeyServiceImpl extends ServiceImpl<GptKeyDao, GptKey> implements
         }
         gptKey.setCreateTime(LocalDateTime.now());
         gptKey.setOperateTime(LocalDateTime.now());
-        InitUtil.add(gptKey.getKey());
+        InitUtil.add(gptKey.getKey(),gptKey);
         log.error("新增key：{}======缓存key信息：{}",gptKey.getKey(), InitUtil.getAllKey());
         this.save(gptKey);
         return B.okBuild();
@@ -70,7 +70,7 @@ public class GptKeyServiceImpl extends ServiceImpl<GptKeyDao, GptKey> implements
             throw new E("key不存在");
         }
         gptKey.setState(req.getState());
-        InitUtil.add(gptKey.getKey());
+        InitUtil.add(gptKey.getKey(),gptKey);
         this.saveOrUpdate(gptKey);
         return B.build(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg());
     }

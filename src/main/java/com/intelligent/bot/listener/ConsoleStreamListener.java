@@ -1,8 +1,10 @@
 package com.intelligent.bot.listener;
 
 import com.intelligent.bot.constant.CommonConst;
+import com.intelligent.bot.model.GptKey;
 import com.intelligent.bot.server.SseEmitterServer;
 import com.intelligent.bot.service.sys.AsyncService;
+import com.intelligent.bot.service.sys.IGptKeyService;
 import com.intelligent.bot.service.sys.IUserService;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,8 @@ public class ConsoleStreamListener extends AbstractStreamListener {
 
     final IUserService userService;
 
+    final IGptKeyService gptKeyService;
+
     @Override
     public void onMsg(Object message) {
         SseEmitterServer.sendMessage(userId, message);
@@ -28,7 +32,8 @@ public class ConsoleStreamListener extends AbstractStreamListener {
         //修改key状态
         asyncService.updateKeyState(response);
         //将用户使用次数返回
-        asyncService.updateRemainingTimes(userId, CommonConst.GPT_NUMBER);
+        GptKey gptKey = gptKeyService.lambdaQuery().eq(GptKey::getKey, response).one();
+        asyncService.updateRemainingTimes(userId,  gptKey.getType() == 3 ? CommonConst.GPT_NUMBER : CommonConst.GPT_4_NUMBER);
         log.error("gpt对话异常，异常key：{}",response);
         SseEmitterServer.sendMessage(userId, "AI对话服务异常请稍后再试");
     }

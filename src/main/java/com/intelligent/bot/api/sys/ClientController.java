@@ -59,12 +59,22 @@ public class ClientController {
         if(!user.getAvatar().contains("http")){
             user.setAvatar(sysConfig.getImgReturnUrl() + user.getAvatar());
         }
-        List<MessageLog> logList = useLogService.lambdaQuery()
-                .select(MessageLog::getUseValue,MessageLog::getId,MessageLog::getSendType)
-                .eq(MessageLog::getUserId, JwtUtil.getUserId())
-                .eq(MessageLog::getSendType, req.getSendType())
-                .orderByDesc(MessageLog::getId)
-                .list();
+        List<MessageLog> logList = new ArrayList<>();
+        if(req.getSendType() != 1){
+            logList = useLogService.lambdaQuery()
+                    .select(MessageLog::getUseValue,MessageLog::getId,MessageLog::getSendType)
+                    .eq(MessageLog::getUserId, JwtUtil.getUserId())
+                    .eq(MessageLog::getSendType, req.getSendType())
+                    .orderByDesc(MessageLog::getId)
+                    .list();
+        }else {
+            logList = useLogService.lambdaQuery()
+                    .select(MessageLog::getUseValue,MessageLog::getId,MessageLog::getSendType)
+                    .eq(MessageLog::getUserId, JwtUtil.getUserId())
+                    .in(MessageLog::getSendType, SendType.GPT.getType(),SendType.GPT_4.getType())
+                    .orderByDesc(MessageLog::getId)
+                    .list();
+        }
         List<Announcement> list = announcementService.lambdaQuery().select(Announcement::getContent).orderByDesc(Announcement::getSort).last("limit 1").list();
         ClientHomeRes clientHomeRes = BeanUtil.copyProperties(user, ClientHomeRes.class);
         clientHomeRes.setAnnouncement((null != list && list.size() > 0) ? list.get(0).getContent() : "暂无通知公告");
@@ -72,7 +82,10 @@ public class ClientController {
         logList.forEach(e -> {
             ClientHomeLogRes res = new ClientHomeLogRes();
             res.setId(e.getId());
-            if (e.getSendType().equals(SendType.GPT.getType()) || e.getSendType().equals(SendType.BING.getType())) {
+            res.setSendType(e.getSendType());
+            if (e.getSendType().equals(SendType.GPT.getType())
+                    || e.getSendType().equals(SendType.GPT_4.getType())
+                    || e.getSendType().equals(SendType.BING.getType())) {
                 res.setTitle(JSONObject.parseArray(e.getUseValue(), Message.class).get(0).getContent());
                 res.setContent(e.getUseValue());
             } else {

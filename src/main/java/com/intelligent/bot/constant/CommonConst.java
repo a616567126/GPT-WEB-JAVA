@@ -66,7 +66,7 @@ public class CommonConst {
     /**
      * 易支付页面跳转地址
      */
-    public static final String Yi_PAY_RETURN_RUL = "/#/user/product";
+    public static final String Yi_PAY_RETURN_RUL = "/#/product";
 
     /**
      * 公众号自动回复消息类型
@@ -100,9 +100,14 @@ public class CommonConst {
     public static final String MEDIA_ID = "yQW1hbBnX-2LcEXW8kghesqMWfIM2S4IfA6SXevO-bUiafR51ufOUCRPtyEshUhy";
 
     /**
-     * gpt消耗次数
+     * gpt3.5对话消耗次数
      */
     public static final Integer GPT_NUMBER =  1;
+
+    /**
+     * gpt4消耗次数
+     */
+    public static final Integer GPT_4_NUMBER =  5;
 
     /**
      * gpt画图消耗次数
@@ -117,9 +122,9 @@ public class CommonConst {
 
 
     /**
-     * mh画图消耗次数
+     * mj画图消耗次数
      */
-    public static final Integer MJ_NUMBER =  3;
+    public static final Integer MJ_NUMBER =  5;
 
     /**
      * sd画图消耗次数
@@ -131,6 +136,12 @@ public class CommonConst {
      */
     public static final Integer BING_NUMBER =  3;
 
+
+    /**
+     * StableStudio画图消耗次数
+     */
+    public static final Integer STABLE_STUDIO_NUMBER =  3;
+
     /**
      * gpt 3.5 token 最大限制
      */
@@ -140,4 +151,25 @@ public class CommonConst {
      * dev环境
      */
     public static final String ACTIVE = "dev";
+
+
+    /**
+     * stableStudio用户信息地址
+     */
+    public static final String STABLE_STUDIO_USER_ACCOUNT = "/v1/user/account";
+
+    /**
+     * stableStudio账户余额地址
+     */
+    public static final String STABLE_STUDIO_USER_BALANCE = "/v1/user/balance";
+
+    /**
+     * 获取引擎列表
+     */
+    public static final String STABLE_STUDIO_ENGINES_LIST = "/v1/engines/list";
+
+    /**
+     * 文生图
+     */
+    public static final String STABLE_STUDIO_TEXT_TO_IMAGE = "/v1/generation/%s/text-to-image";
 }

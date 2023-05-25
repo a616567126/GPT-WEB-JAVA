@@ -19,4 +19,9 @@ public class ClientHomeLogRes {
      * 消息id
      */
     private Long id;
+
+    /**
+     * 1-gpt对话 2-gpt画图 3-sd画图 4-fs画图 5-mj画图 6-bing 7-stableStudio 8-gpt4
+     */
+    private Integer sendType;
 }

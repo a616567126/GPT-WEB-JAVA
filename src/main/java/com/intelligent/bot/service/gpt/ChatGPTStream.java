@@ -97,12 +97,15 @@ public class ChatGPTStream {
      * 流式输出
      */
     public void streamChatCompletion(List<Message> messages,
-                                     EventSourceListener eventSourceListener) {
+                                     EventSourceListener eventSourceListener,
+                                     Integer type) {
         messages.forEach(m ->{
             m.setTime(null);
         });
+        String model  = type == 3 ? ChatCompletion.Model.GPT_3_5_TURBO.getName() : ChatCompletion.Model.GPT_4.getName();
         ChatCompletion chatCompletion = ChatCompletion.builder()
                 .messages(messages)
+                .model(model)
                 .stream(true)
                 .build();
         if(chatCompletion.checkTokens()){

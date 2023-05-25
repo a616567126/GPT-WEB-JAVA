@@ -39,6 +39,7 @@ public class CheckService {
     public Long  checkUser(MessageLog messageLog, Long id) {
         if(null != id){
             messageLog.setId(id);
+            messageLog.setUseNumber(useLogService.getById(id).getUseNumber() + messageLog.getUseNumber());
         }
         return checkUser(messageLog);
     }
