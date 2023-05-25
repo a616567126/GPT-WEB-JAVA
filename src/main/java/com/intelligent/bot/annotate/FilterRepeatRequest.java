@@ -46,7 +46,7 @@ public class FilterRepeatRequest {
         AvoidRepeatRequest lock = method.getAnnotation(AvoidRepeatRequest.class);
         final String lockKey = generateKey(pjp);
         // 上锁
-        final boolean success = redisLock.Rlock(lockKey, null,active.equals(CommonConst.ACTIVE) ? 0 : (lock.intervalTime() == 0 ? 0 : lock.intervalTime()), TimeUnit.SECONDS);
+        final boolean success = redisLock.Rlock(lockKey, null,active.equals(CommonConst.ACTIVE)  ?  0 : (lock.intervalTime() == 0 ? 30 : lock.intervalTime()), TimeUnit.SECONDS);
         if (!success) {
             throw new E(lock.msg());
         }
