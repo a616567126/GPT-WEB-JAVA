@@ -80,7 +80,7 @@ public class BingChatController {
             });
             asyncService.endOfAnswer(logId,bingMessage);
         }else {
-            bingChatService.ask(req,logId);
+            bingChatService.ask(req,logId,asyncService);
         }
         return B.okBuild("请求成功，请稍后");
     }

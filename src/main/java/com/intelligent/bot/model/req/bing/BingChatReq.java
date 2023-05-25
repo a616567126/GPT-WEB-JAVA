@@ -29,7 +29,7 @@ public class BingChatReq {
     /**
      * 是否正确答案1正确 0 错误
      */
-    private Integer isOk = 1;
+    private Integer isOk = 0;
 
 
 

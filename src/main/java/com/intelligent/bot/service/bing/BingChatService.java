@@ -77,16 +77,16 @@ public class BingChatService {
     }
 
     @Async
-    public void ask(BingChatReq req,Long logId) throws ExecutionException, InterruptedException {
+    public void ask(BingChatReq req,Long logId,AsyncService asyncService) throws ExecutionException, InterruptedException {
         CompletableFuture<String> result = new CompletableFuture<>();
-        chatHub.ask(req, result::complete);
+        chatHub.ask(req, result::complete,asyncService);
         String bingMessage = "会话异常，请稍后重试";
         if(!StringUtils.isEmpty(result.get())){
             bingMessage = result.get();
         }else {
-            SseEmitterServer.sendMessage(req.getUserId(), bingMessage);
             asyncService.updateRemainingTimes(req.getUserId(), CommonConst.BING_NUMBER);
         }
+        SseEmitterServer.sendMessage(req.getUserId(), bingMessage);
         asyncService.endOfAnswer(logId,bingMessage);
     }
 
@@ -151,11 +151,12 @@ public class BingChatService {
         private final JSONObject conversation;
         private WebSocketClient wsClient;
 
+
         public ChatHub(JSONObject conversation) {
             this.conversation = conversation;
         }
 
-        public void ask(BingChatReq req, Consumer<String> completionHandler) {
+        public void ask(BingChatReq req, Consumer<String> completionHandler, AsyncService asyncService) {
             final String[] bot = {""};
             try {
                 URI uri = new URI("wss://sydney.bing.com/sydney/ChatHub");
@@ -187,10 +188,9 @@ public class BingChatService {
                         JSONObject json = new JSONObject();
                         json.put("protocol", "json");
                         json.put("version", 1);
-                        send(json.toString()+ DELIMITER);
+                        send(json + DELIMITER);
                         JSONObject chatRequest = createChatRequest(req);
-                        String message = chatRequest.toString() + DELIMITER;
-                        log.info("===========\n"+message);
+                        String message = chatRequest + DELIMITER;
                         send(message);
 
                     }
@@ -222,11 +222,13 @@ public class BingChatService {
                     @Override
                     public void onClose(int code, String reason, boolean remote) {
                         log.error("Bing WebSocket closed: " + reason);
+                        asyncService.updateRemainingTimes(req.getUserId(), CommonConst.BING_NUMBER);
                     }
 
                     @Override
                     public void onError(Exception ex) {
                         log.error("WebSocket error: ");
+                        asyncService.updateRemainingTimes(req.getUserId(), CommonConst.BING_NUMBER);
                         ex.printStackTrace();
                     }
                 };
