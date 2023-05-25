@@ -48,9 +48,9 @@ public class BingChatController {
 
     @RequestMapping(value = "/chat", name = "bing对话")
     public B<String> bingChat(@Validated @RequestBody BingChatReq req) throws ExecutionException, InterruptedException {
-        SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
-        if(sysConfig.getIsOpenBing() == 0){
-            SseEmitterServer.sendMessage(JwtUtil.getUserId(),"暂未开启newBing");
+        SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+        if(null == sysConfig.getIsOpenBing() || sysConfig.getIsOpenBing() == 0){
+            return B.finalBuild("暂未开启newBing");
         }
         List<Message> messages = messageLogService.createMessageLogList(req.getLogId(), req.getPrompt());
         Long logId = checkService.checkUser(MessageLog.builder()
