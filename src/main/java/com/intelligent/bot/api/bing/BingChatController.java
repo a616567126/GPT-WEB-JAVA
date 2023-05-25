@@ -57,7 +57,7 @@ public class BingChatController {
                 .useNumber(CommonConst.BING_NUMBER)
                 .sendType(SendType.BING.getType())
                 .useValue(JSONObject.toJSONString(messages))
-                .userId(JwtUtil.getUserId()).build());
+                .userId(JwtUtil.getUserId()).build(),req.getLogId());
         req.setUserId(JwtUtil.getUserId());
         String bingMessage = "";
         if(req.getIsOk() == 0){

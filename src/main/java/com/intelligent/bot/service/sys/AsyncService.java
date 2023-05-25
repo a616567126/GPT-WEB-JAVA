@@ -2,6 +2,7 @@ package com.intelligent.bot.service.sys;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.GptKey;
 import com.intelligent.bot.model.MessageLog;
 import com.intelligent.bot.model.User;
@@ -19,7 +20,6 @@ import java.util.List;
 
 
 @Component
-@Transactional(propagation= Propagation.NOT_SUPPORTED)
 public class AsyncService {
 
 
@@ -43,8 +43,9 @@ public class AsyncService {
     }
 
     @Async
+    @Transactional(propagation= Propagation.NOT_SUPPORTED)
     public void updateKeyState(String key){
-       gptKeyService.lambdaUpdate().eq(GptKey::getKey,key).set(GptKey::getState,1).update();
+        gptKeyService.lambdaUpdate().eq(GptKey::getKey,key).set(GptKey::getState,1).update();
         InitUtil.removeKey(key);
     }
 
@@ -60,7 +61,7 @@ public class AsyncService {
     public void endOfAnswer(Long logId, String value){
         MessageLog messageLog = useLogService.getById(logId);
         List<Message> messageList = JSONObject.parseArray(messageLog.getUseValue(), Message.class);
-        messageList.add(Message.ofAssistant(value));
+        messageList.add(Message.ofAssistant(value.replaceAll(CommonConst.EMOJI, " ")));
         useLogService.lambdaUpdate().eq(MessageLog::getId,logId)
                 .set(MessageLog::getUseValue,JSONObject.toJSONString(messageList))
                 .update();

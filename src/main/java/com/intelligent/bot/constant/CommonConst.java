@@ -172,4 +172,10 @@ public class CommonConst {
      * 文生图
      */
     public static final String STABLE_STUDIO_TEXT_TO_IMAGE = "/v1/generation/%s/text-to-image";
+
+    /**
+     * emoji表情
+     */
+    public static final String EMOJI = "[\\ud83c\\udf00-\\ud83d\\udfff|\\ud83e\\udd00-\\ud83e\\uddff|\\ud83d\\udc00-\\ud83d\\ude4f|\\ud83d\\ude80-\\ud83d\\udeff]";
+
 }
