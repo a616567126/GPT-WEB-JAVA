@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : app
+ Source Server         : 测试数据库
  Source Server Type    : MySQL
  Source Server Version : 80024
- Source Host           : 103.106.189.148:3307
+ Source Host           : 39.101.167.183:3306
  Source Schema         : intelligent_bot
 
  Target Server Type    : MySQL
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 21/05/2023 08:57:25
+ Date: 25/05/2023 10:51:44
 */
 
 SET NAMES utf8mb4;
@@ -83,7 +83,7 @@ CREATE TABLE `error_message` (
   `user_id` bigint DEFAULT NULL COMMENT '用户id',
   `error_message` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '异常内容',
   `url` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '接口地址',
-  `position` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '异常位置',
+  `position` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '异常位置',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -103,6 +103,7 @@ CREATE TABLE `gpt_key` (
   `use_number` int DEFAULT '0' COMMENT '使用次数',
   `sort` int DEFAULT '0' COMMENT '排序',
   `state` int DEFAULT '0' COMMENT '状态 0 启用 1禁用',
+  `type` tinyint DEFAULT '3' COMMENT 'key类型 3-gpt3.5 4-gpt4',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -123,7 +124,7 @@ CREATE TABLE `message_log` (
   `use_type` tinyint DEFAULT '1' COMMENT '消费类型 1 次数 2 月卡',
   `use_value` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '聊天内容',
   `gpt_key` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '使用gptkey',
-  `send_type` tinyint DEFAULT '0' COMMENT '消息类型  1-gpt对话 2-gpt画图 3-sd画图 4-fs画图 5-mj画图 6-bing对话 ',
+  `send_type` tinyint DEFAULT '0' COMMENT '1-gpt对话 2-gpt画图 3-sd画图 4-fs画图 5-mj画图 6-bing 7-stableStudio 8-gpt4\n',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -181,7 +182,7 @@ CREATE TABLE `product` (
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config` (
   `id` bigint NOT NULL,
-  `registration_method` tinyint DEFAULT '1' COMMENT '注册模式 1 账号密码 2 邮箱注册 3 公众号\n',
+  `registration_method` tinyint DEFAULT '1' COMMENT '注册模式 1账号密码  2 短信注册 3 关闭注册 4邮件注册',
   `default_times` int DEFAULT '10' COMMENT '默认注册次数',
   `gpt_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'gpt请求地址',
   `img_upload_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '图片上传地址',
@@ -207,8 +208,11 @@ CREATE TABLE `sys_config` (
   `is_open_proxy` tinyint DEFAULT '0' COMMENT '是否开启代理 0关闭 1开启',
   `proxy_ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '代理ip',
   `proxy_port` int DEFAULT NULL COMMENT '代理端口',
-  `bing_cookie` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '微软bing cookie',
   `is_open_bing` tinyint DEFAULT '0' COMMENT '是否开启bing 0-未开启 1开启',
+  `bing_cookie` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '微软bing cookie',
+  `is_open_stable_studio` tinyint DEFAULT '0' COMMENT '是否开启StableStudio 0未开启 1 开启',
+  `stable_studio_api` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'StableStudioapi地址前缀',
+  `stable_studio_key` varchar(100) DEFAULT NULL COMMENT 'StableStudio key',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
