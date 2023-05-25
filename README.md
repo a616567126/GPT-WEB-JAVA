@@ -26,11 +26,12 @@
 * **登录**
 * **临时用户**
 * **注册（公众号注册，邮箱注册，账号密码注册）**
-* **基于SSE GPT 3.5流式对话+上下文**
+* **基于SSE GPT 3.5/4.0 流式对话+上下文**
 * **GPT 画图**
 * **FlagStudio画图**
 * **Midjourney画图**
 * **Stable-Diffusion画图**
+* **stableStudio画图**
 * **公告查看**
 * **个人信息展示（剩余次数，身份，昵称）**
 * **个人信息修改（头像，密码）**
@@ -145,6 +146,9 @@ proxy_ip|代理ip|无
 proxy_port|代理端口|无
 bing_cookie|微软bing cookie|无
 is_open_bing|是否开启bing 0-未开启 1开启|无
+is_open_stable_studio|是否开启StableStudio 0未开启 1 开启|无
+stable_studio_api|StableStudioapi地址前缀|写死：https://api.stability.ai
+stable_studio_key|StableStudio key|无
 
 
 
