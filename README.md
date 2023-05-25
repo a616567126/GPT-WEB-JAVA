@@ -12,9 +12,10 @@
 
 **Demo地址：https://gptai.v-wim.xyz**   
  
-**基于Spring Boot  Mybatis-plus的GPTweb后台**
+**基于Spring Boot  Mybatis-plus的GPTweb后台**  
 
-**2.0全新版本，全新ui，全新体验 可切换2.0分支拉取后台代码，完整代码添加作者咨询**
+**2.0全新版本，全新ui，全新体验 可切换2.0分支拉取后台代码，完整代码添加作者咨询**  
+
 **体验地址:https://ai.v-wim.xyz**
  
 ## Getting Started  
