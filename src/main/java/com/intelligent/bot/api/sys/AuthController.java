@@ -157,7 +157,7 @@ public class AuthController {
                     throw new E("用户已存在");
                 }
                 user.setType(1);
-                user.setPassword(SecureUtil.md5(reqUser.getMobile()));
+                user.setPassword(SecureUtil.md5(reqUser.getPassword()));
             }
         }else {
             //判断临时用户是否有剩余次数
