@@ -178,4 +178,30 @@ public class CommonConst {
      */
     public static final String EMOJI = "[\\ud83c\\udf00-\\ud83d\\udfff|\\ud83e\\udd00-\\ud83e\\uddff|\\ud83d\\udc00-\\ud83d\\ude4f|\\ud83d\\ude80-\\ud83d\\udeff]";
 
+    /**
+     * 画图队列数量
+     */
+    public static final Integer QUEUE_SIZE = 5;
+
+
+    /**
+     * 画图队列存储key
+     */
+    public static final String QUEUE_KEY = "user:queue";
+
+    /**
+     * sd文生图
+     */
+    public static final String SD_TXT_2_IMG = "/sdapi/v1/txt2img";
+
+    /**
+     * sd采样方法
+     */
+    public static final String SD_SAMPLERS = "/sdapi/v1/samplers";
+
+    /**
+     * sd画图状态
+     */
+    public static final String SD_PROGRESS = "/sdapi/v1/progress?skip_current_image=false";
+
 }

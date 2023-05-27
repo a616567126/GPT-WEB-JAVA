@@ -1,24 +1,20 @@
 package com.intelligent.bot.api.sd;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.http.ContentType;
-import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.intelligent.bot.base.exception.E;
 import com.intelligent.bot.base.result.B;
 import com.intelligent.bot.constant.CommonConst;
-import com.intelligent.bot.enums.sys.SendType;
-import com.intelligent.bot.model.MessageLog;
+import com.intelligent.bot.model.SdLora;
+import com.intelligent.bot.model.SdModel;
 import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.model.req.sd.SdCreateReq;
-import com.intelligent.bot.model.req.sys.MessageLogSave;
-import com.intelligent.bot.service.sys.AsyncService;
-import com.intelligent.bot.service.sys.CheckService;
-import com.intelligent.bot.utils.sys.DateUtil;
-import com.intelligent.bot.utils.sys.FileUtil;
+import com.intelligent.bot.model.res.sd.GetQueueRes;
+import com.intelligent.bot.service.sys.ISdLoraService;
+import com.intelligent.bot.service.sys.ISdModelService;
 import com.intelligent.bot.utils.sys.JwtUtil;
+import com.intelligent.bot.utils.sys.QueueUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,86 +34,40 @@ import java.util.List;
 @Transactional(rollbackFor = E.class)
 public class SdController {
 
-
     @Resource
-    CheckService checkService;
+    QueueUtil queueUtil;
     @Resource
-    AsyncService asyncService;
+    ISdModelService sdModelService;
+    @Resource
+    ISdLoraService sdLoraService;
 
     @RequestMapping(value = "/create",name="sd画图", method = RequestMethod.POST)
-    public synchronized B<MessageLogSave> createImage(@Validated @RequestBody SdCreateReq req) {
+    public synchronized B<GetQueueRes> createImage(@Validated @RequestBody SdCreateReq req) {
         SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         if(null == cacheObject.getIsOpenSd() || cacheObject.getIsOpenSd() == 0){
             throw new E("暂未开启sd");
         }
-        List<String> imgUrlList = new ArrayList<String>();
-        List<String> returnImgUrlList = new ArrayList<String>();
-        String startTime = DateUtil.getLocalDateTimeNow();
-        Long logId = checkService.checkUser(MessageLog.builder()
-                .useNumber(CommonConst.SD_NUMBER)
-                .sendType(SendType.SD.getType())
-                .useValue(JSONObject.toJSONString(MessageLogSave.builder()
-                        .prompt(req.getPrompt())
-                        .type(SendType.SD.getRemark())
-                        .startTime(startTime)
-                        .imgList(imgUrlList).build()))
-                .userId(JwtUtil.getUserId()).build());
-        JSONObject params = new JSONObject();
-        params.put("prompt",req.getPrompt());
-        params.put("negative_prompt",req.getNegativePrompt());
-        params.put("width",req.getWidth());
-        params.put("height",req.getHeight());
-        params.put("steps",req.getSteps());
-        params.put("batch_size",req.getBatchSize());
-        params.put("cfg_scale",req.getCfgScale());
-        params.put("seed",req.getSeed());
-        params.put("sampler_index",req.getSamplerIndex());
-        params.put("restoreFaces",req.getRestoreFaces());
-        JSONObject override_settings = new JSONObject();
-        override_settings.put("sd_model_checkpoint",req.getSdModelCheckpoint());
-        params.put("override_settings",override_settings);
-        log.info("sd请求地址：{}",cacheObject.getSdUrl()+"/sdapi/v1/txt2img");
-        String body = HttpUtil.createPost(cacheObject.getSdUrl()+"/sdapi/v1/txt2img")
-                .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
-                .body(JSONObject.toJSONString(params))
-                .execute()
-                .body();
-        List<String> images = JSONObject.parseArray(JSONObject.parseObject(body).getJSONArray("images").toJSONString(), String.class);
-        images.forEach(i ->{
-            try {
-                imgUrlList.add(FileUtil.base64ToImage(i));
-                returnImgUrlList.add(cacheObject.getImgReturnUrl() + FileUtil.base64ToImage(i));
-            } catch (IOException e) {
-                //将用户使用次数返回
-                asyncService.updateRemainingTimes(JwtUtil.getUserId(), CommonConst.SD_NUMBER);
-                throw new E(e.getMessage());
-            }
-        });
-        MessageLogSave messageLogSave = MessageLogSave.builder()
-                .prompt(req.getPrompt())
-                .type(SendType.SD.getRemark())
-                .startTime(startTime)
-                .imgList(imgUrlList).build();
-        asyncService.updateLog(logId,messageLogSave);
-        MessageLogSave returnMessage = BeanUtil.copyProperties(messageLogSave, MessageLogSave.class);
-        returnMessage.setImgList(returnImgUrlList);
-        return B.okBuild(returnMessage);
+        req.setUserId(JwtUtil.getUserId());
+        String value = JSONObject.toJSONString(req);
+        int position = queueUtil.getPosition(value);
+        if(position > -1){
+            throw new E("您已发起相同请求，请等待画图完成");
+        }
+        queueUtil.addUserToQueue(value);
+        return getQueue(req);
     }
 
     @RequestMapping(value = "/getModel",name="获取模型列表", method = RequestMethod.POST)
-    public B<List<String>> getModel() {
-        List<String> modelList = new ArrayList<String>();
+    public B<List<SdModel>> getModel() {
         SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         if(null == cacheObject.getIsOpenSd() || cacheObject.getIsOpenSd() == 0){
             throw new E("暂未开启sd");
         }
-        String body = HttpUtil.createGet(cacheObject.getSdUrl()+"/sdapi/v1/sd-models").execute().body();
-        JSONArray jsonArray = JSONObject.parseArray(body);
-        for (int i = 0; i < jsonArray.size(); i++) {
-            String title = jsonArray.getJSONObject(i).getString("title");
-            modelList.add(title);
-        }
-        return B.okBuild(modelList);
+        List<SdModel> list = sdModelService.lambdaQuery().select(SdModel::getModelName,SdModel::getImgUrl).orderByDesc(SdModel::getId).list();
+        list.forEach( l ->{
+            l.setImgUrl(cacheObject.getImgReturnUrl() + l.getImgUrl());
+        });
+        return B.okBuild(list);
     }
 
     @RequestMapping(value = "/getSamplers",name="获取采样方法列表", method = RequestMethod.POST)
@@ -128,7 +77,7 @@ public class SdController {
         if(null == cacheObject.getIsOpenSd() || cacheObject.getIsOpenSd() == 0){
             throw new E("暂未开启sd");
         }
-        String body = HttpUtil.createGet(cacheObject.getSdUrl()+"/sdapi/v1/samplers").execute().body();
+        String body = HttpUtil.createGet(cacheObject.getSdUrl() + CommonConst.SD_SAMPLERS).execute().body();
         JSONArray jsonArray = JSONObject.parseArray(body);
         for (int i = 0; i < jsonArray.size(); i++) {
             String title = jsonArray.getJSONObject(i).getString("name");
@@ -138,13 +87,39 @@ public class SdController {
     }
 
     @RequestMapping(value = "/getLora",name="获取lora列表", method = RequestMethod.POST)
-    public B<List<String>> getLora() {
+    public B<List<SdLora>> getLora() {
         SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         if(null == cacheObject.getIsOpenSd() || cacheObject.getIsOpenSd() == 0){
             throw new E("暂未开启sd");
         }
-        List<String> loraList = FileUtil.readFiles(cacheObject.getSdLoraUrl());
-        return B.okBuild(loraList);
+        List<SdLora> list = sdLoraService.lambdaQuery().select(SdLora::getLoraName,SdLora::getImgUrl).orderByDesc(SdLora::getId).list();
+        list.forEach( l ->{
+            l.setImgUrl(cacheObject.getImgReturnUrl() + l.getImgUrl());
+        });
+        return B.okBuild(list);
     }
 
+    @RequestMapping(value = "/getQueue",name="获取队列信息", method = RequestMethod.POST)
+    public B<GetQueueRes> getQueue(@Validated @RequestBody SdCreateReq req) {
+        SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+        GetQueueRes res = new GetQueueRes();
+        res.setState(1);
+        long currentQueueLength = queueUtil.getCurrentQueueLength();
+        if(currentQueueLength > 0) {
+            res.setQueueSize(currentQueueLength);
+            req.setUserId(JwtUtil.getUserId());
+            int position = queueUtil.getPosition(JSONObject.toJSONString(req));
+            if (position > -1) {
+                if (position + 1 == 1) {
+                    res.setState(2);
+                    String body = HttpUtil.createGet(cacheObject.getSdUrl() + CommonConst.SD_PROGRESS).execute().body();
+                    JSONObject bodyJson = JSONObject.parseObject(body);
+                    res.setImg(bodyJson.getString("current_image"));
+                    res.setProgress(bodyJson.getDouble("progress"));
+                }
+                res.setPosition(position + 1);
+            }
+        }
+        return B.okBuild(res);
+    }
 }

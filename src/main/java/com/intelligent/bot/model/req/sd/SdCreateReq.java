@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 public class SdCreateReq {
@@ -65,7 +66,27 @@ public class SdCreateReq {
     /**
      * 模型
      */
-    private String sdModelCheckpoint;
+    private SdModelCheckpoint overrideSettings;
 
+    /**
+     * lora
+     */
+    private List<String> loraList;
+
+    /**
+     * 用户id
+     */
+    private Long userId;
+
+
+}
+
+@Data
+class SdModelCheckpoint{
+
+    /**
+     * 模型
+     */
+    private String sdModelCheckpoint;
 
 }

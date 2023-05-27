@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 25/05/2023 10:51:44
+ Date: 27/05/2023 15:37:39
 */
 
 SET NAMES utf8mb4;
@@ -175,6 +175,40 @@ CREATE TABLE `product` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='产品表';
+
+-- ----------------------------
+-- Table structure for sd_lora
+-- ----------------------------
+DROP TABLE IF EXISTS `sd_lora`;
+CREATE TABLE `sd_lora` (
+  `id` bigint NOT NULL,
+  `lora_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'lora名',
+  `img_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'lora图片地址',
+  `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
+  `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
+  `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间（默认为创建时服务器时间）',
+  `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
+  `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='sdlora表';
+
+-- ----------------------------
+-- Table structure for sd_model
+-- ----------------------------
+DROP TABLE IF EXISTS `sd_model`;
+CREATE TABLE `sd_model` (
+  `id` bigint NOT NULL,
+  `model_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '模型名',
+  `img_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '模型图片地址',
+  `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
+  `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
+  `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间（默认为创建时服务器时间）',
+  `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
+  `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Sd模型表';
 
 -- ----------------------------
 -- Table structure for sys_config
