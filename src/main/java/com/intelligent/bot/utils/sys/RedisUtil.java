@@ -227,6 +227,16 @@ public class RedisUtil {
      * @param pattern 字符串前缀
      * @return 对象列表
      */
+    public static Set<String> getKeys(final String pattern) {
+        return redisUtils.redisTemplate.keys(pattern);
+    }
+
+    /**
+     * 获得缓存的基本对象列表
+     *
+     * @param pattern 字符串前缀
+     * @return 对象列表
+     */
     public Collection<String> keys(final String pattern) {
         return redisUtils.redisTemplate.keys(pattern);
     }

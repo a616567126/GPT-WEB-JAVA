@@ -1,7 +1,7 @@
 package com.intelligent.bot.service.mj;
 
 
-import com.intelligent.bot.model.req.mj.Task;
+import com.intelligent.bot.api.mj.support.Task;
 
 public interface NotifyService {
 

@@ -2,8 +2,8 @@ package com.intelligent.bot.utils.mj;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.intelligent.bot.enums.mj.Action;
-import com.intelligent.bot.model.res.mj.MessageData;
-import com.intelligent.bot.model.res.mj.UVDataRes;
+import com.intelligent.bot.model.mj.data.MessageData;
+import com.intelligent.bot.model.mj.data.UVData;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
@@ -12,16 +12,13 @@ import java.util.regex.Pattern;
 
 @UtilityClass
 public class ConvertUtils {
-
 	private static final String MJ_I_CONTENT_REGEX = "\\*\\*(.*?)\\*\\* - <@(\\d+)> \\((.*?)\\)";
-
 	private static final String MJ_UV_CONTENT_REGEX = "\\*\\*(.*?)\\*\\* - (.*?) by <@(\\d+)> \\((.*?)\\)";
-
 	private static final String MJ_U_CONTENT_REGEX = "\\*\\*(.*?)\\*\\* - Image #(\\d) <@(\\d+)>";
+
 	public static String findTaskIdByFinalPrompt(String finalPrompt) {
 		return CharSequenceUtil.subBetween(finalPrompt, "[", "]");
 	}
-
 
 	public static MessageData matchImagineContent(String content) {
 		Pattern pattern = Pattern.compile(MJ_I_CONTENT_REGEX);
@@ -63,7 +60,8 @@ public class ConvertUtils {
 		data.setIndex(Integer.parseInt(matcher.group(2)));
 		return data;
 	}
-	public static UVDataRes convertUVData(String content) {
+
+	public static UVData convertUVData(String content) {
 		List<String> split = CharSequenceUtil.split(content, " ");
 		if (split.size() != 2) {
 			return null;
@@ -72,7 +70,7 @@ public class ConvertUtils {
 		if (action.length() != 2) {
 			return null;
 		}
-		UVDataRes upData = new UVDataRes();
+		UVData upData = new UVData();
 		if (action.charAt(0) == 'u') {
 			upData.setAction(Action.UPSCALE);
 		} else if (action.charAt(0) == 'v') {

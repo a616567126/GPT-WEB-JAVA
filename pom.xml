@@ -33,6 +33,7 @@
         <weixin-java-mp.version>4.0.0</weixin-java-mp.version>
         <wx-java-mp-spring-boot-starter.version>4.0.0</wx-java-mp-spring-boot-starter.version>
         <websocket.version>1.5.2</websocket.version>
+        <dataurl.version>2.0.0</dataurl.version>
     </properties>
 
     <dependencies>
@@ -150,6 +151,11 @@
             <groupId>org.java-websocket</groupId>
             <artifactId>Java-WebSocket</artifactId>
             <version>${websocket.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.maxschuster</groupId>
+            <artifactId>dataurl</artifactId>
+            <version>${dataurl.version}</version>
         </dependency>
     </dependencies>
 

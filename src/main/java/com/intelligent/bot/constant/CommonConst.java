@@ -21,6 +21,11 @@ public class CommonConst {
     public static final String SEND_EMAIL_CODE = "email:code";
 
     /**
+     * mj-task
+     */
+    public static final String KEY_PREFIX = "mj-task::";
+
+    /**
      * 系统配置redis前缀
      */
     public static final String SYS_CONFIG = "sysConfig";
@@ -203,5 +208,30 @@ public class CommonConst {
      * sd画图状态
      */
     public static final String SD_PROGRESS = "/sdapi/v1/progress?skip_current_image=false";
+
+    /**
+     * mj队列并发数
+     */
+    public static final Integer MJ_TASK_QUEUE_CORE_SIZE = 3;
+
+    /**
+     * mj等待队列长度
+     */
+    public static final Integer MJ_TASK_QUEUE_QUEUE_SIZE = 3;
+
+    /**
+     * 任务超时时间(分钟)
+     */
+    public static final Integer TIMEOUT_MINUTES = 2;
+
+    /**
+     * mj图片上传地址
+     */
+    public static final String DISCORD_UPLOAD_URL = "https://discord.com/api/v9/channels/%s/attachments";
+
+    /**
+     * mj请求地址
+     */
+    public static final String DISCORD_API_URL = "https://discord.com/api/v9/interactions";
 
 }
