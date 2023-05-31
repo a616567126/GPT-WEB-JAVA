@@ -99,8 +99,10 @@
 
 **2.0全新ui，与管理系统不开源，有需要的可以添加作者微信询问，
 vip进群资格500RMB包含（1.0全部源码，2.0管理端源码，java源码，客户端免费打包）
-1.0、2.0全套部署1000RMB**
-**[后台管理ui地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA)**
+1.0、2.0全套部署1000RMB**  
+
+**[后台管理ui地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA)**  
+
 ## Contributors
 
 这个项目的存在要感谢所有做出贡献的人.
