@@ -59,15 +59,15 @@ public class ClientController {
         if(!user.getAvatar().contains("http")){
             user.setAvatar(sysConfig.getImgReturnUrl() + user.getAvatar());
         }
-        List<MessageLog> logList = new ArrayList<>();
-        if(req.getSendType() != 1){
+        List<MessageLog> logList;
+        if(!Objects.equals(req.getSendType(), SendType.GPT.getType())){
             logList = useLogService.lambdaQuery()
                     .select(MessageLog::getUseValue,MessageLog::getId,MessageLog::getSendType)
                     .eq(MessageLog::getUserId, JwtUtil.getUserId())
                     .eq(MessageLog::getSendType, req.getSendType())
                     .orderByDesc(MessageLog::getId)
                     .list();
-        }else {
+        } else {
             logList = useLogService.lambdaQuery()
                     .select(MessageLog::getUseValue,MessageLog::getId,MessageLog::getSendType)
                     .eq(MessageLog::getUserId, JwtUtil.getUserId())
@@ -88,7 +88,18 @@ public class ClientController {
                     || e.getSendType().equals(SendType.BING.getType())) {
                 res.setTitle(JSONObject.parseArray(e.getUseValue(), Message.class).get(0).getContent());
                 res.setContent(e.getUseValue());
-            } else {
+            }else if(e.getSendType().equals(SendType.MJ.getType())){
+                MessageLogSave messageLogSave = JSONObject.parseObject(e.getUseValue(), MessageLogSave.class);
+                List<String> imgList = new ArrayList<>();
+                messageLogSave.getImgList().forEach( m ->{
+                    imgList.add(sysConfig.getImgReturnUrl() + m );
+                });
+                JSONObject valueJson = JSONObject.parseObject(messageLogSave.getPrompt());
+                res.setTitle(valueJson.getString("prompt"));
+                res.setTaskId(valueJson.getString("taskId"));
+                messageLogSave.setImgList(imgList);
+                res.setContent(JSONObject.toJSONString(messageLogSave));
+            }else {
                 MessageLogSave messageLogSave = JSONObject.parseObject(e.getUseValue(), MessageLogSave.class);
                 List<String> imgList = new ArrayList<>();
                 messageLogSave.getImgList().forEach( m ->{

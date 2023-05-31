@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 public class UVSubmitReq {
 
 	@NotNull
-	private String id;
+	private String taskId;
 
 	@NotNull
 	private Action action;

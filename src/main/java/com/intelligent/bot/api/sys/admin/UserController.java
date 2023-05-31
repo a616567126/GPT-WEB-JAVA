@@ -5,6 +5,7 @@ import com.intelligent.bot.base.result.B;
 import com.intelligent.bot.model.base.BaseDeleteEntity;
 import com.intelligent.bot.model.req.sys.admin.UserQueryPageReq;
 import com.intelligent.bot.model.req.sys.admin.UserUpdateReq;
+import com.intelligent.bot.model.res.sys.admin.AdminHomeRes;
 import com.intelligent.bot.model.res.sys.admin.UserQueryPageRes;
 import com.intelligent.bot.service.sys.IUserService;
 import org.springframework.validation.annotation.Validated;
@@ -39,4 +40,9 @@ public class UserController {
         return userService.delete(params);
     }
 
+
+    @RequestMapping(value = "/admin/home",name = "管理端首页信息", method = RequestMethod.POST)
+    public B<AdminHomeRes> adminHome() {
+        return userService.adminHome();
+    }
 }

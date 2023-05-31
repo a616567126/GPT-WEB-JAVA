@@ -23,7 +23,7 @@ public class WhiteApiList {
         //获取注册方式
         list.add("/client/register/method");
         //mj回调
-        list.add("/trigger/callBack");
+        list.add("/mj/callBack");
         //wx
         list.add("/wx/callBack");
     }

@@ -7,6 +7,7 @@ import com.intelligent.bot.model.User;
 import com.intelligent.bot.model.base.BaseDeleteEntity;
 import com.intelligent.bot.model.req.sys.admin.UserQueryPageReq;
 import com.intelligent.bot.model.req.sys.admin.UserUpdateReq;
+import com.intelligent.bot.model.res.sys.admin.AdminHomeRes;
 import com.intelligent.bot.model.res.sys.admin.UserQueryPageRes;
 
 
@@ -19,6 +20,8 @@ public interface IUserService extends IService<User> {
     B<Void> delete(BaseDeleteEntity req);
 
     User checkTempUser(String browserFingerprint, String ipaddress);
+
+    B<AdminHomeRes> adminHome();
 
 
 }

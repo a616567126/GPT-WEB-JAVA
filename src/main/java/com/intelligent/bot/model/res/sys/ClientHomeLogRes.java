@@ -11,6 +11,11 @@ public class ClientHomeLogRes {
     private String title;
 
     /**
+     * mj TaskId
+     */
+    private String taskId;
+
+    /**
      * 全部消息内容
      */
     private String content;

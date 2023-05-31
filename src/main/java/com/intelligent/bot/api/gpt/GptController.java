@@ -17,6 +17,7 @@ import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.gpt.GptAlphaReq;
 import com.intelligent.bot.model.req.gpt.GptStreamReq;
 import com.intelligent.bot.model.req.sys.MessageLogSave;
+import com.intelligent.bot.service.baidu.BaiDuService;
 import com.intelligent.bot.service.gpt.ChatGPTStream;
 import com.intelligent.bot.service.sys.AsyncService;
 import com.intelligent.bot.service.sys.CheckService;
@@ -57,12 +58,18 @@ public final class GptController {
     @Resource
     IMessageLogService messageLogService;
 
+    @Resource
+    BaiDuService baiDuService;
+
 
 
     @PostMapping(value = "/chat",name = "流式对话")
     public B<Long> gptChat(@Validated @RequestBody GptStreamReq req) {
         if(StringUtils.isEmpty(req.getProblem())){
             throw new E("请输入有效的内容");
+        }
+        if(!baiDuService.textToExamine(req.getProblem())){
+            throw new E("提问违反相关规定，请更换内容重新尝试");
         }
         //国内需要代理 国外不需要
         SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
@@ -116,6 +123,7 @@ public final class GptController {
         if(null != cacheObject.getIsOpenProxy() && cacheObject.getIsOpenProxy() == 1){
             proxy = Proxys.http(cacheObject.getProxyIp(), cacheObject.getProxyPort());
         }
+        req.setType(null);
         String resultBody = HttpUtil.createPost(cacheObject.getGptUrl() + "/v1/images/generations")
                 .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
                 .header(Header.AUTHORIZATION, "Bearer " + randomKey)

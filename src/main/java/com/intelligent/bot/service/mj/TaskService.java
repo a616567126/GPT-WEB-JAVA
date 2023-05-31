@@ -1,8 +1,8 @@
 package com.intelligent.bot.service.mj;
 
 
-import com.intelligent.bot.api.mj.support.Task;
-import com.intelligent.bot.api.mj.support.TaskCondition;
+import com.intelligent.bot.api.midjourney.support.Task;
+import com.intelligent.bot.api.midjourney.support.TaskCondition;
 import com.intelligent.bot.base.result.B;
 import eu.maxschuster.dataurl.DataUrl;
 

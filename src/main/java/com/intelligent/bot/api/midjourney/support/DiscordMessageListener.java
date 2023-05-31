@@ -1,8 +1,8 @@
-package com.intelligent.bot.api.mj.support;
+package com.intelligent.bot.api.midjourney.support;
 
-import com.intelligent.bot.api.mj.support.handle.DescribeMessageHandler;
-import com.intelligent.bot.api.mj.support.handle.ImagineMessageHandler;
-import com.intelligent.bot.api.mj.support.handle.UVMessageHandler;
+import com.intelligent.bot.api.midjourney.support.handle.DescribeMessageHandler;
+import com.intelligent.bot.api.midjourney.support.handle.ImagineMessageHandler;
+import com.intelligent.bot.api.midjourney.support.handle.UVMessageHandler;
 import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.utils.sys.RedisUtil;
 import lombok.RequiredArgsConstructor;

@@ -22,6 +22,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -65,7 +67,7 @@ public class BaiduServiceImpl implements BaiDuService {
 				.header(Header.ACCEPT, ContentType.JSON.getValue())
 				.execute()
 				.body();
-		return !body.contains("error_code");
+		return !body.contains("不合规");
 	}
 
 	/**
@@ -89,6 +91,12 @@ public class BaiduServiceImpl implements BaiDuService {
 			RedisUtil.setCacheObject(CommonConst.BAIDU_TO_EXAMINE_REDIS_KEY,accessToken,29L, TimeUnit.DAYS);
 		}
 		return accessToken;
+	}
+
+	boolean containsChinese(String prompt) {
+		Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+		Matcher m = p.matcher(prompt);
+		return m.find();
 	}
 
 }

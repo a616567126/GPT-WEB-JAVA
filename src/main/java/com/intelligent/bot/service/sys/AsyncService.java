@@ -9,7 +9,6 @@ import com.intelligent.bot.model.User;
 import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.sys.MessageLogSave;
 import com.intelligent.bot.utils.sys.DateUtil;
-import com.intelligent.bot.utils.sys.InitUtil;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -45,8 +44,8 @@ public class AsyncService {
     @Async
     @Transactional(propagation= Propagation.NOT_SUPPORTED)
     public void updateKeyState(String key){
-        gptKeyService.lambdaUpdate().eq(GptKey::getKey,key).set(GptKey::getState,1).update();
-        InitUtil.removeKey(key);
+//       gptKeyService.lambdaUpdate().eq(GptKey::getKey,key).set(GptKey::getState,1).update();
+//        InitUtil.removeKey(key);
     }
 
     @Async

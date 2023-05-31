@@ -1,4 +1,4 @@
-package com.intelligent.bot.api.mj.support;
+package com.intelligent.bot.api.midjourney.support;
 
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.SysConfig;

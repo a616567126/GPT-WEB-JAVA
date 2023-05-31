@@ -56,6 +56,11 @@ public class SysConfigQueryRes implements Serializable {
     private Integer isOpenSd;
 
     /**
+     * sd lora地址
+     */
+    private String sdLoraUrl;
+
+    /**
      * 是否开启FlagStudio 0-未开启 1开启
      */
     private Integer isOpenFlagStudio;
@@ -135,6 +140,30 @@ public class SysConfigQueryRes implements Serializable {
      */
     private Integer proxyPort;
 
+    /**
+     * 微软bing cookie
+     */
+    private String bingCookie;
+
+    /**
+     * 是否开启bing 0-未开启 1开启
+     */
+    private Integer isOpenBing;
+
+    /**
+     * 是否开启StableStudio 0未开启 1 开启
+     */
+    private Integer isOpenStableStudio;
+
+    /**
+     * StableStudioApi地址前缀
+     */
+    private String stableStudioApi;
+
+    /**
+     * StableStudio key
+     */
+    private String stableStudioKey;
     /**
      * id
      */

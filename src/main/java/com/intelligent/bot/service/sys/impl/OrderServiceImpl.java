@@ -210,7 +210,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
 
     @Override
     public B<Page<OrderQueryRes>> query(OrderQueryReq req) {
-        Page<OrderQueryRes> page = new Page<>(req.getPageNumber(),req.getPageNumber());
+        Page<OrderQueryRes> page = new Page<>(req.getPageNumber(),req.getPageSize());
         return B.okBuild(this.baseMapper.queryOrder(page,req));
     }
 

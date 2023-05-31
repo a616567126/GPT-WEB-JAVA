@@ -1,4 +1,4 @@
-package com.intelligent.bot.api.mj.support;
+package com.intelligent.bot.api.midjourney.support;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.intelligent.bot.enums.mj.Action;

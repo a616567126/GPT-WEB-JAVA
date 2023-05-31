@@ -47,6 +47,18 @@ public class RedisUtil {
         redisUtils.redisTemplate.opsForValue().set(key, value);
     }
 
+
+    /**
+     * 缓存基本的对象，Integer、String、实体类等
+     *
+     * @param key   缓存的键值
+     * @param value 缓存的值
+     */
+    public static  <T> void setObject(final String key, final T value) {
+        redisUtils.redisTemplate.opsForValue().set(key, value);
+    }
+
+
     /**
      * 缓存基本的对象，Integer、String、实体类等
      *
@@ -227,7 +239,7 @@ public class RedisUtil {
      * @param pattern 字符串前缀
      * @return 对象列表
      */
-    public static Set<String> getKeys(final String pattern) {
+    public Collection<String> keys(final String pattern) {
         return redisUtils.redisTemplate.keys(pattern);
     }
 
@@ -237,7 +249,7 @@ public class RedisUtil {
      * @param pattern 字符串前缀
      * @return 对象列表
      */
-    public Collection<String> keys(final String pattern) {
+    public static Set<String> getKeys(final String pattern) {
         return redisUtils.redisTemplate.keys(pattern);
     }
 

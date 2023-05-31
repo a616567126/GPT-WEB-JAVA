@@ -158,6 +158,9 @@ public class JwtUtil {
     }
 
     private static String getRequestToken() {
+        if(null == RequestContextHolder.getRequestAttributes()){
+            return null;
+        }
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String token = request.getHeader("token");

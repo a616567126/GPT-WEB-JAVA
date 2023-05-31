@@ -59,7 +59,7 @@ public class SdCreateReq {
     private String samplerIndex = "Euler a";
 
     /**
-     * 脸部修复
+         * 脸部修复
      */
     private Boolean restoreFaces = false;
 
@@ -81,12 +81,12 @@ public class SdCreateReq {
 
 }
 
-@Data
-class SdModelCheckpoint{
+ @Data
+ class SdModelCheckpoint{
 
-    /**
-     * 模型
-     */
-    private String sdModelCheckpoint;
+     /**
+      * 模型
+      */
+     private String sdModelCheckpoint;
 
 }

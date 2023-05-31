@@ -39,4 +39,10 @@ public class GptKeyQueryRes {
      */
     private LocalDateTime createTime;
 
+
+    /**
+     * key类型 3-gpt3.5 4-gpt4
+     */
+    private Integer type;
+
 }

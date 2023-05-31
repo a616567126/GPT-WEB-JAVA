@@ -83,10 +83,20 @@ public abstract class AbstractStreamListener extends EventSourceListener {
         Message delta = choices.get(0).getDelta();
         String text = delta.getContent();
         if (text != null) {
-            lastMessage.append(text);
-            onMsg(delta);
+            if(delta.getContent().equals("<!")){
+                delta.setContent("```\\n");
+                text = delta.getContent();
+                lastMessage.append(text);
+                onMsg(delta);
+                delta.setContent("<!");
+                text = delta.getContent();
+                lastMessage.append(text);
+                onMsg(delta);
+            }else {
+                lastMessage.append(text);
+                onMsg(delta);
+            }
         }
-
     }
 
 

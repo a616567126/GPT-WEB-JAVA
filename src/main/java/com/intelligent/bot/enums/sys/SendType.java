@@ -14,9 +14,9 @@ public enum SendType {
     GPT_4(8,"gpt-4");
 
 
-    private final Integer type;
+    private Integer type;
 
-    private final String remark;
+    private String remark;
 
     SendType(Integer type,String remark){
         this.type = type;

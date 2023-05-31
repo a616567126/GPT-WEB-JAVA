@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.intelligent.bot.model.Order;
 import com.intelligent.bot.model.req.sys.admin.OrderQueryReq;
 import com.intelligent.bot.model.res.sys.ClientOrderRes;
+import com.intelligent.bot.model.res.sys.admin.AdminHomeOrder;
+import com.intelligent.bot.model.res.sys.admin.AdminHomeOrderPrice;
 import com.intelligent.bot.model.res.sys.admin.OrderQueryRes;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,5 +20,10 @@ public interface OrderDao extends BaseMapper<Order> {
 
 
     Page<OrderQueryRes> queryOrder(Page<OrderQueryRes> page, @Param("req") OrderQueryReq req);
+
+    List<AdminHomeOrder> queryHomeOrder();
+
+    List<AdminHomeOrderPrice> queryHomeOrderPrice();
+
 
 }

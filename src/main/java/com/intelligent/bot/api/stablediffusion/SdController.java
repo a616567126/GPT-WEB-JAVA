@@ -1,4 +1,4 @@
-package com.intelligent.bot.api.sd;
+package com.intelligent.bot.api.stablediffusion;
 
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONArray;
@@ -103,22 +103,19 @@ public class SdController {
     public B<GetQueueRes> getQueue(@Validated @RequestBody SdCreateReq req) {
         SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         GetQueueRes res = new GetQueueRes();
-        res.setState(1);
+        req.setUserId(JwtUtil.getUserId());
         long currentQueueLength = queueUtil.getCurrentQueueLength();
-        if(currentQueueLength > 0) {
+        int position = queueUtil.getPosition(JSONObject.toJSONString(req));
+        if(currentQueueLength == 0 || ((position + 1) == 1)) {
+            res.setState(2);
+            String body = HttpUtil.createGet(cacheObject.getSdUrl() + CommonConst.SD_PROGRESS).execute().body();
+            JSONObject bodyJson = JSONObject.parseObject(body);
+            res.setImg(bodyJson.getString("current_image"));
+            res.setProgress(bodyJson.getDouble("progress"));
+        }else {
+            res.setState(1);
             res.setQueueSize(currentQueueLength);
-            req.setUserId(JwtUtil.getUserId());
-            int position = queueUtil.getPosition(JSONObject.toJSONString(req));
-            if (position > -1) {
-                if (position + 1 == 1) {
-                    res.setState(2);
-                    String body = HttpUtil.createGet(cacheObject.getSdUrl() + CommonConst.SD_PROGRESS).execute().body();
-                    JSONObject bodyJson = JSONObject.parseObject(body);
-                    res.setImg(bodyJson.getString("current_image"));
-                    res.setProgress(bodyJson.getDouble("progress"));
-                }
-                res.setPosition(position + 1);
-            }
+            res.setPosition(position);
         }
         return B.okBuild(res);
     }

@@ -34,6 +34,11 @@ public class ProductUpdateReq implements Serializable {
      */
     private Integer stock;
 
+    /**
+     * id
+     */
+    private Long id;
+
 }
 
 

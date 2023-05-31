@@ -155,4 +155,19 @@ public class SysConfig extends BaseEntity implements Serializable {
      */
     private Integer isOpenBing;
 
+    /**
+     * 是否开启StableStudio 0未开启 1 开启
+     */
+    private Integer isOpenStableStudio;
+
+    /**
+     * StableStudioApi地址前缀
+     */
+    private String stableStudioApi;
+
+    /**
+     * StableStudio key
+     */
+    private String stableStudioKey;
+
 }

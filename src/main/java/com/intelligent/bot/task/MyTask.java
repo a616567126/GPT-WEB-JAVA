@@ -5,7 +5,7 @@ import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.intelligent.bot.api.mj.support.TaskCondition;
+import com.intelligent.bot.api.midjourney.support.TaskCondition;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.enums.mj.TaskStatus;
 import com.intelligent.bot.enums.sys.SendType;

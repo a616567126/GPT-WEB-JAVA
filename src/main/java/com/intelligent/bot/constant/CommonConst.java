@@ -59,7 +59,7 @@ public class CommonConst {
     /**
      * mj回调地址
      */
-    public static final String MJ_CALL_BACK_URL = "/trigger/callBack";
+    public static final String MJ_CALL_BACK_URL = "/mj/callBack";
 
 
     /**
@@ -175,7 +175,7 @@ public class CommonConst {
 
     /**
      * 文生图
-     */
+      */
     public static final String STABLE_STUDIO_TEXT_TO_IMAGE = "/v1/generation/%s/text-to-image";
 
     /**
@@ -187,7 +187,6 @@ public class CommonConst {
      * 画图队列数量
      */
     public static final Integer QUEUE_SIZE = 5;
-
 
     /**
      * 画图队列存储key
@@ -222,7 +221,12 @@ public class CommonConst {
     /**
      * 任务超时时间(分钟)
      */
-    public static final Integer TIMEOUT_MINUTES = 2;
+    public static final Integer TIMEOUT_MINUTES = 5;
+
+    /**
+     * mj请求地址
+     */
+    public static final String DISCORD_API_URL = "https://discord.com/api/v9/interactions";
 
     /**
      * mj图片上传地址
@@ -230,8 +234,8 @@ public class CommonConst {
     public static final String DISCORD_UPLOAD_URL = "https://discord.com/api/v9/channels/%s/attachments";
 
     /**
-     * mj请求地址
+     * mj消息地址
      */
-    public static final String DISCORD_API_URL = "https://discord.com/api/v9/interactions";
+    public static final String DISCORD_MESSAGE_URL = "https://discord.com/api/v10/channels/%s/messages?limit=10";
 
 }

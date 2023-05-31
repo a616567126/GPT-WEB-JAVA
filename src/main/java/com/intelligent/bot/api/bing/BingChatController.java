@@ -11,6 +11,7 @@ import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.bing.BingChatReq;
 import com.intelligent.bot.server.SseEmitterServer;
+import com.intelligent.bot.service.baidu.BaiDuService;
 import com.intelligent.bot.service.bing.BingChatService;
 import com.intelligent.bot.service.sys.AsyncService;
 import com.intelligent.bot.service.sys.CheckService;
@@ -44,6 +45,8 @@ public class BingChatController {
     AsyncService asyncService;
     @Resource
     IMessageLogService messageLogService;
+    @Resource
+    BaiDuService baiDuService;
 
 
     @RequestMapping(value = "/chat", name = "bing对话")
@@ -51,6 +54,9 @@ public class BingChatController {
         SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         if(null == sysConfig.getIsOpenBing() || sysConfig.getIsOpenBing() == 0){
             return B.finalBuild("暂未开启newBing");
+        }
+        if(!baiDuService.textToExamine(req.getPrompt())){
+            throw new E("提问违反相关规定，请更换内容重新尝试");
         }
         List<Message> messages = messageLogService.createMessageLogList(req.getLogId(), req.getPrompt());
         Long logId = checkService.checkUser(MessageLog.builder()
@@ -67,10 +73,18 @@ public class BingChatController {
                     .list();
             for (MessageLog m : list) {
                 List<Message> messageList = JSONObject.parseArray(m.getUseValue(), Message.class);
-                for (Message l : messageList) {
-                    if(l.getRole().equals("assistant") && !l.getContent().contains("会话异常，请稍后重试") && l.getContent().equals(req.getPrompt())){
-                        bingMessage = l.getContent();
+                for (int i = 0; i < messageList.size(); i++) {
+                    Message user = messageList.get(i);
+                    if(user.getContent().replace("\n","").equals(req.getPrompt()) && (i + 1) < messageList.size()){
+                        Message assistant = messageList.get(i + 1);
+                        if(assistant.getRole().equals("assistant") && !assistant.getContent().contains("会话异常，请稍后重试")){
+                            bingMessage = assistant.getContent();
+                            break;
+                        }
                     }
+                }
+                if(!StringUtils.isEmpty(bingMessage)){
+                    break;
                 }
             }
         }

@@ -1,9 +1,9 @@
-package com.intelligent.bot.api.mj.support.handle;
+package com.intelligent.bot.api.midjourney.support.handle;
 
 
 import cn.hutool.core.text.CharSequenceUtil;
-import com.intelligent.bot.api.mj.support.Task;
-import com.intelligent.bot.api.mj.support.TaskCondition;
+import com.intelligent.bot.api.midjourney.support.Task;
+import com.intelligent.bot.api.midjourney.support.TaskCondition;
 import com.intelligent.bot.enums.mj.Action;
 import com.intelligent.bot.enums.mj.TaskStatus;
 import com.intelligent.bot.model.mj.data.MessageData;

@@ -1,6 +1,6 @@
 package com.intelligent.bot.service.mj.impl;
 
-import com.intelligent.bot.api.mj.support.Task;
+import com.intelligent.bot.api.midjourney.support.Task;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.service.mj.TaskStoreService;
 import com.intelligent.bot.utils.sys.RedisUtil;

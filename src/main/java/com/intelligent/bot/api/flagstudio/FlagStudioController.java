@@ -1,7 +1,6 @@
-package com.intelligent.bot.api.fs;
+package com.intelligent.bot.api.flagstudio;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.lang.Validator;
 import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
@@ -17,10 +16,7 @@ import com.intelligent.bot.model.req.sys.MessageLogSave;
 import com.intelligent.bot.service.baidu.BaiDuService;
 import com.intelligent.bot.service.sys.AsyncService;
 import com.intelligent.bot.service.sys.CheckService;
-import com.intelligent.bot.utils.sys.DateUtil;
-import com.intelligent.bot.utils.sys.FileUtil;
-import com.intelligent.bot.utils.sys.JwtUtil;
-import com.intelligent.bot.utils.sys.RedisUtil;
+import com.intelligent.bot.utils.sys.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -71,22 +67,13 @@ public class FlagStudioController {
                         .startTime(startTime)
                         .imgList(imgUrlList).build()))
                 .userId(JwtUtil.getUserId()).build());
-        JSONObject params = new JSONObject();
-        params.put("prompt", Validator.isChinese(req.getPrompt()) ? req.getPrompt() : this.baiDuService.translateToEnglish(req.getPrompt()));
-        params.put("guidance_scale",req.getGuidanceScale());
-        params.put("height",req.getHeight());
-        params.put("negative_prompts",req.getNegativePrompts());
-        params.put("sampler",req.getSampler());
-        params.put("seed",req.getSeed());
-        params.put("steps",req.getSteps());
-        params.put("style",req.getStyle());
-        params.put("upsample",req.getUpsample());
-        params.put("width",req.getWidth());
+        String prompt = this.baiDuService.translateToEnglish(req.getPrompt());
+        req.setPrompt(prompt);
         String body = HttpUtil.createPost(cacheObject.getFlagStudioUrl()+"/v1/text2img")
                 .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
                 .header(Header.ACCEPT, ContentType.JSON.getValue())
                 .header("token", getToken())
-                .body(JSONObject.toJSONString(params))
+                .body(StringUtil.toUnderlineCase(req))
                 .execute()
                 .body();
         JSONObject bodyJson = JSONObject.parseObject(body);

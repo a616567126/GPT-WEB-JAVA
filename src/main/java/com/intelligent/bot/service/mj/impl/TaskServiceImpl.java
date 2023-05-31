@@ -1,12 +1,12 @@
 package com.intelligent.bot.service.mj.impl;
 
-import com.intelligent.bot.api.mj.support.TaskCondition;
+import com.intelligent.bot.api.midjourney.support.Task;
+import com.intelligent.bot.api.midjourney.support.TaskCondition;
 import com.intelligent.bot.base.exception.E;
 import com.intelligent.bot.base.result.B;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.enums.mj.TaskStatus;
 import com.intelligent.bot.enums.sys.ResultEnum;
-import com.intelligent.bot.api.mj.support.Task;
 import com.intelligent.bot.service.mj.DiscordService;
 import com.intelligent.bot.service.mj.NotifyService;
 import com.intelligent.bot.service.mj.TaskService;
@@ -122,7 +122,7 @@ public class TaskServiceImpl implements TaskService {
 		if (size == 0) {
 			return B.okBuild(task.getId());
 		} else {
-			return B.okBuild("排队中，前面还有" + size + "个任务");
+			throw new E("排队中，前面还有" + size + "个任务");
 		}
 	}
 

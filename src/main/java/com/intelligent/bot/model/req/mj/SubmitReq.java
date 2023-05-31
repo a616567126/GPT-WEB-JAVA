@@ -5,6 +5,7 @@ import com.intelligent.bot.enums.mj.Action;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * 提交Imagine或UV任务参数
@@ -32,5 +33,7 @@ public class SubmitReq {
 	private Integer index;
 
 	private Long logId;
+
+	List<String> imgList;
 
 }

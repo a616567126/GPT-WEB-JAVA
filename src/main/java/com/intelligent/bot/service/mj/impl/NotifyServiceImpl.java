@@ -2,7 +2,7 @@ package com.intelligent.bot.service.mj.impl;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.intelligent.bot.api.mj.support.Task;
+import com.intelligent.bot.api.midjourney.support.Task;
 import com.intelligent.bot.service.mj.NotifyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

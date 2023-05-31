@@ -1,4 +1,4 @@
-package com.intelligent.bot.api.mj.support;
+package com.intelligent.bot.api.midjourney.support;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.intelligent.bot.enums.mj.Action;

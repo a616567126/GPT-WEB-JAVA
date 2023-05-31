@@ -11,12 +11,6 @@ public class GptKeyAddReq {
      */
     private String key;
 
-
-    /**
-     * 使用次数
-     */
-    private Integer useNumber;
-
     /**
      * 排序
      */
@@ -30,5 +24,5 @@ public class GptKeyAddReq {
     /**
      * key类型 3-gpt3.5 4-gpt4
      */
-    private Integer type = 3;
+    private Integer type;
 }

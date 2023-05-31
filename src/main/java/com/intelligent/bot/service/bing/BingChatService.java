@@ -209,7 +209,7 @@ public class BingChatService {
                                     JSONArray messagesArray = responseObject.getJSONArray("messages");
                                     JSONObject adaptiveCard = messagesArray.getJSONObject(0).getJSONArray("adaptiveCards").getJSONObject(0);
                                     String responseText = adaptiveCard.getJSONArray("body").getJSONObject(0).getString("text");
-                                    SseEmitterServer.sendMessage(req.getUserId(),responseText);
+                                    SseEmitterServer.sendMessage(req.getUserId(),responseText.replaceAll(bot[0],""));
                                     bot[0] =responseText;
                                 }
                             }else if (response.getInteger("type") == 2){
@@ -253,7 +253,7 @@ public class BingChatService {
             optionsSets.add("disable_emoji_spoken_text");
             optionsSets.add("responsible_ai_policy_235");
             optionsSets.add("enablemm");
-            //  .put("enable_debug_commands")
+                  //  .put("enable_debug_commands")
             optionsSets.add(req.getMode());
             optionsSets.add("dtappid");
             optionsSets.add("trn8req120");

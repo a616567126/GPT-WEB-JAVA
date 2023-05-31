@@ -1,10 +1,11 @@
-package com.intelligent.bot.api.mj;
+package com.intelligent.bot.api.midjourney;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.intelligent.bot.api.mj.support.BannedPromptHelper;
-import com.intelligent.bot.api.mj.support.Task;
+import com.intelligent.bot.api.midjourney.support.BannedPromptHelper;
+import com.intelligent.bot.api.midjourney.support.Task;
 import com.intelligent.bot.base.exception.E;
 import com.intelligent.bot.base.result.B;
 import com.intelligent.bot.constant.CommonConst;
@@ -15,8 +16,10 @@ import com.intelligent.bot.model.MessageLog;
 import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.model.req.mj.*;
 import com.intelligent.bot.model.req.sys.MessageLogSave;
+import com.intelligent.bot.model.res.mj.GetTaskRes;
 import com.intelligent.bot.server.SseEmitterServer;
 import com.intelligent.bot.service.baidu.BaiDuService;
+import com.intelligent.bot.service.mj.DiscordMessageService;
 import com.intelligent.bot.service.mj.TaskService;
 import com.intelligent.bot.service.mj.TaskStoreService;
 import com.intelligent.bot.service.sys.AsyncService;
@@ -60,6 +63,8 @@ public class MjController {
 	BannedPromptHelper bannedPromptHelper;
 	@Resource
 	TaskService taskService;
+	@Resource
+	DiscordMessageService discordMessageService;
 
 	@PostMapping(value = "/submit",name = "提交Imagine或UV任务")
 	public B<Task> submit(@RequestBody SubmitReq req) {
@@ -81,7 +86,6 @@ public class MjController {
 		}
 		Task task = new Task();
 		task.setNotifyHook(sysConfig.getApiUrl() + CommonConst.MJ_CALL_BACK_URL);
-		task.setId(RandomUtil.randomNumbers(16));
 		task.setSubmitTime(System.currentTimeMillis());
 		task.setAction(req.getAction());
 		Long logId = checkService.checkUser(MessageLog.builder()
@@ -89,6 +93,7 @@ public class MjController {
 				.sendType(SendType.MJ.getType())
 				.useValue(req.getPrompt())
 				.userId(JwtUtil.getUserId()).build(),req.getLogId());
+		task.setId(RandomUtil.randomNumbers(16));
 		task.setState(String.valueOf(logId));
 		if (Action.IMAGINE.equals(req.getAction())) {
 			String prompt = req.getPrompt();
@@ -107,6 +112,13 @@ public class MjController {
 			}
 			task.setPromptEn(promptEn);
 			task.setFinalPrompt("[" + task.getId() + "] " + promptEn);
+			if(null != req.getImgList()){
+				StringBuilder image = new StringBuilder();
+				for (String img : req.getImgList()) {
+					image.append(img).append(" ");
+				}
+				task.setFinalPrompt("[" + task.getId() + "] " + image + promptEn);
+			}
 			task.setDescription("/imagine " + req.getPrompt());
 			this.taskService.submitImagine(task);
 			return B.okBuild(task);
@@ -145,12 +157,7 @@ public class MjController {
 
 	@PostMapping(value = "/submit/uv",name = "提交选中放大或变换任务")
 	public B<Task> submitUV(@RequestBody UVSubmitReq req) {
-		SubmitReq submitReq = new SubmitReq();
-		submitReq.setAction(req.getAction());
-		submitReq.setTaskId(req.getId());
-		submitReq.setIndex(req.getIndex());
-		submitReq.setLogId(req.getLogId());
-		return submit(submitReq);
+		return submit(BeanUtil.copyProperties(req,SubmitReq.class));
 	}
 
 	@PostMapping(value = "/describe",name = "提交Describe图生文任务")
@@ -179,8 +186,8 @@ public class MjController {
 	}
 
 	@PostMapping("getTask")
-	public B<Task> getTask(@RequestBody TaskReq req) {
-		return B.okBuild(taskStoreService.getTask(req.getTaskId()));
+	public B<GetTaskRes> getTask(@RequestBody TaskReq req) {
+		return B.okBuild(discordMessageService.getMjMessages(req.getTaskId()));
 	}
 	@PostMapping("callBack")
 	public void callBack(@RequestBody MjCallBack mjCallBack) throws Exception {
@@ -191,13 +198,19 @@ public class MjController {
 			mjCallBack.setImageUrl(cacheObject.getImgReturnUrl() + localImgUrl);
 			MessageLog messageLog = messageLogService.getById(Long.valueOf(mjCallBack.getState()));
 			SseEmitterServer.sendMessage(Long.valueOf(mjCallBack.getState()), JSONObject.toJSONString(mjCallBack));
+			Task task = taskStoreService.getTask(mjCallBack.getId());
+			JSONObject prompt = new JSONObject();
+			prompt.put("prompt",task.getPrompt());
+			prompt.put("promptEn",task.getPromptEn());
+			prompt.put("taskId",task.getId());
 			MessageLogSave messageLogSave = MessageLogSave.builder()
-					.prompt(mjCallBack.getPrompt())
+					.prompt(JSONObject.toJSONString(prompt))
 					.type(SendType.MJ.getRemark())
 					.startTime(DateUtil.timestamp2LocalDateTime(mjCallBack.getSubmitTime()))
 					.imgList(Collections.singletonList(localImgUrl)).build();
 			asyncService.updateLog(messageLog.getId(),messageLogSave);
 		}
 	}
+
 
 }
