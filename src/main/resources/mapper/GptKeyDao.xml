@@ -4,7 +4,7 @@
 
 
     <select id="queryGptKey" resultType="com.intelligent.bot.model.res.sys.admin.GptKeyQueryRes">
-        select id,`key`,use_number,state,sort,create_time from gpt_key
+        select id,`key`,use_number,state,type,sort,create_time from gpt_key
         where deleted = 0
         order by id desc,state
     </select>

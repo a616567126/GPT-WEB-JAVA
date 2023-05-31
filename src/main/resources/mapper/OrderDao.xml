@@ -45,4 +45,37 @@
         </if>
         order by u.id desc
     </select>
+    <select id="queryHomeOrder" resultType="com.intelligent.bot.model.res.sys.admin.AdminHomeOrder">
+        SELECT
+            count( 1 ) AS orderNumber,
+            date_format ( create_time, '%Y-%m-%d' ) as days
+        FROM
+            t_order
+        WHERE
+                YEAR ( create_time ) = YEAR (
+                    now())
+          AND MONTH ( create_time )
+        GROUP BY
+            date_format(
+                    create_time,
+                    '%Y-%m-%d'
+                )
+    </select>
+    <select id="queryHomeOrderPrice" resultType="com.intelligent.bot.model.res.sys.admin.AdminHomeOrderPrice">
+        SELECT
+            sum( price ) AS price,
+            date_format ( create_time, '%Y-%m-%d' ) AS days
+        FROM
+            t_order
+        WHERE
+                YEAR ( create_time ) = YEAR (
+                    now())
+          AND MONTH ( create_time )
+          and state = 1
+        GROUP BY
+            date_format(
+                    create_time,
+                    '%Y-%m-%d'
+                )
+    </select>
 </mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.intelligent.bot.dao.CardPinDao">
+
+
+    <select id="queryCardPin" resultType="com.intelligent.bot.model.res.sys.admin.CardPinQueryRes">
+        select
+            c.id,
+            c.number,
+            c.card_pin,
+            c.state,
+            c.create_time,
+            u.name as userName
+        from card_pin  c
+        left join t_user u on u.id = c.user_id
+        where c.deleted = 0
+        order by c.id desc
+    </select>
+</mapper>

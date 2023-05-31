@@ -44,4 +44,35 @@
         </if>
         order by id desc
     </select>
+    <select id="adminHome" resultType="com.intelligent.bot.model.res.sys.admin.AdminHomeRes">
+        SELECT
+            ifnull( u.dayUserNumber, 0 ) AS dayUserNumber,
+            ifnull( o1.dayOrderNumber, 0 ) AS dayOrderNumber,
+            ifnull( o2.dayOkOrderNumber, 0 ) AS dayOkOrderNumber,
+            ifnull( o3.dayPrice, 0 ) AS dayPrice
+        FROM
+            (
+                SELECT
+                    count( 1 ) AS dayUserNumber
+                FROM
+                    `t_user`
+                WHERE
+                    date_format( create_time, '%Y-%m-%d' ) = CURDATE()) u,
+            (
+                SELECT
+                    count( 1 ) AS dayOrderNumber
+                FROM
+                    t_order
+                WHERE
+                    date_format( create_time, '%Y-%m-%d' ) = CURDATE()) o1,
+            ( SELECT count( 1 ) AS dayOkOrderNumber FROM t_order WHERE date_format( create_time, '%Y-%m-%d' ) = CURDATE() AND state = 1 ) o2,
+            (
+                SELECT
+                    sum( price ) AS dayPrice
+                FROM
+                    t_order
+                WHERE
+                    state = 1
+                  AND date_format( create_time, '%Y-%m-%d' ) = CURDATE()) o3
+    </select>
 </mapper>

@@ -15,6 +15,7 @@
             product
         where deleted = 0
         <if test="req.name != null and req.name != ''">
+            <bind name="name" value="'%'+req.name+'%'"/>
             and name like #{name}
         </if>
         order by id desc
