@@ -21,7 +21,7 @@ spring:
     host: 127.0.0.1
     port: 6379
     database: 1
-    password: simshen
+    password: 123456
     jedis:
       pool:
         max-idle: 100
