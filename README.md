@@ -115,7 +115,7 @@ vip进群资格500RMB包含（1.0全部源码，2.0管理端源码，java源码�
 ## USE MJ
     1.注册 MidJourney，创建自己的频道，参考 https://docs.midjourney.com/docs/quick-start
     
-    2.添加自己的机器人参考地址: https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8EK
+    2.添加自己的机器人参考地址: https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8E
 
 ## Put It Last
 **易支付网站地址：[白辰易支付](https://my.mmywl.cn/)**  
