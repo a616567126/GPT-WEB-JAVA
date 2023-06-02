@@ -16,5 +16,7 @@ public class GetTaskRes {
 
     private String percentage;
 
+    private String baseUrl;
+
 
 }

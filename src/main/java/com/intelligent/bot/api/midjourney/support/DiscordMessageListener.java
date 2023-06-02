@@ -3,6 +3,7 @@ package com.intelligent.bot.api.midjourney.support;
 import com.intelligent.bot.api.midjourney.support.handle.DescribeMessageHandler;
 import com.intelligent.bot.api.midjourney.support.handle.ImagineMessageHandler;
 import com.intelligent.bot.api.midjourney.support.handle.UVMessageHandler;
+import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.utils.sys.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class DiscordMessageListener extends ListenerAdapter {
 	private final DescribeMessageHandler describeMessageHandler;
 
 	private boolean ignoreAndLogMessage(Message message, String eventName) {
-		SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
 		String channelId = message.getChannel().getId();
 		if (!sysConfig.getMjChannelId().equals(channelId)) {
 			return true;

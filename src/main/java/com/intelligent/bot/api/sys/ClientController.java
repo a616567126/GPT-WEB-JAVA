@@ -151,13 +151,13 @@ public class ClientController {
 
     @RequestMapping(value = "/register/method",name = "查询注册方式", method = RequestMethod.POST)
     public B<Integer> getRegisterMethod() {
-        SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+        SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         return B.okBuild(sysConfig.getRegistrationMethod());
     }
 
     @RequestMapping(value = "/getFunctionState",name = "获取配置开启状态", method = RequestMethod.POST)
     public B<GetFunctionState> getOpenSdState() {
-        SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+        SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         return B.okBuild( GetFunctionState.builder()
                 .isOpenSd(sysConfig.getIsOpenSd())
                 .isOpenFlagStudio(sysConfig.getIsOpenFlagStudio())
@@ -180,5 +180,14 @@ public class ClientController {
                 .eq(MessageLog::getSendType,req.getSendType())
                 .update();
         return B.okBuild();
+    }
+
+    @RequestMapping(value = "/upload/img", name = "上传图片")
+    @AvoidRepeatRequest(intervalTime = 10, msg = "请勿频繁上传图片")
+    public B<String> uploadImg(MultipartFile file) throws IOException {
+        String oldFileName = Objects.requireNonNull(file.getOriginalFilename()).substring(0, file.getOriginalFilename().lastIndexOf("."));
+        String fileName = ImgUtil.uploadMultipartFile(file, oldFileName);
+        SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+        return B.okBuild(cacheObject.getImgReturnUrl() + fileName);
     }
 }

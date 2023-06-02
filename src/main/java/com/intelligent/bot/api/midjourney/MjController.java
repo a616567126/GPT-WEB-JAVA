@@ -41,8 +41,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/mj")
@@ -88,11 +90,24 @@ public class MjController {
 		task.setNotifyHook(sysConfig.getApiUrl() + CommonConst.MJ_CALL_BACK_URL);
 		task.setSubmitTime(System.currentTimeMillis());
 		task.setAction(req.getAction());
-		Long logId = checkService.checkUser(MessageLog.builder()
+		JSONObject jsonPrompt = new JSONObject();
+		jsonPrompt.put("prompt",req.getPrompt());
+		jsonPrompt.put("promptEn",task.getFinalPrompt());
+		jsonPrompt.put("taskId",task.getId());
+		MessageLogSave messageLogSave = MessageLogSave.builder()
+				.prompt(jsonPrompt.toJSONString())
+				.type(SendType.MJ.getRemark())
+				.startTime(DateUtil.getLocalDateTimeNow())
+				.imgList(new ArrayList<>()).build();
+		MessageLog messageLog = MessageLog.builder()
 				.useNumber(CommonConst.MJ_NUMBER)
 				.sendType(SendType.MJ.getType())
-				.useValue(req.getPrompt())
-				.userId(JwtUtil.getUserId()).build(),req.getLogId());
+				.useValue(JSONObject.toJSONString(messageLogSave))
+				.userId(JwtUtil.getUserId()).build();
+		if(null != req.getLogId()){
+			messageLog.setUseValue(null);
+		}
+		Long logId = checkService.checkUser(messageLog,req.getLogId());
 		task.setId(RandomUtil.randomNumbers(16));
 		task.setState(String.valueOf(logId));
 		if (Action.IMAGINE.equals(req.getAction())) {
@@ -107,7 +122,7 @@ public class MjController {
 				promptEn = this.baiDuService.translateToEnglish(prompt).trim();
 			}
 			if (this.bannedPromptHelper.isBanned(promptEn)) {
-				asyncService.updateRemainingTimes(JwtUtil.getUserId(), CommonConst.FS_NUMBER);
+				asyncService.updateRemainingTimes(JwtUtil.getUserId(), CommonConst.MJ_NUMBER);
 				throw new E("生成内容可能包含敏感词");
 			}
 			task.setPromptEn(promptEn);
@@ -124,16 +139,16 @@ public class MjController {
 			return B.okBuild(task);
 		}
 		if (CharSequenceUtil.isBlank(req.getTaskId())) {
-			asyncService.updateRemainingTimes(JwtUtil.getUserId(), CommonConst.FS_NUMBER);
+			asyncService.updateRemainingTimes(JwtUtil.getUserId(), CommonConst.MJ_NUMBER);
 			throw new E("校验错误");
 		}
 		Task targetTask = this.taskStoreService.getTask(req.getTaskId());
 		if (targetTask == null) {
-			asyncService.updateRemainingTimes(JwtUtil.getUserId(), CommonConst.FS_NUMBER);
+			asyncService.updateRemainingTimes(JwtUtil.getUserId(), CommonConst.MJ_NUMBER);
 			throw new E("任务不存在或已失效");
 		}
 		if (!TaskStatus.SUCCESS.equals(targetTask.getStatus())) {
-			asyncService.updateRemainingTimes(JwtUtil.getUserId(), CommonConst.FS_NUMBER);
+			asyncService.updateRemainingTimes(JwtUtil.getUserId(), CommonConst.MJ_NUMBER);
 			throw new E("关联任务状态错误");
 		}
 		task.setPrompt(targetTask.getPrompt());
@@ -186,31 +201,31 @@ public class MjController {
 	}
 
 	@PostMapping("getTask")
-	public B<GetTaskRes> getTask(@RequestBody TaskReq req) {
+	public B<GetTaskRes> getTask(@RequestBody TaskReq req) throws IOException {
 		return B.okBuild(discordMessageService.getMjMessages(req.getTaskId()));
 	}
 	@PostMapping("callBack")
 	public void callBack(@RequestBody MjCallBack mjCallBack) throws Exception {
 		log.info("mj开始回调,回调内容：{}", mjCallBack);
 		SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+		Task task = taskStoreService.getTask(mjCallBack.getId());
 		if(null != mjCallBack.getImageUrl()){
 			String localImgUrl = FileUtil.base64ToImage(FileUtil.imageUrlToBase64(mjCallBack.getImageUrl()));
 			mjCallBack.setImageUrl(cacheObject.getImgReturnUrl() + localImgUrl);
 			MessageLog messageLog = messageLogService.getById(Long.valueOf(mjCallBack.getState()));
 			SseEmitterServer.sendMessage(Long.valueOf(mjCallBack.getState()), JSONObject.toJSONString(mjCallBack));
-			Task task = taskStoreService.getTask(mjCallBack.getId());
 			JSONObject prompt = new JSONObject();
 			prompt.put("prompt",task.getPrompt());
-			prompt.put("promptEn",task.getPromptEn());
+			prompt.put("promptEn",task.getFinalPrompt());
 			prompt.put("taskId",task.getId());
-			MessageLogSave messageLogSave = MessageLogSave.builder()
-					.prompt(JSONObject.toJSONString(prompt))
-					.type(SendType.MJ.getRemark())
-					.startTime(DateUtil.timestamp2LocalDateTime(mjCallBack.getSubmitTime()))
-					.imgList(Collections.singletonList(localImgUrl)).build();
+			MessageLogSave messageLogSave = JSONObject.parseObject(messageLog.getUseValue(), MessageLogSave.class);
+			messageLogSave.setStartTime(DateUtil.timestamp2LocalDateTime(mjCallBack.getSubmitTime()));
+			messageLogSave.setPrompt(prompt.toString());
+			List<String> imgList = messageLogSave.getImgList();
+			imgList.add(localImgUrl);
+			messageLogSave.setImgList(imgList);
 			asyncService.updateLog(messageLog.getId(),messageLogSave);
 		}
 	}
-
 
 }

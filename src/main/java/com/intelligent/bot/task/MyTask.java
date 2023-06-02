@@ -5,9 +5,7 @@ import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.intelligent.bot.api.midjourney.support.TaskCondition;
 import com.intelligent.bot.constant.CommonConst;
-import com.intelligent.bot.enums.mj.TaskStatus;
 import com.intelligent.bot.enums.sys.SendType;
 import com.intelligent.bot.model.MessageLog;
 import com.intelligent.bot.model.SysConfig;
@@ -15,7 +13,6 @@ import com.intelligent.bot.model.req.sd.SdCreateReq;
 import com.intelligent.bot.model.req.sys.MessageLogSave;
 import com.intelligent.bot.server.SseEmitterServer;
 import com.intelligent.bot.service.baidu.BaiDuService;
-import com.intelligent.bot.service.mj.TaskService;
 import com.intelligent.bot.service.sys.AsyncService;
 import com.intelligent.bot.service.sys.CheckService;
 import com.intelligent.bot.utils.sys.*;
@@ -26,10 +23,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 @Component
 @Log4j2
@@ -46,8 +40,6 @@ public class MyTask {
     @Resource
     BaiDuService baiDuService;
 
-    @Resource
-    TaskService taskService;
 
 
     @Scheduled(fixedRate = 5000) // 每5秒执行一次
@@ -118,23 +110,5 @@ public class MyTask {
                 asyncService.updateRemainingTimes(req.getUserId(), CommonConst.SD_NUMBER);
             }
         }
-    }
-    @Scheduled(fixedRate = 30000)
-    public void checkTasks() {
-        long currentTime = System.currentTimeMillis();
-        long timeout = TimeUnit.MINUTES.toMillis(CommonConst.TIMEOUT_MINUTES);
-        Set<TaskStatus> set = new HashSet<TaskStatus>();
-        set.add(TaskStatus.SUBMITTED);
-        set.add(TaskStatus.IN_PROGRESS);
-        TaskCondition condition = new TaskCondition()
-                .setStatusSet(set);
-        this.taskService.findTask(condition)
-                .filter(t -> currentTime - t.getStartTime() > timeout)
-                .forEach(task -> {
-                    task.setFinishTime(System.currentTimeMillis());
-                    task.setFailReason("任务超时");
-                    task.setStatus(TaskStatus.FAILURE);
-                    task.awake();
-                });
     }
 }

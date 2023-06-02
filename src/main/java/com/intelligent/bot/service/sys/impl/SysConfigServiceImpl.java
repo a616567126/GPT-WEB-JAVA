@@ -3,6 +3,7 @@ package com.intelligent.bot.service.sys.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.intelligent.bot.base.result.B;
+import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.dao.SysConfigDao;
 import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.model.req.sys.admin.SysConfigUpdateReq;
@@ -34,7 +35,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfig> i
         SysConfig sysConfig = BeanUtil.copyProperties(req, SysConfig.class);
         sysConfig.setOperateTime(LocalDateTime.now());
         this.updateById(sysConfig);
-        redisUtil.setCacheObject("sysConfig",this.getById(sysConfig.getId()));
+        redisUtil.setCacheObject(CommonConst.SYS_CONFIG,this.getById(sysConfig.getId()));
         return B.okBuild();
     }
 }

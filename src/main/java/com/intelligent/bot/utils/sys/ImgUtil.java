@@ -1,6 +1,7 @@
 package com.intelligent.bot.utils.sys;
 
 import cn.hutool.core.date.DateUtil;
+import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.SysConfig;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,10 +52,10 @@ public class ImgUtil {
     }
 
     public static String[] createFileName(){
-        SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+        SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         String newFileName =  DateUtil.format(new Date(), "yyyyMMdd");
         String uploadPath = sysConfig.getImgUploadUrl();
-        log.info("上传路径="  + uploadPath);
+//        log.info("上传路径="  + uploadPath);
         File destFile = new File(uploadPath + newFileName);
         if (!destFile.exists()) {
             //不存在就创建

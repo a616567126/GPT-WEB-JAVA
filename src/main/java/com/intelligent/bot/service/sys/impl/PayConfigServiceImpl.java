@@ -3,6 +3,7 @@ package com.intelligent.bot.service.sys.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.intelligent.bot.base.result.B;
+import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.dao.PayConfigDao;
 import com.intelligent.bot.model.PayConfig;
 import com.intelligent.bot.model.req.sys.admin.PayConfigUpdateReq;
@@ -34,7 +35,7 @@ public class PayConfigServiceImpl extends ServiceImpl<PayConfigDao, PayConfig> i
         PayConfig payConfig = BeanUtil.copyProperties(req,PayConfig.class);
         payConfig.setOperateTime(LocalDateTime.now());
         this.updateById(payConfig);
-        redisUtil.setCacheObject("payConfig",this.getById(payConfig.getId()));
+        redisUtil.setCacheObject(CommonConst.PAY_CONFIG,this.getById(payConfig.getId()));
         return B.okBuild();
     }
 }

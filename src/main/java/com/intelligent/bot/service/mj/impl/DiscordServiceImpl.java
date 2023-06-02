@@ -44,7 +44,7 @@ public class DiscordServiceImpl implements DiscordService {
 
 	@Override
 	public B<Void> imagine(String prompt) {
-		SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
 		String paramsStr = this.imagineParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
 				.replace("$channel_id", sysConfig.getMjChannelId());
 		JSONObject params = JSONObject.parseObject(paramsStr);
@@ -55,7 +55,7 @@ public class DiscordServiceImpl implements DiscordService {
 
 	@Override
 	public B<Void> upscale(String messageId, int index, String messageHash) {
-		SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
 		String paramsStr = this.upscaleParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
 				.replace("$channel_id", sysConfig.getMjChannelId())
 				.replace("$message_id", messageId)
@@ -66,7 +66,7 @@ public class DiscordServiceImpl implements DiscordService {
 
 	@Override
 	public B<Void> variation(String messageId, int index, String messageHash) {
-		SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
 		String paramsStr = this.variationParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
 				.replace("$channel_id", sysConfig.getMjChannelId())
 				.replace("$message_id", messageId)
@@ -77,7 +77,7 @@ public class DiscordServiceImpl implements DiscordService {
 
 	@Override
 	public B<Void> reset(String messageId, String messageHash) {
-		SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
 		String paramsStr = this.resetParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
 				.replace("$channel_id", sysConfig.getMjChannelId())
 				.replace("$message_id", messageId)
@@ -88,7 +88,7 @@ public class DiscordServiceImpl implements DiscordService {
 	@Override
 	public B<String> upload(String fileName, DataUrl dataUrl) {
 		try {
-			SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+			SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
 			JSONObject fileObj = new JSONObject();
 			fileObj.put("filename", fileName);
 			fileObj.put("file_size", dataUrl.getData().length);
@@ -117,7 +117,7 @@ public class DiscordServiceImpl implements DiscordService {
 
 	@Override
 	public B<Void> describe(String finalFileName) {
-		SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
 		String fileName = CharSequenceUtil.subAfter(finalFileName, "/", true);
 		String paramsStr = this.describeParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
 				.replace("$channel_id", sysConfig.getMjChannelId())
@@ -140,7 +140,7 @@ public class DiscordServiceImpl implements DiscordService {
 	}
 
 	private ResponseEntity<String> postJson(String url, String paramsStr) {
-		SysConfig sysConfig = RedisUtil.getCacheObject("sysConfig");
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.set("Authorization", sysConfig.getMjUserToken());

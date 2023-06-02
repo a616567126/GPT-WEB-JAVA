@@ -238,4 +238,9 @@ public class CommonConst {
      */
     public static final String DISCORD_MESSAGE_URL = "https://discord.com/api/v10/channels/%s/messages?limit=10";
 
+    /**
+     * 获取任务信息时最大次数，超过该次数则将此任务改为失败
+     */
+    public static final Integer GET_TASK_ERROR_NUMBER = 15;
+
 }

@@ -82,6 +82,8 @@ public class Task implements Serializable {
 	private String messageId;
 
 	private String messageHash;
+
+	private Integer errorNumber = 0;
 	// Hidden -- end
 
 	@JsonIgnore

@@ -1,5 +1,6 @@
 package com.intelligent.bot.model.req.mj;
 
+import com.intelligent.bot.enums.mj.TaskStatus;
 import lombok.Data;
 
 
@@ -22,7 +23,7 @@ public class MjCallBack {
 
     private String imageUrl;
 
-    private String status;
+    private TaskStatus status;
 
     private String notifyHook;
 }
