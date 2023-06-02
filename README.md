@@ -112,13 +112,16 @@ vip进群资格500RMB包含（1.0全部源码，2.0管理端源码，java源码�
 </a>  
 
 
+## USE MJ
+    1.注册 MidJourney，创建自己的频道，参考 https://docs.midjourney.com/docs/quick-start
+    2.添加自己的机器人: [流程说明](https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8EK)
 
 ## Put It Last
 **易支付网站地址：[白辰易支付](https://my.mmywl.cn/)**  
 **作者使用服务器地址：[浅夏云](https://www.qxqxa.com/aff/ZGWPEDLQ)**  
 **作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)**  
 **默认启动时需配置gpt_key,pay_config,sys_config,因为项目启动时会加载对应参数到redis中，如果手动修改数据库，需要在redis中修改对应参数，防止不生效**
-**FlagStudio地址：http://flagstudio.baai.ac.cn/
+**FlagStudio地址：http://flagstudio.baai.ac.cn/**
 
 
 **支付配置(pay_config)**
