@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 @Log4j2
 public class FileUtil {
 
-    public static String base64ToImage(String base64) throws IOException {
+    public static String base64ToImage(String base64,String fileName) throws IOException {
         SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         // JDK8以上
         Base64.Decoder decoder = Base64.getDecoder();
@@ -41,7 +41,10 @@ public class FileUtil {
             //不存在就创建
             destFile.mkdir();
         }
-        String newFileName ="/"+System.currentTimeMillis()+".jpg";
+        if(StringUtils.isEmpty(fileName)){
+            fileName = String.valueOf(System.currentTimeMillis());
+        }
+        String newFileName ="/"+fileName+".jpg";
         // 生成jpeg图片
         OutputStream out = Files.newOutputStream(Paths.get(imgUploadUrl+dayFilePatch+newFileName));
         out.write(bytes);
@@ -50,6 +53,9 @@ public class FileUtil {
         return "/"+dayFilePatch+newFileName;
     }
 
+    public static String base64ToImage(String base64) throws IOException {
+        return base64ToImage(base64,null);
+    }
 
     /**
      * 图片URL转Base64编码

@@ -91,7 +91,7 @@ public class ClientController {
                         taskTransformList.add(transform);
                     }
                 }
-                if(null !=  mjTaskRes.getImageUrl()){
+                if(null !=  mjTaskRes.getImageUrl() && mjTaskRes.getImageUrl().contains(".jpg")){
                     mjTaskRes.setImageUrl(sysConfig.getImgReturnUrl() + mjTaskRes.getImageUrl());
                 }
                 mjTaskRes.setTaskTransformList(taskTransformList);

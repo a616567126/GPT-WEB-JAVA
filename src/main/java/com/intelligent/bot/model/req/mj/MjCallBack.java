@@ -27,4 +27,9 @@ public class MjCallBack {
      * 任务状态
      */
     private TaskStatus status;
+
+    /**
+     * 任务进度
+     */
+    private String progress;
 }

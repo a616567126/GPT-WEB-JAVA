@@ -96,17 +96,21 @@ public class TaskQueueHelper {
 			do {
 				task.sleep();
 				changeStatusAndNotify(task, task.getStatus());
-			} while (task.getStatus() == TaskStatus.IN_PROGRESS);
+			} while (task.getStatus() == TaskStatus.IN_PROGRESS || task.getStatus() == TaskStatus.SUCCESS);
 			log.debug("task finished, id: {}, status: {}", task.getId(), task.getStatus());
 		} catch (InterruptedException e) {
 			log.debug("task timeout, id: {}", task.getId());
-			task.fail("任务超时");
-			changeStatusAndNotify(task, TaskStatus.FAILURE);
-			Thread.currentThread().interrupt();
+			if(task.getStatus()  != TaskStatus.SUCCESS){
+				task.fail("任务超时");
+				changeStatusAndNotify(task, TaskStatus.FAILURE);
+				Thread.currentThread().interrupt();
+			}
 		} catch (Exception e) {
 			log.error("task execute error", e);
-			task.fail("执行错误，系统异常");
-			changeStatusAndNotify(task, TaskStatus.FAILURE);
+			if(task.getStatus()  != TaskStatus.SUCCESS){
+				task.fail("执行错误，系统异常");
+				changeStatusAndNotify(task, TaskStatus.FAILURE);
+			}
 		} finally {
 			this.runningTasks.remove(task);
 			this.taskFutureMap.remove(task.getId());

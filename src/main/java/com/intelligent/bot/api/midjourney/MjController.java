@@ -17,7 +17,6 @@ import com.intelligent.bot.service.sys.AsyncService;
 import com.intelligent.bot.service.sys.CheckService;
 import com.intelligent.bot.utils.mj.BannedPromptUtils;
 import com.intelligent.bot.utils.mj.MimeTypeUtils;
-import com.intelligent.bot.utils.sys.FileUtil;
 import com.intelligent.bot.utils.sys.IDUtil;
 import com.intelligent.bot.utils.sys.JwtUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
@@ -189,17 +188,19 @@ public class MjController {
 	public B<MjTask> getTask(@RequestBody TaskReq req) {
 		return B.okBuild(taskStoreService.getTask(req.getId()));
 	}
-	@PostMapping("callBack")
+//	@PostMapping("callBack")
 	public void callBack(@RequestBody MjCallBack mjTask) throws Exception {
-		log.info("mj开始回调,回调内容：{}", mjTask);
-		if(mjTask.getStatus() == TaskStatus.SUCCESS){
-			MjTask targetTask = new MjTask();
-			String localImgUrl = FileUtil.base64ToImage((mjTask.getImageUrl()));
-			targetTask.setImageUrl(localImgUrl);
-			targetTask.setId(mjTask.getId());
-			targetTask.setStatus(TaskStatus.SUCCESS);
-			asyncService.updateMjTask(targetTask);
-		}
+//		log.info("mj开始回调,回调内容：{}", mjTask);
+//		if(mjTask.getStatus() == TaskStatus.SUCCESS){
+//			MjTask targetTask = new MjTask();
+//			String localImgUrl = FileUtil.base64ToImage((mjTask.getImageUrl()));
+//			targetTask.setImageUrl(localImgUrl);
+//			targetTask.setId(mjTask.getId());
+//			targetTask.setStatus(TaskStatus.SUCCESS);
+//			mjTask.setImageUrl(targetTask.getImageUrl());
+//			asyncService.updateMjTask(targetTask);
+//		}
+//		SseEmitterServer.sendMessage(mjTask.getUserId(),mjTask);
 	}
 
 	private MjTask newTask() {

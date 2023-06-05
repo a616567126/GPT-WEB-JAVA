@@ -24,7 +24,7 @@ public abstract class MessageHandler {
 		DataArray attachments = message.getArray("attachments");
 		if (!attachments.isEmpty()) {
 			String imageUrl = attachments.getObject(0).getString("url");
-			task.setImageUrl(replaceCdnUrl(imageUrl));
+			task.setImageUrl(replaceCdnUrl(imageUrl,task.getId()));
 		}
 	}
 
@@ -33,7 +33,7 @@ public abstract class MessageHandler {
 		DataArray attachments = message.getArray("attachments");
 		if (!attachments.isEmpty()) {
 			String imageUrl = attachments.getObject(0).getString("url");
-			task.setImageUrl(replaceCdnUrl(imageUrl));
+			task.setImageUrl(replaceCdnUrl(imageUrl,task.getId()));
 			int hashStartIndex = imageUrl.lastIndexOf("_");
 			task.setMessageHash(CharSequenceUtil.subBefore(imageUrl.substring(hashStartIndex + 1), ".", true));
 			task.success();
@@ -45,7 +45,7 @@ public abstract class MessageHandler {
 	protected void updateTaskImageUrl(MjTask task, Message message) throws IOException {
 		if (!message.getAttachments().isEmpty()) {
 			String imageUrl = message.getAttachments().get(0).getUrl();
-			task.setImageUrl(replaceCdnUrl(imageUrl));
+			task.setImageUrl(replaceCdnUrl(imageUrl,task.getId()));
 		}
 	}
 
@@ -53,7 +53,7 @@ public abstract class MessageHandler {
 		task.setMessageId(message.getId());
 		if (!message.getAttachments().isEmpty()) {
 			String imageUrl = message.getAttachments().get(0).getUrl();
-			task.setImageUrl(replaceCdnUrl(imageUrl));
+			task.setImageUrl(replaceCdnUrl(imageUrl,task.getId()));
 			int hashStartIndex = imageUrl.lastIndexOf("_");
 			task.setMessageHash(CharSequenceUtil.subBefore(imageUrl.substring(hashStartIndex + 1), ".", true));
 			task.success();
@@ -62,11 +62,11 @@ public abstract class MessageHandler {
 		}
 	}
 
-	protected String replaceCdnUrl(String imageUrl){
+	protected String replaceCdnUrl(String imageUrl,Long taskId) throws IOException {
 		if (CharSequenceUtil.isBlank(imageUrl)) {
 			return imageUrl;
 		}
-		return FileUtil.imageUrlToBase64(imageUrl);
+		return FileUtil.base64ToImage(FileUtil.imageUrlToBase64(imageUrl),String.valueOf(taskId));
 	}
 
 }
