@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 31/05/2023 13:41:43
+ Date: 05/06/2023 14:03:33
 */
 
 SET NAMES utf8mb4;
@@ -133,6 +133,40 @@ CREATE TABLE `message_log` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='使用记录表';
+
+-- ----------------------------
+-- Table structure for mj_task
+-- ----------------------------
+DROP TABLE IF EXISTS `mj_task`;
+CREATE TABLE `mj_task` (
+  `id` bigint NOT NULL,
+  `user_id` bigint DEFAULT NULL COMMENT '用户id',
+  `action` varchar(50) DEFAULT '1' COMMENT '任务类型',
+  `prompt` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '关键字',
+  `prompt_en` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '译文',
+  `description` varchar(500) DEFAULT NULL COMMENT '任务描述',
+  `state` varchar(100) DEFAULT NULL COMMENT '自定义参数',
+  `index` int DEFAULT NULL COMMENT '图片位置',
+  `status` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '任务状态',
+  `image_url` longtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '图片地址',
+  `start_time` bigint DEFAULT NULL COMMENT '任务开始时间',
+  `submit_time` bigint DEFAULT NULL COMMENT '任务提交时间\n',
+  `finish_time` bigint DEFAULT NULL COMMENT '任务完成时间',
+  `fail_reason` varchar(100) DEFAULT NULL COMMENT '任务失败原因',
+  `final_prompt` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'mj 任务信息',
+  `notify_hook` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '回调地址',
+  `related_task_id` bigint DEFAULT NULL COMMENT '任务关联 id',
+  `message_id` varchar(20) DEFAULT NULL COMMENT '消息 id',
+  `message_hash` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '消息 hash',
+  `progress` varchar(30) DEFAULT NULL COMMENT '任务进度',
+  `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
+  `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
+  `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间（默认为创建时服务器时间）',
+  `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
+  `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Mj任务';
 
 -- ----------------------------
 -- Table structure for pay_config
