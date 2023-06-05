@@ -7,23 +7,24 @@ import lombok.Data;
 @Data
 public class MjCallBack {
 
-    private String action;
-
-    private String id;
-
-    private String prompt;
-
-    private String description;
-
-    private String state;
-
-    private Long submitTime;
-
-    private Long finishTime;
-
+    /**
+     * 图片url
+     */
     private String imageUrl;
 
-    private TaskStatus status;
 
-    private String notifyHook;
+    /**
+     * 用户id
+     */
+    private Long userId;
+
+    /**
+     * id
+     */
+    private Long id;
+
+    /**
+     * 任务状态
+     */
+    private TaskStatus status;
 }

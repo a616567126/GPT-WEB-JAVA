@@ -1,5 +1,6 @@
 package com.intelligent.bot;
 
+import com.intelligent.bot.utils.sys.IDUtil;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +17,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableScheduling
 public class IntelligentBotApplication {
 
-
+	/**
+	 * 初始化ID获取方法，共全局使用
+	 */
+	public static IDUtil idUtil = new IDUtil(1, 0);
 	public static void main(String[] args) {
 		SpringApplication.run(IntelligentBotApplication.class, args);
 	}

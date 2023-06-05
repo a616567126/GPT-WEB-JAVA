@@ -8,5 +8,5 @@ import javax.validation.constraints.NotNull;
 public class TaskReq {
 
 	@NotNull
-	private String taskId;
+	private Long id;
 }

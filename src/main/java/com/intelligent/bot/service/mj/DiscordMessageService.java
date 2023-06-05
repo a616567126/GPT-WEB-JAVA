@@ -7,5 +7,5 @@ import java.io.IOException;
 
 public interface DiscordMessageService {
 
-    GetTaskRes getMjMessages(String taskId) throws IOException;
+    GetTaskRes getMjMessages(Long id) throws IOException;
 }

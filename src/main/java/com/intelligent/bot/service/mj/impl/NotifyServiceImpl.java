@@ -2,7 +2,8 @@ package com.intelligent.bot.service.mj.impl;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.intelligent.bot.api.midjourney.support.Task;
+import com.intelligent.bot.enums.mj.TaskStatus;
+import com.intelligent.bot.model.MjTask;
 import com.intelligent.bot.service.mj.NotifyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,14 +18,17 @@ public class NotifyServiceImpl implements NotifyService {
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	@Override
-	public void notifyTaskChange(Task task) {
+	public void notifyTaskChange(MjTask task) {
 		String notifyHook = task.getNotifyHook();
 		if (CharSequenceUtil.isBlank(notifyHook)) {
 			return;
 		}
 		try {
+			if(task.getStatus() != TaskStatus.SUCCESS){
+				task.setImageUrl(null);
+			}
 			String paramsStr = OBJECT_MAPPER.writeValueAsString(task);
-			log.debug("任务变更, 触发推送, task: {}", paramsStr);
+//			log.info("任务变更, 触发推送, task: {}", paramsStr);
 			postJson(notifyHook, paramsStr);
 		} catch (Exception e) {
 			log.warn("回调通知接口失败: {}", e.getMessage());

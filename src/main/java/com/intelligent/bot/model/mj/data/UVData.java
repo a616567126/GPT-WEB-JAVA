@@ -1,11 +1,11 @@
 package com.intelligent.bot.model.mj.data;
 
-import com.intelligent.bot.enums.mj.Action;
+import com.intelligent.bot.enums.mj.TaskAction;
 import lombok.Data;
 
 @Data
 public class UVData {
 	private String id;
-	private Action action;
+	private TaskAction taskAction;
 	private int index;
 }

@@ -19,18 +19,20 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class DiscordServiceImpl implements DiscordService {
 
-	private String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36";
 	private String imagineParamsJson;
 	private String upscaleParamsJson;
 	private String variationParamsJson;
 	private String resetParamsJson;
 	private String describeParamsJson;
+	private String blendParamsJson;
+
 
 
 	@PostConstruct
@@ -40,6 +42,7 @@ public class DiscordServiceImpl implements DiscordService {
 		this.variationParamsJson = ResourceUtil.readUtf8Str("api-params/variation.json");
 		this.resetParamsJson = ResourceUtil.readUtf8Str("api-params/reset.json");
 		this.describeParamsJson = ResourceUtil.readUtf8Str("api-params/describe.json");
+		this.blendParamsJson = ResourceUtil.readUtf8Str("api-params/blend.json");
 	}
 
 	@Override
@@ -76,12 +79,23 @@ public class DiscordServiceImpl implements DiscordService {
 	}
 
 	@Override
-	public B<Void> reset(String messageId, String messageHash) {
+	public B<Void> reroll(String messageId, String messageHash) {
 		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
 		String paramsStr = this.resetParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
 				.replace("$channel_id", sysConfig.getMjChannelId())
 				.replace("$message_id", messageId)
 				.replace("$message_hash", messageHash);
+		return postJsonAndCheckStatus(paramsStr);
+	}
+
+	@Override
+	public B<Void> describe(String finalFileName) {
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+		String fileName = CharSequenceUtil.subAfter(finalFileName, "/", true);
+		String paramsStr = this.describeParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
+				.replace("$channel_id", sysConfig.getMjChannelId())
+				.replace("$file_name", fileName)
+				.replace("$final_file_name", finalFileName);
 		return postJsonAndCheckStatus(paramsStr);
 	}
 
@@ -116,19 +130,33 @@ public class DiscordServiceImpl implements DiscordService {
 	}
 
 	@Override
-	public B<Void> describe(String finalFileName) {
+	public B<Void> blend(List<String> finalFileNames) {
 		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
-		String fileName = CharSequenceUtil.subAfter(finalFileName, "/", true);
-		String paramsStr = this.describeParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
-				.replace("$channel_id", sysConfig.getMjChannelId())
-				.replace("$file_name", fileName)
-				.replace("$final_file_name", finalFileName);
-		return postJsonAndCheckStatus(paramsStr);
+		String paramsStr = this.blendParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
+				.replace("$channel_id", sysConfig.getMjChannelId());
+		JSONObject params = JSONObject.parseObject(paramsStr);
+		JSONArray options = params.getJSONObject("data").getJSONArray("options");
+		JSONArray attachments = params.getJSONObject("data").getJSONArray("attachments");
+		for (int i = 0; i < finalFileNames.size(); i++) {
+			String finalFileName = finalFileNames.get(i);
+			String fileName = CharSequenceUtil.subAfter(finalFileName, "/", true);
+			JSONObject attachment = new JSONObject();
+			attachment.put("id", String.valueOf(i));
+			attachment.put("filename", fileName);
+			attachment.put("uploaded_filename", finalFileName);
+			attachments.add(attachment);
+			JSONObject option = new JSONObject();
+			option.put("type", 11);
+			option.put("name", "image" + (i + 1));
+			option.put("value", i);
+			options.add(option);
+		}
+		return null;
 	}
 
 	private void putFile(String uploadUrl, DataUrl dataUrl) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("User-Agent", this.userAgent);
+		headers.add("User-Agent", CommonConst.USERAGENT);
 		headers.setContentType(MediaType.valueOf(dataUrl.getMimeType()));
 		headers.setContentLength(dataUrl.getData().length);
 		HttpEntity<byte[]> requestEntity = new HttpEntity<>(dataUrl.getData(), headers);
@@ -144,7 +172,7 @@ public class DiscordServiceImpl implements DiscordService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.set("Authorization", sysConfig.getMjUserToken());
-		headers.add("User-Agent", this.userAgent);
+		headers.add("User-Agent", CommonConst.USERAGENT);
 		HttpEntity<String> httpEntity = new HttpEntity<>(paramsStr, headers);
 		return new RestTemplate().postForEntity(url, httpEntity, String.class);
 	}

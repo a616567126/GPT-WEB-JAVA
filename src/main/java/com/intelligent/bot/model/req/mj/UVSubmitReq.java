@@ -1,6 +1,6 @@
 package com.intelligent.bot.model.req.mj;
 
-import com.intelligent.bot.enums.mj.Action;
+import com.intelligent.bot.enums.mj.TaskAction;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -12,14 +12,12 @@ import javax.validation.constraints.NotNull;
 public class UVSubmitReq {
 
 	@NotNull
-	private String taskId;
+	private Long id;
 
 	@NotNull
-	private Action action;
+	private TaskAction taskAction;
 
 	@NotNull
 	private Integer index;
 
-	@NotNull
-	private Long logId;
 }

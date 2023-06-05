@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.intelligent.bot.dao.MjTaskDao">
+
+    <select id="selectUserMjTask" resultType="com.intelligent.bot.model.res.sys.MjTaskRes">
+        select id,
+               related_task_id,
+               `action`,
+               prompt,
+               prompt_en,
+               `index`,
+               status,
+               image_url,
+               start_time,
+               finish_time,
+               final_prompt,
+               fail_reason
+        from mj_task
+        where user_id = #{userId}
+        order by id desc
+    </select>
+    <select id="selectTransform" resultType="com.intelligent.bot.model.res.sys.MjTaskTransformRes">
+        select   `action`, `index` ,related_task_id
+        from mj_task
+        where `index` > 0
+    </select>
+</mapper>

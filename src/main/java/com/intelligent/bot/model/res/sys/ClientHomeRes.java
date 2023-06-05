@@ -46,4 +46,9 @@ public class ClientHomeRes {
      */
     private String announcement;
 
+    /**
+     * mj任务列表
+     */
+    List<MjTaskRes> mjTaskList;
+
 }

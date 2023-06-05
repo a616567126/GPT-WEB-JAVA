@@ -34,6 +34,7 @@
         <wx-java-mp-spring-boot-starter.version>4.0.0</wx-java-mp-spring-boot-starter.version>
         <websocket.version>1.5.2</websocket.version>
         <dataurl.version>2.0.0</dataurl.version>
+        <user-agent-utils.verison>1.21</user-agent-utils.verison>
     </properties>
 
     <dependencies>
@@ -156,6 +157,11 @@
             <groupId>eu.maxschuster</groupId>
             <artifactId>dataurl</artifactId>
             <version>${dataurl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>${user-agent-utils.verison}</version>
         </dependency>
     </dependencies>
 

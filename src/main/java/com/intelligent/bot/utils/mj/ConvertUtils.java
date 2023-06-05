@@ -1,7 +1,7 @@
 package com.intelligent.bot.utils.mj;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import com.intelligent.bot.enums.mj.Action;
+import com.intelligent.bot.enums.mj.TaskAction;
 import com.intelligent.bot.model.mj.data.MessageData;
 import com.intelligent.bot.model.mj.data.UVData;
 import lombok.experimental.UtilityClass;
@@ -27,7 +27,7 @@ public class ConvertUtils {
 			return null;
 		}
 		MessageData data = new MessageData();
-		data.setAction(Action.IMAGINE);
+		data.setTaskAction(TaskAction.IMAGINE);
 		data.setPrompt(matcher.group(1));
 		data.setStatus(matcher.group(3));
 		return data;
@@ -42,7 +42,7 @@ public class ConvertUtils {
 		MessageData data = new MessageData();
 		data.setPrompt(matcher.group(1));
 		String matchAction = matcher.group(2);
-		data.setAction(matchAction.startsWith("Variation") ? Action.VARIATION : Action.UPSCALE);
+		data.setTaskAction(matchAction.startsWith("Variation") ? TaskAction.VARIATION : TaskAction.UPSCALE);
 		data.setStatus(matcher.group(4));
 		return data;
 	}
@@ -54,7 +54,7 @@ public class ConvertUtils {
 			return null;
 		}
 		MessageData data = new MessageData();
-		data.setAction(Action.UPSCALE);
+		data.setTaskAction(TaskAction.UPSCALE);
 		data.setPrompt(matcher.group(1));
 		data.setStatus("complete");
 		data.setIndex(Integer.parseInt(matcher.group(2)));
@@ -72,9 +72,9 @@ public class ConvertUtils {
 		}
 		UVData upData = new UVData();
 		if (action.charAt(0) == 'u') {
-			upData.setAction(Action.UPSCALE);
+			upData.setTaskAction(TaskAction.UPSCALE);
 		} else if (action.charAt(0) == 'v') {
-			upData.setAction(Action.VARIATION);
+			upData.setTaskAction(TaskAction.VARIATION);
 		} else {
 			return null;
 		}

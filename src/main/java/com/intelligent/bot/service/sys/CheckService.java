@@ -43,4 +43,17 @@ public class CheckService {
         }
         return checkUser(messageLog);
     }
+
+    public void checkUser(Long userId,Integer number) {
+        //查询当前用户信息
+        User user = userService.getById(userId);
+        if(user.getType() != -1){
+            //判断剩余次数
+            if(user.getRemainingTimes() < number){
+                throw new E("剩余次数不足请充值");
+            }
+            user.setRemainingTimes(user.getRemainingTimes() - number);
+        }
+        userService.saveOrUpdate(user);
+    }
 }

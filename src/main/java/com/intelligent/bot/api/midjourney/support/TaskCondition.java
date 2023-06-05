@@ -1,34 +1,37 @@
 package com.intelligent.bot.api.midjourney.support;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import com.intelligent.bot.enums.mj.Action;
+import com.intelligent.bot.enums.mj.TaskAction;
 import com.intelligent.bot.enums.mj.TaskStatus;
+import com.intelligent.bot.model.MjTask;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 
 @Data
 @Accessors(chain = true)
-public class TaskCondition implements Predicate<Task> {
+public class TaskCondition implements Predicate<MjTask> {
 
-	private String key;
+	private Long id;
 
 	private String prompt;
 	private String promptEn;
 	private String finalPrompt;
+	private String description;
 
-	private String relatedTaskId;
+	private Long relatedTaskId;
 	private String messageId;
 
-	private Set<TaskStatus> statusSet;
-	private Set<Action> actionSet;
+	private List<TaskStatus> statusSet;
+	private List<TaskAction> actionSet;
 
 	@Override
-	public boolean test(Task task) {
-		if (CharSequenceUtil.isNotBlank(this.key) && !this.key.equals(task.getKey())) {
+	public boolean test(MjTask task) {
+		if (null != this.id && !Objects.equals(this.id, task.getId())) {
 			return false;
 		}
 		if (CharSequenceUtil.isNotBlank(this.prompt) && !this.prompt.equals(task.getPrompt())) {
@@ -40,7 +43,10 @@ public class TaskCondition implements Predicate<Task> {
 		if (CharSequenceUtil.isNotBlank(this.finalPrompt) && !this.finalPrompt.equals(task.getFinalPrompt())) {
 			return false;
 		}
-		if (CharSequenceUtil.isNotBlank(this.relatedTaskId) && !this.relatedTaskId.equals(task.getRelatedTaskId())) {
+		if (CharSequenceUtil.isNotBlank(this.description) && !this.description.equals(task.getDescription())) {
+			return false;
+		}
+		if (null != this.relatedTaskId && !this.relatedTaskId.equals(task.getRelatedTaskId())) {
 			return false;
 		}
 		if (CharSequenceUtil.isNotBlank(this.messageId) && !this.messageId.equals(task.getMessageId())) {
@@ -50,10 +56,11 @@ public class TaskCondition implements Predicate<Task> {
 		if (this.statusSet != null && !this.statusSet.isEmpty() && !this.statusSet.contains(task.getStatus())) {
 			return false;
 		}
-		if (this.actionSet != null && !this.actionSet.isEmpty() && !this.actionSet.contains(task.getAction())) {
+		if (this.actionSet != null && !this.actionSet.isEmpty() && !this.actionSet.contains(task.getTaskAction())) {
 			return false;
 		}
 		return true;
 	}
+
 
 }

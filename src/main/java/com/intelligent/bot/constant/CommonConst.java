@@ -243,4 +243,21 @@ public class CommonConst {
      */
     public static final Integer GET_TASK_ERROR_NUMBER = 15;
 
+    /**
+     * mj
+     */
+    public static final String MJ_WSS_URL = "wss://gateway.discord.gg";
+
+    /**
+     * mj 请求头
+     */
+    public static final String USERAGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36";
+
+
+    /**
+     * mj 地址
+     */
+    public static final String DISCORD_SERVER_URL = "https://discord.com";
+
+
 }

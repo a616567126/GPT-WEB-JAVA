@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.GptKey;
 import com.intelligent.bot.model.MessageLog;
+import com.intelligent.bot.model.MjTask;
 import com.intelligent.bot.model.User;
 import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.sys.MessageLogSave;
@@ -32,6 +33,9 @@ public class AsyncService {
     @Resource
     IUserService userService;
 
+    @Resource
+    IMjTaskService mjTaskService;
+
 
     @Async
     public void updateKeyNumber(String key){
@@ -54,6 +58,12 @@ public class AsyncService {
         useLogService.lambdaUpdate().eq(MessageLog::getId,logId)
                 .set(MessageLog::getUseValue,JSONObject.toJSONString(messageLogSave))
                 .update();
+    }
+
+    @Async
+    public void updateMjTask(MjTask mjTask){
+        mjTask.setFinishTime(System.currentTimeMillis());
+        mjTaskService.updateById(mjTask);
     }
 
     @Async

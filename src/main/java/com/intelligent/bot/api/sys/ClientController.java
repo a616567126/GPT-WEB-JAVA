@@ -8,14 +8,12 @@ import com.intelligent.bot.annotate.AvoidRepeatRequest;
 import com.intelligent.bot.base.exception.E;
 import com.intelligent.bot.base.result.B;
 import com.intelligent.bot.constant.CommonConst;
+import com.intelligent.bot.dao.MjTaskDao;
 import com.intelligent.bot.enums.sys.SendType;
 import com.intelligent.bot.model.*;
 import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.sys.*;
-import com.intelligent.bot.model.res.sys.ClientHomeLogRes;
-import com.intelligent.bot.model.res.sys.ClientHomeRes;
-import com.intelligent.bot.model.res.sys.ClientRechargeRes;
-import com.intelligent.bot.model.res.sys.GetFunctionState;
+import com.intelligent.bot.model.res.sys.*;
 import com.intelligent.bot.service.sys.*;
 import com.intelligent.bot.utils.sys.ImgUtil;
 import com.intelligent.bot.utils.sys.JwtUtil;
@@ -51,6 +49,11 @@ public class ClientController {
     IProductService productService;
     @Resource
     IOrderService orderService;
+    @Resource
+    MjTaskDao mjTaskDao;
+    @Resource
+    IMjTaskService mjTaskService;
+
 
     @RequestMapping(value = "/home", name = "用户首页信息")
     public B<ClientHomeRes> home(@Validated @RequestBody ClientHomeReq req) {
@@ -78,41 +81,50 @@ public class ClientController {
         List<Announcement> list = announcementService.lambdaQuery().select(Announcement::getContent).orderByDesc(Announcement::getSort).last("limit 1").list();
         ClientHomeRes clientHomeRes = BeanUtil.copyProperties(user, ClientHomeRes.class);
         clientHomeRes.setAnnouncement((null != list && list.size() > 0) ? list.get(0).getContent() : "暂无通知公告");
-        List<ClientHomeLogRes> homeLogResList = new ArrayList<>();
-        logList.forEach(e -> {
-            ClientHomeLogRes res = new ClientHomeLogRes();
-            res.setId(e.getId());
-            res.setSendType(e.getSendType());
-            if (e.getSendType().equals(SendType.GPT.getType())
-                    || e.getSendType().equals(SendType.GPT_4.getType())
-                    || e.getSendType().equals(SendType.BING.getType())) {
-                res.setTitle(JSONObject.parseArray(e.getUseValue(), Message.class).get(0).getContent());
-                res.setContent(e.getUseValue());
-            }else if(e.getSendType().equals(SendType.MJ.getType())){
-                MessageLogSave messageLogSave = JSONObject.parseObject(e.getUseValue(), MessageLogSave.class);
-                List<String> imgList = new ArrayList<>();
-                messageLogSave.getImgList().forEach( m ->{
-                    imgList.add(sysConfig.getImgReturnUrl() + m );
-                });
-                JSONObject valueJson = JSONObject.parseObject(messageLogSave.getPrompt());
-                res.setTitle(valueJson.getString("prompt"));
-                res.setTaskId(valueJson.getString("taskId"));
-                messageLogSave.setImgList(imgList);
-                res.setContent(JSONObject.toJSONString(messageLogSave));
-            }else {
-                MessageLogSave messageLogSave = JSONObject.parseObject(e.getUseValue(), MessageLogSave.class);
-                List<String> imgList = new ArrayList<>();
-                messageLogSave.getImgList().forEach( m ->{
-                    imgList.add(sysConfig.getImgReturnUrl() + m );
-                });
-                res.setTitle(messageLogSave.getPrompt());
-                messageLogSave.setImgList(imgList);
-                res.setContent(JSONObject.toJSONString(messageLogSave));
+        if(Objects.equals(req.getSendType(), SendType.MJ.getType())){
+            List<MjTaskRes> mjTaskList = mjTaskDao.selectUserMjTask(JwtUtil.getUserId());
+            List<MjTaskTransformRes> transformList = mjTaskDao.selectTransform();
+            for (MjTaskRes mjTaskRes : mjTaskList) {
+                List<MjTaskTransformRes> taskTransformList = new ArrayList<>();
+                for (MjTaskTransformRes transform : transformList) {
+                    if(transform.getRelatedTaskId().equals(mjTaskRes.getId())){
+                        taskTransformList.add(transform);
+                    }
+                }
+                if(null !=  mjTaskRes.getImageUrl()){
+                    mjTaskRes.setImageUrl(sysConfig.getImgReturnUrl() + mjTaskRes.getImageUrl());
+                }
+                mjTaskRes.setTaskTransformList(taskTransformList);
             }
-            homeLogResList.add(res);
+            clientHomeRes.setMjTaskList(mjTaskList);
+            return B.okBuild(clientHomeRes);
 
-        });
-        clientHomeRes.setLogList(homeLogResList);
+        }else {
+            List<ClientHomeLogRes> homeLogResList = new ArrayList<>();
+            logList.forEach(e -> {
+                ClientHomeLogRes res = new ClientHomeLogRes();
+                res.setId(e.getId());
+                res.setSendType(e.getSendType());
+                if (e.getSendType().equals(SendType.GPT.getType())
+                        || e.getSendType().equals(SendType.GPT_4.getType())
+                        || e.getSendType().equals(SendType.BING.getType())) {
+                    res.setTitle(JSONObject.parseArray(e.getUseValue(), Message.class).get(0).getContent());
+                    res.setContent(e.getUseValue());
+                } else {
+                    MessageLogSave messageLogSave = JSONObject.parseObject(e.getUseValue(), MessageLogSave.class);
+                    List<String> imgList = new ArrayList<>();
+                    messageLogSave.getImgList().forEach( m ->{
+                        imgList.add(sysConfig.getImgReturnUrl() + m );
+                    });
+                    res.setTitle(messageLogSave.getPrompt());
+                    messageLogSave.setImgList(imgList);
+                    res.setContent(JSONObject.toJSONString(messageLogSave));
+                }
+                homeLogResList.add(res);
+
+            });
+            clientHomeRes.setLogList(homeLogResList);
+        }
         return B.okBuild(clientHomeRes);
     }
 
@@ -178,6 +190,21 @@ public class ClientController {
                 .set(MessageLog::getDeleted,1)
                 .eq(MessageLog::getUserId,JwtUtil.getUserId())
                 .eq(MessageLog::getSendType,req.getSendType())
+                .update();
+        return B.okBuild();
+    }
+
+    @RequestMapping(value = "/delete/mj/task", name = "删除mj任务")
+    public B<Void> deleteMjTask(@Validated @RequestBody ClientDeleteLog req) {
+        mjTaskService.removeById(req.getId());
+        return B.okBuild();
+    }
+
+    @RequestMapping(value = "/empty/mj/task", name = "清空mj任务")
+    public B<Void> emptyMjTask() {
+        mjTaskService.lambdaUpdate()
+                .set(MjTask::getDeleted,1)
+                .eq(MjTask::getUserId,JwtUtil.getUserId())
                 .update();
         return B.okBuild();
     }
