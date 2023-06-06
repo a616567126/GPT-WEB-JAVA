@@ -196,16 +196,13 @@ public class ClientController {
 
     @RequestMapping(value = "/delete/mj/task", name = "删除mj任务")
     public B<Void> deleteMjTask(@Validated @RequestBody ClientDeleteLog req) {
-        mjTaskService.removeById(req.getId());
+        mjTaskService.deleteMjTask(req.getId());
         return B.okBuild();
     }
 
     @RequestMapping(value = "/empty/mj/task", name = "清空mj任务")
     public B<Void> emptyMjTask() {
-        mjTaskService.lambdaUpdate()
-                .set(MjTask::getDeleted,1)
-                .eq(MjTask::getUserId,JwtUtil.getUserId())
-                .update();
+        mjTaskService.emptyMjTask(JwtUtil.getUserId());
         return B.okBuild();
     }
 

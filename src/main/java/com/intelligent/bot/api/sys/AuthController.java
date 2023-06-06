@@ -145,7 +145,6 @@ public class AuthController {
             //判断是否临时用户请求
             if (isTemp) {
                 user.setType(2);
-                user.setPassword(SecureUtil.md5("123456"));
                 user.setName("用户"+System.currentTimeMillis());
             } else {
                 Long count = this.userService.lambdaQuery()
@@ -157,7 +156,6 @@ public class AuthController {
                     throw new E("用户已存在");
                 }
                 user.setType(1);
-                user.setPassword(SecureUtil.md5(reqUser.getPassword()));
             }
         }else {
             //判断临时用户是否有剩余次数
@@ -176,6 +174,11 @@ public class AuthController {
                 }
 
             }
+        }
+        if(null != reqUser.getPassword()){
+            user.setPassword(SecureUtil.md5(reqUser.getPassword()));
+        }else {
+            user.setPassword(SecureUtil.md5("123456"));
         }
         userService.saveOrUpdate(user);
         return createLoginResult(user);

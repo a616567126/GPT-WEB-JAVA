@@ -15,4 +15,8 @@ public interface MjTaskDao extends BaseMapper<MjTask> {
     List<MjTaskRes> selectUserMjTask(@Param("userId") Long userId);
 
     List<MjTaskTransformRes> selectTransform();
+
+    int batchDeleteByUserId(@Param("userId") Long userId);
+
+    int deleteByKeyId(@Param("id") Long id);
 }

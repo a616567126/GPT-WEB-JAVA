@@ -1,15 +1,16 @@
 package com.intelligent.bot.service.sys;
 
 
+import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.intelligent.bot.constant.CommonConst;
-import com.intelligent.bot.model.GptKey;
-import com.intelligent.bot.model.MessageLog;
-import com.intelligent.bot.model.MjTask;
-import com.intelligent.bot.model.User;
+import com.intelligent.bot.model.*;
 import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.sys.MessageLogSave;
 import com.intelligent.bot.utils.sys.DateUtil;
+import com.intelligent.bot.utils.sys.RedisUtil;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,6 +21,7 @@ import java.util.List;
 
 
 @Component
+@Log4j2
 public class AsyncService {
 
 
@@ -34,6 +36,7 @@ public class AsyncService {
     IUserService userService;
 
     @Resource
+    @Lazy
     IMjTaskService mjTaskService;
 
 
@@ -82,6 +85,16 @@ public class AsyncService {
                 .eq(User::getId,userId)
                 .setSql("remaining_times = remaining_times + "+number)
                 .update();
+    }
+
+    @Async
+    public void deleteImages(List<String> images){
+        SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+        images.forEach( i ->{
+            String filePatch = sysConfig.getImgUploadUrl() + i;
+            log.info("删除文件路径：{}",filePatch);
+            FileUtil.del(filePatch);
+        });
     }
 
 }
