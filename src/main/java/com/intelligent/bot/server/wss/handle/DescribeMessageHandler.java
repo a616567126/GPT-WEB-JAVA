@@ -44,7 +44,7 @@ public class DescribeMessageHandler extends MessageHandler {
 		task.setMessageId(message.getString("id"));
 		task.setPrompt(prompt);
 		task.setPromptEn(prompt);
-		task.setImageUrl(replaceCdnUrl(imageUrl,task.getId()));
+		task.setImageUrl(replaceCdnUrl(task));
 		task.success();
 		task.awake();
 	}
@@ -69,7 +69,7 @@ public class DescribeMessageHandler extends MessageHandler {
 		task.setMessageId(message.getId());
 		task.setPrompt(prompt);
 		task.setPromptEn(prompt);
-		task.setImageUrl(replaceCdnUrl(imageUrl,task.getId()));
+		task.setImageUrl(replaceCdnUrl(task));
 		task.success();
 		task.awake();
 	}

@@ -52,16 +52,19 @@ public class UserWebSocketStarter extends WebSocketAdapter implements WebSocketS
 
 	@Override
 	public synchronized void start() throws Exception {
-		this.decompressor = new ZlibDecompressor(2048);
-		this.heartExecutor = Executors.newSingleThreadScheduledExecutor();
-		WebSocketFactory webSocketFactory = createWebSocketFactory();
-		this.socket = webSocketFactory.createSocket(CommonConst.MJ_WSS_URL + "/?encoding=json&v=9&compress=zlib-stream");
-		this.socket.addListener(this);
-		this.socket.addHeader("Accept-Encoding", "gzip, deflate, br").addHeader("Accept-Language", "en-US,en;q=0.9")
-				.addHeader("Cache-Control", "no-cache").addHeader("Pragma", "no-cache")
-				.addHeader("Sec-WebSocket-Extensions", "permessage-deflate; client_max_window_bits")
-				.addHeader("User-Agent", CommonConst.USERAGENT);
-		this.socket.connect();
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+		if(null != sysConfig.getIsOpenMj() && sysConfig.getIsOpenMj() == 1){
+			this.decompressor = new ZlibDecompressor(2048);
+			this.heartExecutor = Executors.newSingleThreadScheduledExecutor();
+			WebSocketFactory webSocketFactory = createWebSocketFactory();
+			this.socket = webSocketFactory.createSocket(CommonConst.MJ_WSS_URL + "/?encoding=json&v=9&compress=zlib-stream");
+			this.socket.addListener(this);
+			this.socket.addHeader("Accept-Encoding", "gzip, deflate, br").addHeader("Accept-Language", "en-US,en;q=0.9")
+					.addHeader("Cache-Control", "no-cache").addHeader("Pragma", "no-cache")
+					.addHeader("Sec-WebSocket-Extensions", "permessage-deflate; client_max_window_bits")
+					.addHeader("User-Agent", CommonConst.USERAGENT);
+			this.socket.connect();
+		}
 	}
 
 	@Override

@@ -96,7 +96,7 @@ public class TaskQueueHelper {
 			do {
 				task.sleep();
 				changeStatusAndNotify(task, task.getStatus());
-			} while (task.getStatus() == TaskStatus.IN_PROGRESS || task.getStatus() == TaskStatus.SUCCESS);
+			} while (task.getStatus() == TaskStatus.IN_PROGRESS);
 			log.debug("task finished, id: {}, status: {}", task.getId(), task.getStatus());
 		} catch (InterruptedException e) {
 			log.debug("task timeout, id: {}", task.getId());

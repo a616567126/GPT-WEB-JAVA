@@ -3,6 +3,7 @@ package com.intelligent.bot.server.wss.handle;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.intelligent.bot.api.midjourney.support.TaskQueueHelper;
 import com.intelligent.bot.enums.mj.MessageType;
+import com.intelligent.bot.enums.mj.TaskAction;
 import com.intelligent.bot.model.MjTask;
 import com.intelligent.bot.utils.sys.FileUtil;
 import net.dv8tion.jda.api.entities.Message;
@@ -24,7 +25,8 @@ public abstract class MessageHandler {
 		DataArray attachments = message.getArray("attachments");
 		if (!attachments.isEmpty()) {
 			String imageUrl = attachments.getObject(0).getString("url");
-			task.setImageUrl(replaceCdnUrl(imageUrl,task.getId()));
+			task.setImageUrl(imageUrl);
+			task.setImageUrl(replaceCdnUrl(task));
 		}
 	}
 
@@ -33,7 +35,8 @@ public abstract class MessageHandler {
 		DataArray attachments = message.getArray("attachments");
 		if (!attachments.isEmpty()) {
 			String imageUrl = attachments.getObject(0).getString("url");
-			task.setImageUrl(replaceCdnUrl(imageUrl,task.getId()));
+			task.setImageUrl(imageUrl);
+			task.setImageUrl(replaceCdnUrl(task));
 			int hashStartIndex = imageUrl.lastIndexOf("_");
 			task.setMessageHash(CharSequenceUtil.subBefore(imageUrl.substring(hashStartIndex + 1), ".", true));
 			task.success();
@@ -45,7 +48,8 @@ public abstract class MessageHandler {
 	protected void updateTaskImageUrl(MjTask task, Message message) throws IOException {
 		if (!message.getAttachments().isEmpty()) {
 			String imageUrl = message.getAttachments().get(0).getUrl();
-			task.setImageUrl(replaceCdnUrl(imageUrl,task.getId()));
+			task.setImageUrl(imageUrl);
+			task.setImageUrl(replaceCdnUrl(task));
 		}
 	}
 
@@ -53,7 +57,8 @@ public abstract class MessageHandler {
 		task.setMessageId(message.getId());
 		if (!message.getAttachments().isEmpty()) {
 			String imageUrl = message.getAttachments().get(0).getUrl();
-			task.setImageUrl(replaceCdnUrl(imageUrl,task.getId()));
+			task.setImageUrl(imageUrl);
+			task.setImageUrl(replaceCdnUrl(task));
 			int hashStartIndex = imageUrl.lastIndexOf("_");
 			task.setMessageHash(CharSequenceUtil.subBefore(imageUrl.substring(hashStartIndex + 1), ".", true));
 			task.success();
@@ -62,11 +67,11 @@ public abstract class MessageHandler {
 		}
 	}
 
-	protected String replaceCdnUrl(String imageUrl,Long taskId) throws IOException {
-		if (CharSequenceUtil.isBlank(imageUrl)) {
-			return imageUrl;
+	protected String replaceCdnUrl(MjTask task) throws IOException {
+		if (CharSequenceUtil.isBlank(task.getImageUrl())) {
+			return "";
 		}
-		return FileUtil.base64ToImage(FileUtil.imageUrlToBase64(imageUrl),String.valueOf(taskId));
+		return FileUtil.base64ToImage(FileUtil.imageUrlToBase64(task.getImageUrl()),task.getTaskAction() == TaskAction.IMAGINE ? String.valueOf(task.getId()) : null);
 	}
 
 }
