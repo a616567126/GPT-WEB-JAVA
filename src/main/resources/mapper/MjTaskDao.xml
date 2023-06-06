@@ -5,7 +5,7 @@
     <select id="selectUserMjTask" resultType="com.intelligent.bot.model.res.sys.MjTaskRes">
         select id,
                related_task_id,
-               `action`,
+               `action` as taskAction,
                prompt,
                prompt_en,
                `index`,

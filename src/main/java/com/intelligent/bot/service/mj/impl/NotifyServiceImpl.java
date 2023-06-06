@@ -46,7 +46,9 @@ public class NotifyServiceImpl implements NotifyService {
 		MjCallBack mjTask = JSONObject.parseObject(paramsJson, MjCallBack.class);
 		log.info("mj开始回调,回调内容：{}", mjTask);
 		SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
-		mjTask.setImageUrl(FileUtil.imageUrlToBase64(cacheObject.getImgReturnUrl() + mjTask.getImageUrl()));
+		if(null != mjTask.getImageUrl()){
+			mjTask.setImageUrl(FileUtil.imageUrlToBase64(cacheObject.getImgReturnUrl() + mjTask.getImageUrl()));
+		}
 		SseEmitterServer.sendMessage(mjTask.getUserId(),mjTask);
 	}
 
