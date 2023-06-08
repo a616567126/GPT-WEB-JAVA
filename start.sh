@@ -54,6 +54,7 @@ cd $(cd $(dirname $0);pwd)/GPT-WEB-JAVA/
 git pull
 echo "Code pulled successfully."
 #执行mvn
+git git pull
 mvn clean && mvn compile && mvn install
 echo "Build successful."
 #复制文件到/usr/local/siana

@@ -5,13 +5,16 @@ import com.intelligent.bot.model.ErrorMessage;
 import com.intelligent.bot.service.sys.IErrorMessageService;
 import com.intelligent.bot.utils.sys.JwtUtil;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-//@ControllerAdvice
+@ControllerAdvice
 @Log4j2
 public class ExceptionHandle {
 
@@ -23,8 +26,8 @@ public class ExceptionHandle {
      * @param e 异常信息
      * @return 返回类是我自定义的接口返回类，参数是返回码和返回结果，异常的返回结果为空字符串
      */
-//    @ExceptionHandler(value = Exception.class)
-//    @ResponseBody
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
     public B<Void> handle(Exception e) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         ErrorMessage errorMessage = new ErrorMessage();
