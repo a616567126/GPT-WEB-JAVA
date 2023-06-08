@@ -61,7 +61,7 @@ public class MyTask {
                                 .type(SendType.SD.getRemark())
                                 .startTime(startTime)
                                 .imgList(imgUrlList).build()))
-                        .userId(req.getUserId()).build());
+                        .userId(req.getUserId()).build(),null);
                 log.info("sd请求地址：{}",cacheObject.getSdUrl() + CommonConst.SD_TXT_2_IMG);
                 SdCreateReq param = BeanUtil.copyProperties(req, SdCreateReq.class);
                 param.setPrompt(baiDuService.translateToEnglish(req.getPrompt()).trim()

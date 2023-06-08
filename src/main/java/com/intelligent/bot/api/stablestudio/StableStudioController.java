@@ -89,7 +89,7 @@ public class StableStudioController {
                 .useNumber(CommonConst.STABLE_STUDIO_NUMBER)
                 .sendType(SendType.STABLE_STUDIO.getType())
                 .useValue(JSONObject.toJSONString(req.getTextPrompts()))
-                .userId(JwtUtil.getUserId()).build());
+                .userId(JwtUtil.getUserId()).build(),null);
         List<String> imgUrlList = new ArrayList<String>();
         List<String> returnImgUrlList = new ArrayList<String>();
         String startTime = DateUtil.getLocalDateTimeNow();

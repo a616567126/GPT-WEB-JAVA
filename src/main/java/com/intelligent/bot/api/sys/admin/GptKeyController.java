@@ -2,6 +2,7 @@ package com.intelligent.bot.api.sys.admin;
 
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.intelligent.bot.base.exception.E;
@@ -14,7 +15,6 @@ import com.intelligent.bot.model.req.gpt.GptBillingReq;
 import com.intelligent.bot.model.req.sys.admin.GptKeyAddReq;
 import com.intelligent.bot.model.req.sys.admin.GptKeyUpdateStateReq;
 import com.intelligent.bot.model.res.gpt.GptBillingRes;
-import com.intelligent.bot.model.res.gpt.LineItems;
 import com.intelligent.bot.model.res.sys.admin.GptKeyQueryRes;
 import com.intelligent.bot.service.sys.IGptKeyService;
 import com.intelligent.bot.utils.gpt.Proxys;
@@ -29,7 +29,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.Proxy;
 import java.time.LocalDate;
-import java.util.List;
 
 
 @RestController
@@ -94,10 +93,8 @@ public class GptKeyController {
         }
         JSONObject bodyJson = JSONObject.parseObject(resultBody);
         res.setTotalUsage(bodyJson.getBigDecimal("total_usage").divide(new BigDecimal(100),2, RoundingMode.HALF_UP));
-        JSONObject dailyCosts = bodyJson.getJSONObject("daily_costs");
+        JSONArray dailyCosts = bodyJson.getJSONArray("daily_costs");
         log.info("dailyCosts:{}",dailyCosts);
-        List<LineItems> lineItems = JSONObject.parseArray(dailyCosts.getString("line_items"), LineItems.class);
-        res.setLineItems(lineItems);
         return B.okBuild(res);
     }
 

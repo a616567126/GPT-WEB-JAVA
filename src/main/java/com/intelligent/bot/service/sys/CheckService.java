@@ -21,7 +21,7 @@ public class CheckService {
     IMessageLogService useLogService;
 
 
-    public Long checkUser(MessageLog messageLog) {
+    public Long checkUser(MessageLog messageLog, Long id) {
         //查询当前用户信息
         User user = userService.getById(messageLog.getUserId());
         messageLog.setUseType(1);
@@ -33,15 +33,12 @@ public class CheckService {
             user.setRemainingTimes(user.getRemainingTimes() - messageLog.getUseNumber());
         }
         userService.saveOrUpdate(user);
-        useLogService.saveOrUpdate(messageLog);
-        return messageLog.getId();
-    }
-    public Long  checkUser(MessageLog messageLog, Long id) {
         if(null != id){
             messageLog.setId(id);
             messageLog.setUseNumber(useLogService.getById(id).getUseNumber() + messageLog.getUseNumber());
         }
-        return checkUser(messageLog);
+        useLogService.saveOrUpdate(messageLog);
+        return messageLog.getId();
     }
 
     public void checkUser(Long userId,Integer number) {

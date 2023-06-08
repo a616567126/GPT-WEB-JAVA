@@ -123,7 +123,7 @@ public abstract class AbstractStreamListener extends EventSourceListener {
             if (StrUtil.contains(responseText, overloadedText)) {
                 log.error("检测到官方超载了，赶紧优化你的代码，做重试吧");
             }
-            this.onError(throwable, key);
+            this.onError(throwable, key.replaceAll("\\s*|\r|\n|\t",""));
         } catch (Exception e) {
             log.warn("onFailure error:{}", e);
             // do nothing

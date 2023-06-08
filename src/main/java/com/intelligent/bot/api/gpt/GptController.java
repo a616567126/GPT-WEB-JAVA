@@ -19,10 +19,7 @@ import com.intelligent.bot.model.req.gpt.GptStreamReq;
 import com.intelligent.bot.model.req.sys.MessageLogSave;
 import com.intelligent.bot.service.baidu.BaiDuService;
 import com.intelligent.bot.service.gpt.ChatGPTStream;
-import com.intelligent.bot.service.sys.AsyncService;
-import com.intelligent.bot.service.sys.CheckService;
-import com.intelligent.bot.service.sys.IMessageLogService;
-import com.intelligent.bot.service.sys.IUserService;
+import com.intelligent.bot.service.sys.*;
 import com.intelligent.bot.utils.gpt.Proxys;
 import com.intelligent.bot.utils.sys.*;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +58,9 @@ public final class GptController {
     @Resource
     BaiDuService baiDuService;
 
+    @Resource
+    IGptKeyService gptKeyService;
+
 
 
     @PostMapping(value = "/chat",name = "流式对话")
@@ -95,6 +95,7 @@ public final class GptController {
         ConsoleStreamListener listener = ConsoleStreamListener.builder()
                 .userId(JwtUtil.getUserId())
                 .userService(userService)
+                .gptKeyService(gptKeyService)
                 .asyncService(asyncService).build();
         listener.setOnComplate(msg -> {
             asyncService.endOfAnswer(logId,msg.toString());
@@ -117,7 +118,7 @@ public final class GptController {
                         .startTime(startTime)
                         .imgList(imgUrlList).build()))
                 .gptKey(randomKey)
-                .userId(JwtUtil.getUserId()).build());
+                .userId(JwtUtil.getUserId()).build(),null);
         SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         Proxy proxy = null ;
         if(null != cacheObject.getIsOpenProxy() && cacheObject.getIsOpenProxy() == 1){

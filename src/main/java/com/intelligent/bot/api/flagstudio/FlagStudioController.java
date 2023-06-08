@@ -66,7 +66,7 @@ public class FlagStudioController {
                         .type(SendType.FS.getRemark())
                         .startTime(startTime)
                         .imgList(imgUrlList).build()))
-                .userId(JwtUtil.getUserId()).build());
+                .userId(JwtUtil.getUserId()).build(),null);
         String prompt = this.baiDuService.translateToEnglish(req.getPrompt());
         req.setPrompt(prompt);
         String body = HttpUtil.createPost(cacheObject.getFlagStudioUrl()+"/v1/text2img")
