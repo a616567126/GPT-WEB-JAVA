@@ -26,5 +26,7 @@ public class WhiteApiList {
         list.add("/mj/callBack");
         //wx
         list.add("/wx/callBack");
+        //获取客户端配置
+        list.add("/client/client/conf");
     }
 }

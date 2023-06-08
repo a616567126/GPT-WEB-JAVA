@@ -931,4 +931,6 @@ public class DateUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return formatter.format(localDateTime);
     }
+
+    public static final DateTimeFormatter DFT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 }

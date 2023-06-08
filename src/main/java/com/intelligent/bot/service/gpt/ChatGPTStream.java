@@ -1,8 +1,10 @@
 package com.intelligent.bot.service.gpt;
 
 import cn.hutool.http.ContentType;
+import cn.hutool.http.Header;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intelligent.bot.base.exception.E;
+import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.gpt.Message;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -82,10 +84,10 @@ public class ChatGPTStream {
             String requestBody = mapper.writeValueAsString(chatCompletion);
             String key = apiKey;
             Request request = new Request.Builder()
-                    .url(apiHost + "v1/chat/completions")
+                    .url(apiHost + CommonConst.CPT_CHAT_URL)
                     .post(RequestBody.create(MediaType.parse(ContentType.JSON.getValue()),
                             requestBody))
-                    .header("Authorization", "Bearer " + key)
+                    .header(Header.AUTHORIZATION.name(), "Bearer " + key)
                     .build();
             factory.newEventSource(request, eventSourceListener);
         } catch (Exception e) {

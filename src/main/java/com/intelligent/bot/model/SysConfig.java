@@ -170,4 +170,13 @@ public class SysConfig extends BaseEntity implements Serializable {
      */
     private String stableStudioKey;
 
+    /**
+     *  客户端 logo 地址
+     */
+    private String clientLogo;
+
+    /**
+     * 客户端名称
+     */
+    private String clientName;
 }

@@ -259,5 +259,24 @@ public class CommonConst {
      */
     public static final String DISCORD_SERVER_URL = "https://discord.com";
 
+    /**
+     * gpt 问答地址
+     */
+    public static final String CPT_CHAT_URL =  "/v1/chat/completions";
+
+    /**
+     * gpt 画图地址
+     */
+    public static final String CPT_IMAGES_URL =  "/v1/images/generations";
+
+    /**
+     * gpt 订阅信息
+     */
+    public static final String CPT_SUBSCRIPTION_URL =  "/v1/dashboard/billing/subscription";
+    /**
+     * get 查询使用情况
+     */
+    public static final String CPT_BILLING_USAGE_URL =  "/v1/dashboard/billing/usage?start_date=%s&end_date=%s";
+
 
 }

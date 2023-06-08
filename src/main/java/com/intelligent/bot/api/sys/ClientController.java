@@ -214,4 +214,12 @@ public class ClientController {
         SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         return B.okBuild(cacheObject.getImgReturnUrl() + fileName);
     }
+
+    @RequestMapping(value = "/client/conf", name = "获取客户端配置，logo，名称")
+    public B<ClientConfRes> clientConf(){
+        SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+        ClientConfRes clientConfRes = BeanUtil.copyProperties(cacheObject, ClientConfRes.class);
+        clientConfRes.setClientLogo(cacheObject.getImgReturnUrl() + clientConfRes.getClientLogo());
+        return B.okBuild(clientConfRes);
+    }
 }

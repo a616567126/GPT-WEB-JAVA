@@ -124,7 +124,7 @@ public final class GptController {
             proxy = Proxys.http(cacheObject.getProxyIp(), cacheObject.getProxyPort());
         }
         req.setType(null);
-        String resultBody = HttpUtil.createPost(cacheObject.getGptUrl() + "/v1/images/generations")
+        String resultBody = HttpUtil.createPost(cacheObject.getGptUrl() + CommonConst.CPT_IMAGES_URL)
                 .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
                 .header(Header.AUTHORIZATION, "Bearer " + randomKey)
                 .setProxy(proxy)
