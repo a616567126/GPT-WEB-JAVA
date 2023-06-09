@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 05/06/2023 14:03:33
+ Date: 09/06/2023 10:38:27
 */
 
 SET NAMES utf8mb4;
@@ -148,7 +148,7 @@ CREATE TABLE `mj_task` (
   `state` varchar(100) DEFAULT NULL COMMENT '自定义参数',
   `index` int DEFAULT NULL COMMENT '图片位置',
   `status` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '任务状态',
-  `image_url` longtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '图片地址',
+  `image_url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '图片地址',
   `start_time` bigint DEFAULT NULL COMMENT '任务开始时间',
   `submit_time` bigint DEFAULT NULL COMMENT '任务提交时间\n',
   `finish_time` bigint DEFAULT NULL COMMENT '任务完成时间',
@@ -281,6 +281,8 @@ CREATE TABLE `sys_config` (
   `is_open_stable_studio` tinyint DEFAULT '0' COMMENT '是否开启StableStudio 0未开启 1 开启',
   `stable_studio_api` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'StableStudioapi地址前缀',
   `stable_studio_key` varchar(100) DEFAULT NULL COMMENT 'StableStudio key',
+  `client_logo` varchar(50) DEFAULT NULL COMMENT '客户端 logo 地址',
+  `client_name` varchar(50) DEFAULT NULL COMMENT '客户端名称',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',

@@ -9,6 +9,8 @@ if ! [ -x "$(command -v git)" ]; then
   echo "安装git"
   yum install git -y
   echo "拉取代码"
+fi
+if [ ! -d "/usr/local/GPT-WEB-JAVA" ]; then
 git clone -b 2.0 https://github.com/a616567126/GPT-WEB-JAVA.git
 fi
 #判断是否有maven
@@ -50,11 +52,10 @@ if [ ! -d "/usr/local/siana" ]; then
 mkdir /usr/local/siana
 fi
 #执行git pull
-cd $(cd $(dirname $0);pwd)/GPT-WEB-JAVA/
+cd /usr/local/GPT-WEB-JAVA/
 git pull
 echo "Code pulled successfully."
 #执行mvn
-git git pull
 mvn clean && mvn compile && mvn install
 echo "Build successful."
 #复制文件到/usr/local/siana

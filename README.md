@@ -57,12 +57,13 @@
     ## shell运行安装步骤
         1.安装mysql，redis
         2.使用centos7系统（其他系统需自己修改shell脚本），将application-prod.yml配置改为自己实际配置 复制到/usr/local/siana下
-        3.使用sh start.sh运行安装脚本
-        4.脚本将自动安装git,拉取代码，安装maven，jdk1.8，并配置环境变量
-        5.自动maven打包，放到/usr/local/siana下
-        6.在/etc/systemd/system/下创建bot.serice 并开机启动
-        7.打包成功之后会运行systemctl restart bot 运行jar包
-        8.使用journalctl -fu bot 命令可查看当前服务状态日志
+        3.进入/usr/local将脚本复制到根目录下
+        4.使用sh start.sh运行安装脚本
+        5.脚本将自动安装git,拉取代码，安装maven，jdk1.8，并配置环境变量
+        6.自动maven打包，放到/usr/local/siana下
+        7.在/etc/systemd/system/下创建bot.serice 并开机启动
+        8.打包成功之后会运行systemctl restart bot 运行jar包
+        9.使用journalctl -fu bot 命令可查看当前服务状态日志
 
 
 ## SQL IN RESOURCES
