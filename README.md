@@ -53,7 +53,7 @@
 * **系统配置**
 
 ## INSTALL AND START  
-    ## 系统依赖jdk1.8 redis mysql 8.0 需自行安装
+    ## 系统依赖jdk1.8 其中redis mysql 8.0 需自行安装
     ## shell运行安装步骤
         1.安装mysql，redis
         2.使用centos7系统（其他系统需自己修改shell脚本），将application-prod.yml配置改为自己实际配置 复制到/usr/local/siana下
