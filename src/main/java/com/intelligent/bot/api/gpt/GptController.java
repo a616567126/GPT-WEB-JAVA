@@ -40,7 +40,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/gpt")
-@RequiredArgsConstructor
+
 @Log4j2
 public final class GptController {
     @Resource

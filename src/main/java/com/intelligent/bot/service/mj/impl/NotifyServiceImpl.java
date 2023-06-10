@@ -21,7 +21,7 @@ import java.io.IOException;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+
 public class NotifyServiceImpl implements NotifyService {
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 

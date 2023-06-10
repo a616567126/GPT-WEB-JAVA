@@ -23,7 +23,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+
 public class DiscordServiceImpl implements DiscordService {
 
 	private String imagineParamsJson;

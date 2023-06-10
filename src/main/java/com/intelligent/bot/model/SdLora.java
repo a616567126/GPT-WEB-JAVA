@@ -21,7 +21,7 @@ public class SdLora extends BaseEntity implements Serializable {
     private String loraName;
 
     /**
-     * lora地址
+     * lora图片地址
      */
     private String imgUrl;
 

@@ -9,7 +9,6 @@ import com.intelligent.bot.model.res.sys.admin.SysConfigUploadImgRes;
 import com.intelligent.bot.service.sys.ISysConfigService;
 import com.intelligent.bot.utils.sys.ImgUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/sys/config")
-@RequiredArgsConstructor
+
 public class SysConfigController {
 
 

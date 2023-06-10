@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.intelligent.bot.dao.SdModelDao">
+
+
+    <select id="queryModelPage" resultType="com.intelligent.bot.model.res.sys.admin.SdModelQueryRes">
+        select id,model_name,img_url,create_time
+        from sd_model
+        where deleted = 0
+        <if test="req.modelName != null and req.modelName != ''">
+            <bind name="modelName" value="'%'+req.modelName+'%'"/>
+            and model_name like #{modelName}
+        </if>
+        order by id desc
+    </select>
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.intelligent.bot.dao.SdLoraDao">
+
+
+    <select id="queryLoraPage" resultType="com.intelligent.bot.model.res.sys.admin.SdLoraQueryRes">
+        select id,lora_name,img_url,create_time
+        from sd_lora
+        where deleted = 0
+        <if test="req.loraName != null and req.loraName != ''">
+            <bind name="loraName" value="'%'+req.loraName+'%'"/>
+            and lora_name like #{loraName}
+        </if>
+        order by id desc
+    </select>
+</mapper>

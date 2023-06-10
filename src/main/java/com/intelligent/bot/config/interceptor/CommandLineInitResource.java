@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @Order(1)
-@RequiredArgsConstructor
+
 public class CommandLineInitResource implements CommandLineRunner {
 
     /**
