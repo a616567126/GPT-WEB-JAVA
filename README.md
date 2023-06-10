@@ -67,7 +67,9 @@
 
 
 ## SQL IN RESOURCES
-**sql文件 src/resources/intelligent_bot.sql**
+**sql文件 src/resources/intelligent_bot.sql**  
+
+**管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码**
 
 ## Precautions For Using Nginx
 
