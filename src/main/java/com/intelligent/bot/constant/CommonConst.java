@@ -199,6 +199,12 @@ public class CommonConst {
     public static final String SD_TXT_2_IMG = "/sdapi/v1/txt2img";
 
     /**
+     * 图生图地址
+      */
+    public static final String SD_IMG_2_IMG = "/sdapi/v1/img2img";
+
+
+    /**
      * sd采样方法
      */
     public static final String SD_SAMPLERS = "/sdapi/v1/samplers";

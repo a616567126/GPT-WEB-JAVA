@@ -62,11 +62,13 @@ public class MyTask {
                                 .startTime(startTime)
                                 .imgList(imgUrlList).build()))
                         .userId(req.getUserId()).build(),null);
-                log.info("sd请求地址：{}",cacheObject.getSdUrl() + CommonConst.SD_TXT_2_IMG);
+                String postUrl = cacheObject.getSdUrl();
+                postUrl = postUrl + (null != req.getInitImages() && req.getInitImages().size() > 0 ? CommonConst.SD_IMG_2_IMG : CommonConst.SD_TXT_2_IMG);
+                log.info("sd请求地址：{}",postUrl);
                 SdCreateReq param = BeanUtil.copyProperties(req, SdCreateReq.class);
                 param.setPrompt(baiDuService.translateToEnglish(req.getPrompt()).trim()
                         + (null != req.getLoraList() ? req.getLoraList().stream().map(String::valueOf) : ""));
-                String body = HttpUtil.createPost(cacheObject.getSdUrl() + CommonConst.SD_TXT_2_IMG)
+                String body = HttpUtil.createPost(postUrl)
                         .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
                         .body(StringUtil.toUnderlineCase(param))
                         .execute()

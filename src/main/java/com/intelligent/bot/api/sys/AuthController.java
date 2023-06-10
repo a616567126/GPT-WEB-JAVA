@@ -62,7 +62,7 @@ public class AuthController {
 
     @RequestMapping(value = "/login", name = "用户登录")
     @AvoidRepeatRequest( msg = "请勿短时间连续登录")
-    public B<UserAuthRes> userLogin(@Validated @RequestBody UserLoginReq userLogin) {
+    public B<UserAuthRes> userLogin(HttpServletRequest request,@Validated @RequestBody UserLoginReq userLogin) {
         SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         List<User> list = userService.lambdaQuery()
                 .eq(User::getMobile, userLogin.getMobile())
@@ -79,6 +79,7 @@ public class AuthController {
         User nweUser = new User();
         nweUser.setId(user.getId());
         nweUser.setLastLoginTime(LocalDateTime.now());
+        nweUser.setIpAddress(ServletUtil.getClientIP(request));
         userService.updateById(nweUser);
         if(!user.getAvatar().contains("http")){
             user.setAvatar(sysConfig.getImgReturnUrl() + user.getAvatar());

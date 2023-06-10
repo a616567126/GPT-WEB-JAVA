@@ -35,4 +35,6 @@ public class PayConfigUpdateReq implements Serializable {
      */
     private Integer payType;
 
+    private Long id;
+
 }

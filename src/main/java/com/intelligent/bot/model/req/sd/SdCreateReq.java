@@ -78,6 +78,10 @@ public class SdCreateReq {
      */
     private Long userId;
 
+    /**
+     * 图生图base64数组
+     */
+    private List<String> initImages;
 
 }
 

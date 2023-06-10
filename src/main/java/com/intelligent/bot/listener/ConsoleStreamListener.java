@@ -1,8 +1,8 @@
 package com.intelligent.bot.listener;
 
-import com.alibaba.fastjson.JSONObject;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.GptKey;
+import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.server.SseEmitterServer;
 import com.intelligent.bot.service.sys.AsyncService;
 import com.intelligent.bot.service.sys.IGptKeyService;
@@ -36,9 +36,11 @@ public class ConsoleStreamListener extends AbstractStreamListener {
         GptKey gptKey = gptKeyService.lambdaQuery().eq(GptKey::getKey, response).one();
         asyncService.updateRemainingTimes(userId,  gptKey.getType() == 3 ? CommonConst.GPT_NUMBER : CommonConst.GPT_4_NUMBER);
         log.error("gpt对话异常，异常key：{}",response);
-        JSONObject errorMessage = new JSONObject();
-        errorMessage.put("content","AI对话服务异常请稍后再试");
-        SseEmitterServer.sendMessage(userId, errorMessage);
+        Message message = Message.ofAssistant("AI对话服务异常请稍后再试");
+        SseEmitterServer.sendMessage(userId, message);
+        message = Message.ofAssistant("[DONE]");
+        SseEmitterServer.sendMessage(userId, message);
+
     }
 
 }

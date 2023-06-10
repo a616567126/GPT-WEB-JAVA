@@ -44,13 +44,14 @@ public class WxServiceImpl implements WxService {
                 "https://github.com/a616567126/GPT-WEB-JAVA\n\n" +
                 "demo演示地址：\n" +
                 url + "\n" +
-                "方便的时候可以给作者点个star\n\n" +
-                "程序功能：1-GPT上下文对话（前端动画仿流式），2-GPT流式对话（socket），3-GPT画图，4-SD画图（联系作者开启功能），5-newBing流式对话（socket）\n\n" +
-                "支付能力：1-易支付（微信，qq，支付宝），2-支付宝扫码支付，3-微信扫码支付\n\n" +
-                "newBing、后台管理页面vip群免费领取，持续更新，入群方式联系作者\n\n" +
+                "1.0 停止注册，需要的同学可以进群咨询开通，方便的时候可以给作者点个star\n\n" +
+                "客户端功能：1-GPT3.5/4.0流式上下文对话，2-GPT画图，3-SD画图（联系作者开启功能），4-newBing流式对话，5-MJ画图\n\n" +
+                "支付能力：1-易支付（微信，qq，支付宝），2-卡密支付\n\n" +
+                "注册能力：1-账号密码，2-邮箱，3-公众号\n\n" +
+                "管理端功能：1-用户管理，2-商品管理，3-订单管理，4-GPTKEY管理，5-卡密管理，6-邮箱管理，7-系统配置，8-操作日志\n\n" +
                 "作者承接App，公众号，小程序，网站，物联网，定制软件，需要可添加作者微信：ssp941003\n\n" +
                 "****************菜单*************\n\n" +
-                "输 入 '查询' 即可查询月卡到期日期剩余次数，账号创建时间\n\n" +
+                "输 入 '查询' 即可剩余次数，账号创建时间\n\n" +
                 "输 入 '绑定-手机号' 即可与当前微信用户绑定例如(绑定-13344445556)\n\n" +
                 "输 入 '开通-手机号' 即可开通账号例如(开通-13344445556)同一个微信号只能开通一个账号默认使用次数5次，默认密码123456\n\n" +
                 "输 入 '加群' 即可扫码添加作者微信,备注github\n\n" +
@@ -118,7 +119,6 @@ public class WxServiceImpl implements WxService {
                                 userService.saveOrUpdate(user);
                                 respContent = "账号绑定成功!" +
                                         "\n账号:" + user.getMobile() + "" +
-                                        "\n密码:" + user.getPassword() +
                                         "\ndemo地址：" + url;
                             }
                         }
@@ -153,6 +153,7 @@ public class WxServiceImpl implements WxService {
                                 user.setFromUserName(fromUser);
                                 user.setIsEvent(1);
                                 user.setRemainingTimes(sysConfig.getDefaultTimes());
+                                user.setType(1);
                                 userService.save(user);
                                 respContent = "账号开通成功!" +
                                         "\n账号:" + user.getMobile() + "" +
@@ -173,7 +174,7 @@ public class WxServiceImpl implements WxService {
                 }
             } else if (content.equals("菜单")) {
                 respContent = "****************菜单**********************\n\n" +
-                        "输 入 '查询' 即可查询月卡到期日期剩余次数，账号创建时间\n\n" +
+                        "输 入 '查询' 即可查询剩余次数，账号创建时间\n\n" +
                         "输 入 '绑定-手机号' 即可与当前微信用户绑定例如(绑定-13344445556)\n\n" +
                         "输 入 '开通-手机号' 即可开通账号例如(开通-13344445556)同一个微信号只能开通一个账号默认使用次数5次，默认密码123456\n\n" +
                         "输 入 '加群' 即可扫码添加作者微信,备注github\n\n" +
@@ -237,4 +238,5 @@ public class WxServiceImpl implements WxService {
                 .build();
         return texts.toXml();
     }
+
 }

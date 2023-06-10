@@ -16,7 +16,7 @@
                final_prompt,
                fail_reason
         from mj_task
-        where user_id = #{userId}
+        where user_id = #{userId} and deleted = 0
         order by id desc
     </select>
     <select id="selectTransform" resultType="com.intelligent.bot.model.res.sys.MjTaskTransformRes">
@@ -24,4 +24,10 @@
         from mj_task
         where `index` > 0
     </select>
+    <delete id="batchDeleteByUserId">
+        delete from mj_task where user_id = #{userId}
+    </delete>
+    <delete id="deleteByKeyId">
+        delete from mj_task where id = #{id}
+    </delete>
 </mapper>
