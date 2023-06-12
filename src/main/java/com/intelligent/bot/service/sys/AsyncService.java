@@ -73,7 +73,7 @@ public class AsyncService {
     public void endOfAnswer(Long logId, String value){
         MessageLog messageLog = useLogService.getById(logId);
         List<Message> messageList = JSONObject.parseArray(messageLog.getUseValue(), Message.class);
-        messageList.add(Message.ofAssistant(value.replaceAll(CommonConst.EMOJI, " ")));
+        messageList.add(Message.ofAssistant(value));
         useLogService.lambdaUpdate().eq(MessageLog::getId,logId)
                 .set(MessageLog::getUseValue,JSONObject.toJSONString(messageList))
                 .update();

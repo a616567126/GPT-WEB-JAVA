@@ -8,7 +8,6 @@ import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.SysConfig;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.StringUtils;
-import sun.misc.BASE64Encoder;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -107,8 +106,7 @@ public class FileUtil {
      * @return Base64编码
      */
     public static String encode(byte[] image) {
-        BASE64Encoder decoder = new BASE64Encoder();
-        return replaceEnter(decoder.encode(image));
+        return replaceEnter(Base64.getEncoder().encodeToString(image));
     }
 
     /**
