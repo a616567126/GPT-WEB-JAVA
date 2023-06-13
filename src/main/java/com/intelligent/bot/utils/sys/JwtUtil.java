@@ -142,7 +142,7 @@ public class JwtUtil {
                 .withClaim("type",user.getType())
                 .sign(algorithm);
         RedisUtil.setCacheObject(CommonConst.REDIS_KEY_PREFIX_TOKEN + user.getId(), SecureUtil.md5(token),
-                CommonConst.TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);
+                CommonConst.TOKEN_EXPIRE_TIME, TimeUnit.DAYS);
         return token;
     }
 

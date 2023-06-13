@@ -7,7 +7,7 @@ public class CommonConst {
     /**
      * token存储时间
      */
-    public static final long TOKEN_EXPIRE_TIME = 1000 * 3600 * 24 * 7L;
+    public static final long TOKEN_EXPIRE_TIME = 7L;
 
     /**
      * token 前缀
