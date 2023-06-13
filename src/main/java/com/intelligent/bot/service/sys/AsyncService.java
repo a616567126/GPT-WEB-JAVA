@@ -4,6 +4,7 @@ package com.intelligent.bot.service.sys;
 import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.intelligent.bot.constant.CommonConst;
+import com.intelligent.bot.enums.sys.SendType;
 import com.intelligent.bot.model.*;
 import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.sys.MessageLogSave;
@@ -73,7 +74,11 @@ public class AsyncService {
     public void endOfAnswer(Long logId, String value){
         MessageLog messageLog = useLogService.getById(logId);
         List<Message> messageList = JSONObject.parseArray(messageLog.getUseValue(), Message.class);
-        messageList.add(Message.ofAssistant(value));
+        if(messageLog.getSendType().equals(SendType.BING.getType())){
+            messageList.add(Message.ofAssistant(value.replaceAll(CommonConst.EMOJI, " ")));
+        }else {
+            messageList.add(Message.ofAssistant(value));
+        }
         useLogService.lambdaUpdate().eq(MessageLog::getId,logId)
                 .set(MessageLog::getUseValue,JSONObject.toJSONString(messageList))
                 .update();

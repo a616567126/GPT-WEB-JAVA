@@ -33,7 +33,7 @@ public class SdLoraServiceImpl extends ServiceImpl<SdLoraDao, SdLora> implements
         Page<SdLoraQueryRes> sdLoraQueryResPage = this.baseMapper.queryLoraPage(page, req);
         SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         sdLoraQueryResPage.getRecords().forEach(s ->{
-            s.setImgUrl(cacheObject.getImgReturnUrl() + s.getImgUrl());
+            s.setImgReturnUrl(cacheObject.getImgReturnUrl());
         });
         return B.okBuild(sdLoraQueryResPage);
     }

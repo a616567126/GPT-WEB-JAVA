@@ -32,7 +32,7 @@ public class SdModelServiceImpl extends ServiceImpl<SdModelDao, SdModel> impleme
         SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         Page<SdModelQueryRes> sdModelQueryResPage = this.baseMapper.queryModelPage(page, req);
         sdModelQueryResPage.getRecords().forEach( s ->{
-            s.setImgUrl(cacheObject.getImgReturnUrl() + s.getImgUrl());
+            s.setImgReturnUrl(cacheObject.getImgReturnUrl());
         });
         return B.okBuild(sdModelQueryResPage);
     }

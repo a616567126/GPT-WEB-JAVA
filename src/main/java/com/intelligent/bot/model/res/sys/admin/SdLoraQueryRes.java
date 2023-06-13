@@ -21,6 +21,11 @@ public class SdLoraQueryRes {
     private String imgUrl;
 
     /**
+     * 图片返回前缀地址
+     */
+    private String imgReturnUrl;
+
+    /**
      * id
      */
     private Long id;

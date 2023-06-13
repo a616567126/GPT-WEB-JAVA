@@ -19,4 +19,38 @@ public class SubmitReq {
 
 	List<String> imgList;
 
+	/**
+	 * 过滤关键字
+	 */
+	private String no;
+
+	/**
+	 * 版本
+	 */
+	private String version;
+
+	/**
+	 * 风格化
+	 */
+	private String stylize;
+
+	/**
+	 * 混乱
+	 */
+	private String chaos;
+
+	/**
+	 * 品质
+	 */
+	private String q;
+
+	/**
+	 * 尺寸
+	 */
+	private String ar;
+
+	/**
+	 * niji风格
+	 */
+	private String style;
 }

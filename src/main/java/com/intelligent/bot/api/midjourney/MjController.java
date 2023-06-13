@@ -24,6 +24,7 @@ import eu.maxschuster.dataurl.DataUrl;
 import eu.maxschuster.dataurl.DataUrlSerializer;
 import eu.maxschuster.dataurl.IDataUrlSerializer;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,6 +88,14 @@ public class MjController {
 			}
 			task.setFinalPrompt("[" + task.getId() + "] " + image + promptEn);
 		}
+		task.setFinalPrompt(task.getFinalPrompt()
+				+" " + (!StringUtils.isEmpty(req.getNo()) ? "--no "+(this.baiDuService.translateToEnglish(req.getNo())) : "")
+				+" " +(!StringUtils.isEmpty(req.getVersion()) ? req.getVersion() : "")
+				+" " +(!StringUtils.isEmpty(req.getStyle()) ? req.getStyle() : "")
+				+" " +(!StringUtils.isEmpty(req.getAr()) ? req.getAr() : "")
+				+" " +(!StringUtils.isEmpty(req.getQ()) ? req.getQ() : "")
+				+" " +(!StringUtils.isEmpty(req.getStylize()) ? req.getStylize() : "")
+				+" " +(!StringUtils.isEmpty(req.getChaos()) ? req.getChaos() : ""));
 		task.setDescription("/imagine " + req.getPrompt());
 		this.taskService.submitImagine(task);
 		return B.okBuild(task);
