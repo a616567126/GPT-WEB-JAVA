@@ -8,17 +8,17 @@
 
 </div>
 
-**<h1 align="center">✨2.0全新版本，全新ui，全新体验</h1>**
+**<h1 align="center">✨ 2.0全新版本，全新ui，全新体验</h1>**
 
 
-## 🚀Getting Started
+## 🚀 Getting Started
 
 * ✔️ **JDK version >= 8**
 * ✔️ **MySql version>= 8.0**
 * ✔️ **Redis version >=4.0**
 
-## 👨‍🚀Major Function
-🔱客户端
+## 👨‍🚀 Major Function
+🔱 客户端
 
 * **🔗登录**
 * **🔗临时用户**
@@ -36,7 +36,7 @@
 
 
 
-🔱管理端
+🔱 管理端
 
 * **🔗首页（数据统计）**
 * **🔗支付配置**
