@@ -47,7 +47,7 @@
 * **🔗产品管理**
 * **🔗系统配置**
 
-## ▶️INSTALL AND START  
+## 〽️ INSTALL AND START  
     ## 系统依赖jdk1.8 其中redis mysql 8.0 需自行安装
     ## shell运行安装步骤
         1.安装mysql，redis
@@ -61,14 +61,14 @@
         9.使用journalctl -fu bot 命令可查看当前服务状态日志
 
 
-## 🐋SQL IN RESOURCES
+## 🐋 SQL IN RESOURCES
 **sql文件 src/resources/intelligent_bot.sql**  
 
-**🧨管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码**
+**🧨 管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码**
 
-## 🪄Precautions For Using Nginx
+## 🪄 Precautions For Using Nginx
 
-**🪄若使用nginx反向代理到后端需要增加SEE支持，与SEE长连接时间**
+**🕹️ 若使用nginx反向代理到后端需要增加SEE支持，与SEE长连接时间**
 
 ```powershell
  server {
@@ -188,7 +188,7 @@ stable_studio_key|StableStudio key|无
 
 
 
-## ℹ️Pay attention to the official account
+## ℹ️ Pay attention to the official account
 ![关注公众号](https://user-images.githubusercontent.com/43660702/229270101-4f11a841-51fc-4625-b498-833629fe7934.png)
 
 
