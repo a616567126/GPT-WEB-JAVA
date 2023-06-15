@@ -119,11 +119,15 @@ Our contributors have made this project possible. Thank you! 🙏
 
 
 ## 🐛Put It Last
-**易支付网站地址：[白辰易支付](https://my.mmywl.cn/)**  
-**作者使用服务器地址：[浅夏云](https://www.qxqxa.com/aff/ZGWPEDLQ)**  
-**作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)**  
-**默认启动时需配置gpt_key,pay_config,sys_config,因为项目启动时会加载对应参数到redis中，如果手动修改数据库，需要在redis中修改对应参数，防止不生效**
-**FlagStudio地址：http://flagstudio.baai.ac.cn/**
+- 易支付网站地址：[白辰易支付](https://my.mmywl.cn/)
+- 作者使用服务器地址：[浅夏云](https://www.qxqxa.com/aff/ZGWPEDLQ)
+- 作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)
+- 默认启动时需配置如下三个表的数据（根据自己实际情况）
+  - gpt_key
+  - pay_config
+  - sys_config
+  - 项目启动时会加载对应参数到redis中，如果手动修改数据库，需要在redis中修改对应参数，防止不生效
+- FlagStudio地址：http://flagstudio.baai.ac.cn/
 
 
 **支付配置(pay_config)**
@@ -175,16 +179,19 @@ stable_studio_key|StableStudio key|无
 
 
 ## ☕条件允许的情况下可以请作者喝一杯冰阔落
-* **支付宝**
-* <img src="https://user-images.githubusercontent.com/43660702/228105535-144d09cd-6326-4c22-b9b9-8c69c299caac.png" width="100px" height="100px">
-* **微信**
-* <img src="https://user-images.githubusercontent.com/43660702/228105188-09c49078-9156-40bc-8327-f2b05c5bc5fa.png" width="100px" height="100px"> 
+- 支付宝  
+
+<img src="https://user-images.githubusercontent.com/43660702/228105535-144d09cd-6326-4c22-b9b9-8c69c299caac.png" width="100px" height="100px">  
+
+- 微信  
+
+<img src="https://user-images.githubusercontent.com/43660702/228105188-09c49078-9156-40bc-8327-f2b05c5bc5fa.png" width="100px" height="100px"> 
 
 
 ## ⭐记得点一个Star哦!!!!
 
 ## ✉ Scan code to add friends
-![IMG_60D5DE670485-1](https://user-images.githubusercontent.com/43660702/232187172-9d971a97-b7a3-407f-9ba1-a35516505733.jpeg)
+![扫码添加好友](https://user-images.githubusercontent.com/43660702/232187172-9d971a97-b7a3-407f-9ba1-a35516505733.jpeg)
 
 
 
