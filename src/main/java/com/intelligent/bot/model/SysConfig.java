@@ -60,7 +60,6 @@ public class SysConfig extends BaseEntity implements Serializable {
      */
     private Integer isOpenSd;
 
-
     /**
      * 是否开启FlagStudio 0-未开启 1开启
      */

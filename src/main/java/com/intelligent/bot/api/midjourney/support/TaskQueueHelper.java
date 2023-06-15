@@ -84,13 +84,13 @@ public class TaskQueueHelper {
 	private void executeTask(MjTask task, Callable<B<Void>> discordSubmit) {
 		this.runningTasks.add(task);
 		try {
+			task.start();
 			B<Void> result = discordSubmit.call();
 			if (result.getStatus() != ResultEnum.SUCCESS.getCode()) {
 				task.fail(result.getMessage());
 				changeStatusAndNotify(task, TaskStatus.FAILURE);
 				return;
 			}
-			task.start();
 			changeStatusAndNotify(task, TaskStatus.SUBMITTED);
 			waitTaskFuture(task);
 			do {

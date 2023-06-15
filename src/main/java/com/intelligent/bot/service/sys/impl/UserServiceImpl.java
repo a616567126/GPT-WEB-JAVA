@@ -73,4 +73,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements IUser
         adminHomeRes.setOrderPriceList(adminHomeOrderPrices);
         return B.okBuild(adminHomeRes);
     }
+
+    @Override
+    public User getOne(String fromUser, String mobile) {
+        return null;
+    }
 }

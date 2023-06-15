@@ -75,4 +75,13 @@
                     state = 1
                   AND date_format( create_time, '%Y-%m-%d' ) = CURDATE()) o3
     </select>
+    <select id="getOne" resultType="com.intelligent.bot.model.User">
+        select * from t_user where deleted = 0
+        <if test="mobile != null and mobile != ''">
+            and mobile = #{mobile}
+        </if>
+        <if test="fromUser != null and fromUser != ''">
+            and from_user_name = #{fromUser}
+        </if>
+    </select>
 </mapper>

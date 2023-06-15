@@ -40,7 +40,7 @@ public class WxApi {
     public String token(String signature,String timestamp,String nonce,String echostr) {
         log.error("wxtoken校验");
         // 通过检验signature对请求进行校验，若校验成功则原样返回echostr，表示接入成功，否则接入失败
-        if (signature != null && wxMpService.checkSignature(signature, timestamp, nonce)) {
+        if (signature != null && wxMpService.checkSignature(timestamp,nonce , signature)) {
             return echostr;
         }
         return null;

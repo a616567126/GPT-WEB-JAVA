@@ -23,5 +23,7 @@ public interface IUserService extends IService<User> {
 
     B<AdminHomeRes> adminHome();
 
+    User getOne(String fromUser,String mobile);
+
 
 }

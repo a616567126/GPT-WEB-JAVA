@@ -9,24 +9,16 @@ import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.model.req.mj.MjCallBack;
 import com.intelligent.bot.server.SseEmitterServer;
 import com.intelligent.bot.service.mj.NotifyService;
-import com.intelligent.bot.service.sys.AsyncService;
 import com.intelligent.bot.utils.sys.FileUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.io.IOException;
-
 @Slf4j
 @Service
-
 public class NotifyServiceImpl implements NotifyService {
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-	@Resource
-	AsyncService asyncService;
 	@Override
 	public void notifyTaskChange(MjTask task) {
 		String notifyHook = task.getNotifyHook();
@@ -42,7 +34,7 @@ public class NotifyServiceImpl implements NotifyService {
 		}
 	}
 
-	private void postJson(String notifyHook, String paramsJson) throws IOException {
+	private void postJson(String notifyHook, String paramsJson) {
 		MjCallBack mjTask = JSONObject.parseObject(paramsJson, MjCallBack.class);
 		log.info("mj开始回调,回调内容：{}", mjTask);
 		SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);

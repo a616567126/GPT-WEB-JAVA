@@ -2,7 +2,6 @@ package com.intelligent.bot.service.wx.impl;
 
 import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.SecureUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.model.User;
@@ -70,9 +69,7 @@ public class WxServiceImpl implements WxService {
         if (msgType.equals(CommonConst.REQ_MESSAGE_TYPE_EVENT)) {
             // 事件类型
             log.info("关注事件");
-            QueryWrapper<User> query = new QueryWrapper<>();
-            query.eq("from_user_name", fromUser);
-            User user = userService.getOne(query);
+            User user = userService.getOne(fromUser,null);
             if (null != user) {
                 if (user.getIsEvent() == 1) {
                     user.setIsEvent(0);
@@ -100,15 +97,11 @@ public class WxServiceImpl implements WxService {
                     if (!Validator.isMobile(split[1])) {
                         respContent = "请输入正确的手机号";
                     } else {
-                        QueryWrapper<User> query = new QueryWrapper<>();
-                        query.eq("from_user_name", fromUser);
-                        User user = userService.getOne(query);
+                        User user = userService.getOne(fromUser,null);
                         if (null != user) {
                             respContent = "当前微信已绑定账号：" + user.getMobile();
                         } else {
-                            query = new QueryWrapper<>();
-                            query.eq("mobile", split[1]);
-                            user = userService.getOne(query);
+                            user = userService.getOne(null,split[1]);
                             if (null == user) {
                                 respContent = "当前手机未注册，请输入'开通' 开通账号";
                             } else if (null != user.getFromUserName()) {
@@ -133,15 +126,11 @@ public class WxServiceImpl implements WxService {
                     if (!Validator.isMobile(split[1])) {
                         respContent = "请输入正确的手机号";
                     } else {
-                        QueryWrapper<User> query = new QueryWrapper<>();
-                        query.eq("from_user_name", fromUser);
-                        User user = userService.getOne(query);
+                        User user = userService.getOne(fromUser,null);
                         if (null != user) {
                             respContent = "当前微信已绑定账号账号：" + user.getMobile();
                         } else {
-                            query = new QueryWrapper<User>();
-                            query.eq("mobile", split[1]);
-                            user = userService.getOne(query);
+                            user = userService.getOne(null,split[1]);
                             if (null != user) {
                                 respContent = "当前手机号已被绑定";
                             } else {
@@ -164,9 +153,7 @@ public class WxServiceImpl implements WxService {
                     }
                 }
             } else if (content.equals("查询")) {
-                QueryWrapper<User> query = new QueryWrapper<>();
-                query.eq("from_user_name", fromUser);
-                User user = userService.getOne(query);
+                User user = userService.getOne(fromUser,null);
                 if (null == user) {
                     respContent = "当微信用户前暂未绑定账号";
                 } else {
@@ -182,9 +169,7 @@ public class WxServiceImpl implements WxService {
                         "输 入 '重置密码' 即可重置一个随机密码\n\n" +
                         "输 入 '菜单' 进入菜单模式";
             } else if (content.equals("加群")) {
-                QueryWrapper<User> query = new QueryWrapper<>();
-                query.eq("from_user_name", fromUser);
-                User user = userService.getOne(query);
+                User user = userService.getOne(fromUser,null);
                 if (null == user) {
                     respContent = "请先开通或绑定账号";
                 } else {
@@ -197,9 +182,7 @@ public class WxServiceImpl implements WxService {
                     return texts.toXml();
                 }
             }else if (content.contains("修改密码")) {
-                QueryWrapper<User> query = new QueryWrapper<>();
-                query.eq("from_user_name", fromUser);
-                User user = userService.getOne(query);
+                User user = userService.getOne(fromUser,null);
                 if (null == user) {
                     respContent = "请先开通或绑定账号";
                 } else {
@@ -217,9 +200,7 @@ public class WxServiceImpl implements WxService {
                     }
                 }
             }else if (content.equals("重置密码")) {
-                QueryWrapper<User> query = new QueryWrapper<>();
-                query.eq("from_user_name", fromUser);
-                User user = userService.getOne(query);
+                User user = userService.getOne(fromUser,null);
                 if (null == user) {
                     respContent = "请先开通或绑定账号";
                 } else {

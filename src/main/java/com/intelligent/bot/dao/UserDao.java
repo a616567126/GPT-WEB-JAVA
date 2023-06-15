@@ -17,4 +17,5 @@ public interface UserDao extends BaseMapper<User> {
     Page<UserQueryPageRes> queryUserPage(@Param("page") Page<UserQueryPageRes> page, @Param("req") UserQueryPageReq req);
 
     AdminHomeRes adminHome();
-}
+
+    User getOne(@Param("fromUser") String fromUser, @Param("mobile") String mobile);}
