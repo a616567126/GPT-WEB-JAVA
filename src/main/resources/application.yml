@@ -29,3 +29,5 @@ wx:
     secret:
     config-storage:
       type: redistemplate
+    token: xxxx
+
