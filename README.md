@@ -113,7 +113,7 @@ Our contributors have made this project possible. Thank you! 🙏
 
 
 ## 🎨USE MJ
-- 注册 MidJourney，创建自己的频道，参考 https://docs.midjourney.com/docs/quick-start
+- 注册 MidJourney，创建自己的频道，[参考地址](https://docs.midjourney.com/docs/quick-start)
 - 添加自己的机器人 [参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8E)  
 
 
