@@ -8,51 +8,46 @@
 
 </div>
 
-# **Project Title**
+**✨<h1 align="center">2.0全新版本，全新ui，全新体验</h1>**
 
-**2.0全新版本，全新ui，全新体验**
 
-**Project Name: Siana**
+## 🚀Getting Started
 
-## Getting Started
+* ✅ **JDK>=8**
+* ✅ **MySql>=8.0**
+* ✅ **Redis>=4.0**
 
-* [**JDK>=8**](golang_install_guide)
-* [**MySql>=8.0**](golang_install_guide)
-* [**Redis>=4.0**](golang_install_guide)
-
-## Major Function
+## 👨‍🚀Major Function
 --客户端
 
-* **登录**
-* **临时用户**
-* **注册（公众号注册，邮箱注册，账号密码注册）**
-* **基于SSE GPT 3.5/4.0 流式对话+上下文**
-* **GPT 画图**
-* **FlagStudio画图**
-* **Midjourney画图**
-* **Stable-Diffusion画图**
-* **stableStudio画图**
-* **公告查看**
-* **个人信息展示（剩余次数，身份，昵称）**
-* **个人信息修改（头像，密码）**
-* **产品查询购买**
-* **订单查询**
-* **支付方式 易支付、卡密兑换**
+* **🔗登录**
+* **🔗临时用户**
+* **🔗注册（公众号注册，邮箱注册，账号密码注册）**
+* **🔗基于SSE GPT 3.5/4.0 流式对话+上下文**
+* **🔗GPT 画图**
+* **🔗FlagStudio画图**
+* **🔗Midjourney画图**
+* **🔗Stable-Diffusion画图**
+* **🔗个人信息展示（剩余次数，身份，昵称）**
+* **🔗个人信息修改（头像，密码）**
+* **🔗产品查询购买**
+* **🔗订单查询**
+* **🔗支付方式 易支付、卡密兑换**
 
 
 
 --管理端
 
-* **首页（数据统计）**
-* **支付配置**
-* **对KEY配置**
-* **用户管理**
-* **订单管理**
-* **公告管理**
-* **产品管理**
-* **系统配置**
+* **🔗首页（数据统计）**
+* **🔗支付配置**
+* **🔗对KEY配置**
+* **🔗用户管理**
+* **🔗订单管理**
+* **🔗公告管理**
+* **🔗产品管理**
+* **🔗系统配置**
 
-## INSTALL AND START  
+## ▶️INSTALL AND START  
     ## 系统依赖jdk1.8 其中redis mysql 8.0 需自行安装
     ## shell运行安装步骤
         1.安装mysql，redis
@@ -66,14 +61,14 @@
         9.使用journalctl -fu bot 命令可查看当前服务状态日志
 
 
-## SQL IN RESOURCES
+## 🐋SQL IN RESOURCES
 **sql文件 src/resources/intelligent_bot.sql**  
 
-**管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码**
+**🧨管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码**
 
-## Precautions For Using Nginx
+## 🪄Precautions For Using Nginx
 
-**若使用nginx反向代理到后端需要增加SEE支持，与SEE长连接时间**
+**🪄若使用nginx反向代理到后端需要增加SEE支持，与SEE长连接时间**
 
 ```powershell
  server {
@@ -100,28 +95,30 @@
 
 ### And coding style tests
 
-**2.0全新ui，与管理系统不开源，有需要的可以添加作者微信询问，
-vip进群资格500RMB包含（1.0全部源码，2.0管理端源码，java源码，客户端免费打包）
-1.0、2.0全套部署1000RMB**  
+**💰2.0全新ui，客户端与管理前端源码不开源，加入VIP群持续更新，加入价格500RMB**  
 
 **[后台管理ui地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA)**  
 
-## Contributors
+## 💪 Contributors 
 
-这个项目的存在要感谢所有做出贡献的人.
+
+<p align="center">
+Our contributors have made this project possible. Thank you! 🙏
+</p>
 
 <a href="https://github.com/a616567126/GPT-WEB-JAVA/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=a616567126/GPT-WEB-JAVA" />
-</a>  
+  <img src="https://contrib.rocks/image?repo=a616567126/GPT-WEB-JAVA" />
+</a>
 
 
-## USE MJ
+
+## 🎨USE MJ
 - 注册 MidJourney，创建自己的频道，参考 https://docs.midjourney.com/docs/quick-start
 - 添加自己的机器人 [参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8E)  
 
 
 
-## Put It Last
+## 🐛Put It Last
 **易支付网站地址：[白辰易支付](https://my.mmywl.cn/)**  
 **作者使用服务器地址：[浅夏云](https://www.qxqxa.com/aff/ZGWPEDLQ)**  
 **作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)**  
@@ -177,21 +174,21 @@ stable_studio_key|StableStudio key|无
 
 
 
-## 条件允许的情况下可以请作者喝一杯冰阔落
+## ☕条件允许的情况下可以请作者喝一杯冰阔落
 * **支付宝**
 * <img src="https://user-images.githubusercontent.com/43660702/228105535-144d09cd-6326-4c22-b9b9-8c69c299caac.png" width="100px" height="100px">
 * **微信**
 * <img src="https://user-images.githubusercontent.com/43660702/228105188-09c49078-9156-40bc-8327-f2b05c5bc5fa.png" width="100px" height="100px"> 
 
 
-## 记得点一个Star哦!!!!
+## ⭐记得点一个Star哦!!!!
 
-## 扫码添加好友
+## ✉ Scan code to add friends
 ![IMG_60D5DE670485-1](https://user-images.githubusercontent.com/43660702/232187172-9d971a97-b7a3-407f-9ba1-a35516505733.jpeg)
 
 
 
-## 关注公众号
+## ℹ️Pay attention to the official account
 ![关注公众号](https://user-images.githubusercontent.com/43660702/229270101-4f11a841-51fc-4625-b498-833629fe7934.png)
 
 
