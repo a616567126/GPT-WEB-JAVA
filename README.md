@@ -103,9 +103,8 @@
 Our contributors have made this project possible. Thank you! 🙏
 </p>
 
-<a href="https://github.com/a616567126/GPT-WEB-JAVA/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=a616567126/GPT-WEB-JAVA" />
-</a>
+<a href="https://github.com/a616567126/GPT-WEB-JAVA/graphs/contributors"><img src="https://opencollective.com/gpt-web-java/contributors.svg?width=890&button=false" /></a>
+
 
 
 
