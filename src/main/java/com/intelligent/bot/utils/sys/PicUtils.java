@@ -1,5 +1,7 @@
 package com.intelligent.bot.utils.sys;
 
+import com.intelligent.bot.constant.CommonConst;
+import com.intelligent.bot.model.SysConfig;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.util.StringUtils;
@@ -21,6 +23,9 @@ public class PicUtils {
      * @return
      */
     public static String commpressPicForScale(String srcPath, String desPath) {
+        SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+        srcPath = sysConfig.getImgUploadUrl() + srcPath;
+        desPath = sysConfig.getImgUploadUrl() + desPath;
         if (StringUtils.isEmpty(srcPath) || StringUtils.isEmpty(srcPath)) {
             return null;
         }
@@ -33,14 +38,16 @@ public class PicUtils {
 //            log.info("源图片：" + srcPath + "，大小：" + srcFileSize / 1024
 //                    + "kb");
             // 1、先转换成jpg
-            Thumbnails.of(srcPath).scale(1f).toFile(desPath);
+            if(!desPath.contains("jpg")){
+                Thumbnails.of(srcPath).scale(1f).toFile(desPath);
+            }
             // 递归压缩，直到目标文件大小小于desFileSize
             commpressPicCycle(desPath, 500L, 0.9);
 
             File desFile = new File(desPath);
 //            log.info("目标图片：" + desPath + "，大小" + desFile.length()
 //                    / 1024 + "kb");
-            //System.out.println("图片压缩完成！");
+//            log.info("图片压缩完成！");
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -49,7 +49,9 @@ public class FileUtil {
         out.write(bytes);
         out.flush();
         out.close();
-        return "/"+dayFilePatch+newFileName;
+        String savePath = "/"+dayFilePatch+newFileName;
+        PicUtils.commpressPicForScale(savePath,savePath);
+        return savePath;
     }
 
     public static String base64ToImage(String base64) throws IOException {
