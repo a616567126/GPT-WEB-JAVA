@@ -2,9 +2,9 @@
     <p style="font-size:40px;font-weight: 800;color: coral">Siana 智能Ai机器人 </p>
 </div>
 <div align="center" style="text-align:center;margin-top:30px;margin-bottom:20px">
-    <img alt="Java version" src=https://img.shields.io/static/v1?label=java&message=%20%3E=8&logo=openjdk" />
+    <img alt="Java version" src=https://img.shields.io/static/v1?label=openjdk&message=%20%3E=8&logo=openjdk&color=blue" />
     <img alt="MySql version" src="https://img.shields.io/static/v1?label=mysql&message=%20=8.0&logo=mysql&color=blue" />
-    <img alt="Redis version" src=https://img.shields.io/static/v1?label=redis&message=%20%3E=4&logo=redis&color=red" />
+    <img alt="Redis version" src=https://img.shields.io/static/v1?label=redis&message=%20%3E=4&logo=redis&color=blue" />
     <a style="padding-left:10px"><img src="https://img.shields.io/github/stars/a616567126/GPT-WEB-JAVA"/></a>
     <a style="padding-left:10px"><img src="https://img.shields.io/github/forks/a616567126/GPT-WEB-JAVA?color=red&logo=red"/></a>  
 
