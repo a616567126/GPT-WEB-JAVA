@@ -1,24 +1,21 @@
 <div align="center">
-    <p style="font-size:25px;font-weight: 800;">GPT-WEB-CLIENT</p>
+    <p style="font-size:40px;font-weight: 800;color: coral">Siana 智能Ai机器人 </p>
 </div>
 <div align="center" style="text-align:center;margin-top:30px;margin-bottom:20px">
-   <a style="padding-left:10px"><img src="https://img.shields.io/github/stars/a616567126/GPT-WEB-JAVA"/></a>
-   <a style="padding-left:10px"><img src="https://img.shields.io/github/forks/a616567126/GPT-WEB-JAVA?color=red&logo=red"/></a>  
+    <img alt="Node version" src=https://img.shields.io/static/v1?label=java&message=%20%3E=8&logo=openjdk" />
+    <img alt="Node version" src="https://img.shields.io/static/v1?label=mysql&message=%20=8.0&logo=mysql&color=blue" />
+    <img alt="Node version" src=https://img.shields.io/static/v1?label=redis&message=%20%3E=4&logo=redis&color=red" />
+    <a style="padding-left:10px"><img src="https://img.shields.io/github/stars/a616567126/GPT-WEB-JAVA"/></a>
+    <a style="padding-left:10px"><img src="https://img.shields.io/github/forks/a616567126/GPT-WEB-JAVA?color=red&logo=red"/></a>  
 
 
 </div>
 
-**<h1 align="center">✨ 2.0全新版本，全新ui，全新体验</h1>**
+**<h1 align="center">✨  2.0全新版本，全新ui，全新体验</h1>**
 
 
-## 🚀 Getting Started
-
-* ✔️ **JDK version >= 8**
-* ✔️ **MySql version>= 8.0**
-* ✔️ **Redis version >=4.0**
-
-## 👨‍🚀 Major Function
-🔱 客户端
+## 👨‍🚀  Major Function
+<h2>🔱 客户端</h2>
 
 * **🔗登录**
 * **🔗临时用户**
@@ -36,7 +33,7 @@
 
 
 
-🔱 管理端
+<h2>🔱 管理端</h2>
 
 * **🔗首页（数据统计）**
 * **🔗支付配置**
@@ -61,14 +58,14 @@
         9.使用journalctl -fu bot 命令可查看当前服务状态日志
 
 
-## 🐋 SQL IN RESOURCES
+## 🐋  SQL IN RESOURCES
 **sql文件 src/resources/intelligent_bot.sql**  
 
 **🧨 管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码**
 
-## 🪄 Precautions For Using Nginx
+## 🪄  Precautions For Using Nginx
 
-**🕹️ 若使用nginx反向代理到后端需要增加SEE支持，与SEE长连接时间**
+**🕹️  若使用nginx反向代理到后端需要增加SEE支持，与SEE长连接时间**
 
 ```powershell
  server {
@@ -93,9 +90,9 @@
     }
 ```
 
-### And coding style tests
+### 🧭 And coding style tests
 
-**💰2.0全新ui，客户端与管理前端源码不开源，加入VIP群持续更新，加入价格500RMB**  
+**<h3>🧧 2.0全新ui，客户端与管理前端源码不开源，加入VIP群持续更新，加入价格500RMB</h3>**  
 
 **[📽️后台管理ui演示地址地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA)**  
 
@@ -112,13 +109,13 @@ Our contributors have made this project possible. Thank you! 🙏
 
 
 
-## 🎨USE MJ
+## 🎨USE Midjourney
 - 注册 MidJourney，创建自己的频道，[参考地址](https://docs.midjourney.com/docs/quick-start)
 - 添加自己的机器人 [参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8E)  
 
 
 
-## 🐛Put It Last
+## 🍾  Put It Last
 - 易支付网站地址：[白辰易支付](https://my.mmywl.cn/)
 - 作者使用服务器地址：[浅夏云](https://www.qxqxa.com/aff/ZGWPEDLQ)
 - 作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)
@@ -178,7 +175,7 @@ stable_studio_key|StableStudio key|无
 
 
 
-## ☕条件允许的情况下可以请作者喝一杯冰阔落
+## ☕  Reward
 - 支付宝  
 
 <img src="https://user-images.githubusercontent.com/43660702/228105535-144d09cd-6326-4c22-b9b9-8c69c299caac.png" width="100px" height="100px">  
@@ -188,9 +185,9 @@ stable_studio_key|StableStudio key|无
 <img src="https://user-images.githubusercontent.com/43660702/228105188-09c49078-9156-40bc-8327-f2b05c5bc5fa.png" width="100px" height="100px"> 
 
 
-## ⭐记得点一个Star哦!!!!
+## ⭐  记得点一个Star哦!!!!
 
-## ✉ Scan code to add friends
+## ✉  Scan code to add friends
 ![扫码添加好友](https://user-images.githubusercontent.com/43660702/232187172-9d971a97-b7a3-407f-9ba1-a35516505733.jpeg)
 
 
@@ -199,7 +196,7 @@ stable_studio_key|StableStudio key|无
 ![关注公众号](https://user-images.githubusercontent.com/43660702/229270101-4f11a841-51fc-4625-b498-833629fe7934.png)
 
 
-
+## 
 [![Star History Chart](https://api.star-history.com/svg?repos=a616567126/GPT-WEB-JAVA&type=Timeline)](https://star-history.com/#a616567126/GPT-WEB-JAVA&Timeline)  
 
 
