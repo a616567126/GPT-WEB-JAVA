@@ -111,6 +111,7 @@ Our contributors have made this project possible. Thank you! 🙏
 ## 🎨USE Midjourney
 - 1.注册 MidJourney创建自己的频道、[参考地址](https://docs.midjourney.com/docs/quick-start)
 - 2.添加自己的机器人、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8E)  
+- 3.如果使用机器人监听可参考1，2步骤，建议使用用户wss来监听消息，数据库只需配置服务器id，频道id，用户的token即可
 
 
 
