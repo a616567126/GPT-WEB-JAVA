@@ -58,14 +58,14 @@
         9.使用journalctl -fu bot 命令可查看当前服务状态日志
 
 
-## 🐋  SQL IN RESOURCES
-**sql文件 src/resources/intelligent_bot.sql**  
+## 🐋  SQL IN RESOURCES  
+<span>sql文件位置： src/resources/intelligent_bot.sql</span>
 
-**🧨 管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码**
+🧨 <span>管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码</span>
 
 ## 🪄  Precautions For Using Nginx
 
-**🕹️  若使用nginx反向代理到后端需要增加SEE支持，与SEE长连接时间**
+<span>🕹️  若使用nginx反向代理到后端需要增加SEE支持，与SEE长连接时间</span>
 
 ```powershell
  server {
@@ -109,8 +109,8 @@ Our contributors have made this project possible. Thank you! 🙏
 
 
 ## 🎨USE Midjourney
-- 注册 MidJourney，创建自己的频道，[参考地址](https://docs.midjourney.com/docs/quick-start)
-- 添加自己的机器人 [参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8E)  
+- 1.注册 MidJourney创建自己的频道、[参考地址](https://docs.midjourney.com/docs/quick-start)
+- 2.添加自己的机器人、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8E)  
 
 
 
@@ -147,7 +147,6 @@ api_url|后台接口地址|用于mj、支付、微信等回调使用
 client_url|客户端页面地址|用于支付跳转等
 is_open_sd|是否开启sd 0未开启 1开启|无
 sd_url|Sd接口地址|开启sd时需配置这个地址
-sd_lora_url|sdLora地址|无
 is_open_flag_studio|是否开启FlagStudio 0-未开启 1开启|无
 flag_studio_key|FlagStudio key|登录之后api获得每天500次请求
 flag_studio_url|FlagStudio 接口地址|暂时写死https://flagopen.baai.ac.cn/flagStudio
@@ -159,8 +158,6 @@ is_open_mj|是否开启mj 0-未开启 1开启|无
 mj_guild_id|Mj服务器id|url地址中获得
 mj_channel_id|Mj频道id|url地址中获得
 mj_user_token|mj用户token|F12查看network中的Authorization参数
-mj_bot_token|机器人token|https://discord.com/developers/applications中获取
-mj_bot_name|机器人名称|默认Midjourney Bot若其他自行修改
 is_open_proxy|是否开启代理 0关闭 1开启|无
 proxy_ip|代理ip|无
 proxy_port|代理端口|无
