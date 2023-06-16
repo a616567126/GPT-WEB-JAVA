@@ -23,7 +23,7 @@ public class ChatCompletion implements Serializable {
 
     @NonNull
     @Builder.Default
-    private String model = Model.GPT_3_5_TURBO.getName();
+    private String model = Model.GPT_3_5_TURBO_16K.getName();
 
     @NonNull
     private List<Message> messages;
@@ -94,6 +94,10 @@ public class ChatCompletion implements Serializable {
          * gpt-3.5-turbo
          */
         GPT_3_5_TURBO("gpt-3.5-turbo"),
+        /**
+         * gpt-3.5-turbo-16
+         */
+        GPT_3_5_TURBO_16K("gpt-3.5-turbo-16k"),
         /**
          * 临时模型，不建议使用
          */

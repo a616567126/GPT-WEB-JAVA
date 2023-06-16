@@ -104,7 +104,7 @@ public class ChatGPTStream {
         messages.forEach(m ->{
             m.setTime(null);
         });
-        String model  = type == 3 ? ChatCompletion.Model.GPT_3_5_TURBO.getName() : ChatCompletion.Model.GPT_4.getName();
+        String model  = type == 3 ? ChatCompletion.Model.GPT_3_5_TURBO_16K.getName() : ChatCompletion.Model.GPT_4.getName();
         ChatCompletion chatCompletion = ChatCompletion.builder()
                 .messages(messages)
                 .model(model)

@@ -107,7 +107,7 @@ public class CommonConst {
     /**
      * gpt3.5对话消耗次数
      */
-    public static final Integer GPT_NUMBER =  1;
+    public static final Integer GPT_NUMBER =  2;
 
     /**
      * gpt4消耗次数
