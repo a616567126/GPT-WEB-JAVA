@@ -112,7 +112,7 @@ Our contributors have made this project possible. Thank you! 🙏
 
 ## 🎨USE Midjourney
 - 1.注册 MidJourney创建自己的频道、[参考地址](https://docs.midjourney.com/docs/quick-start)
-- 2.添加成功之后查看浏览器中的地址如：<h2>https://discord.com/channels/123/456 </h2>其中123为mj_guild_id,456为mj_channel_id
+- 2.添加成功之后查看浏览器中的地址如：<dfn>https://discord.com/channels/123/456 </dfn> 其中123为mj_guild_id,456为mj_channel_id
 - 3.获取mj_user_token，浏览器打开F12随便发送一个信息查看Network,Authorization为用户token
 - 4.~~添加自己的机器人~~、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8E)  
 - 5.如果使用机器人监听可参考步骤4
