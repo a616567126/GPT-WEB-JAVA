@@ -13,7 +13,7 @@
 
 <h1 align="center">✨  2.0全新版本，全新ui，全新体验</h1>  
 
-<p align="center">注意：获取1.0请切换到wx分支</p>
+<p align="center">注意：获取1.0请切换到[wx]分支,About中的地址为1.0客户端地址</p>
 
 
 ## 👨‍🚀  Major Function
