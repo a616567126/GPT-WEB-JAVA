@@ -66,8 +66,9 @@ public class MyTask {
                 postUrl = postUrl + (null != req.getInitImages() && req.getInitImages().size() > 0 ? CommonConst.SD_IMG_2_IMG : CommonConst.SD_TXT_2_IMG);
                 log.info("sd请求地址：{}",postUrl);
                 SdCreateReq param = BeanUtil.copyProperties(req, SdCreateReq.class);
-                param.setPrompt(baiDuService.translateToEnglish(req.getPrompt()).trim()
-                        + (null != req.getLoraList() ? req.getLoraList().stream().map(String::valueOf) : ""));
+                String lora = null != req.getLoraList() ? String.join(" ", req.getLoraList()) : "";
+                param.setPrompt(baiDuService.translateToEnglish(req.getPrompt()).trim() + lora);
+                param.setLoraList(null);
                 String body = HttpUtil.createPost(postUrl)
                         .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
                         .body(StringUtil.toUnderlineCase(param))
