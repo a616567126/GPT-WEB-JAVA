@@ -119,8 +119,9 @@ Our contributors have made this project possible. Thank you! 🙏
 - 4.~~添加自己的机器人~~、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8E)  
 - 5.如果使用机器人监听可参考步骤4
 
-## 📃  USE Baidu
-<p align="center">GPT，Midjourney、Stable-Diffusion 使用文本审核，Midjourney、Stable-Diffusion，使用百度翻译</p>
+<p align="center">GPT，Midjourney、Stable-Diffusion 使用文本审核，Midjourney、Stable-Diffusion，使用百度翻译</p>  
+
+## 🎨  USE Midjourney
 - 1.百度翻译申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91)
 - 1.百度文本审核申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E5%86%85%E5%AE%B9%E5%AE%A1%E6%A0%B8%E5%B9%B3%E5%8F%B0-%E6%96%87%E6%9C%AC)
 
