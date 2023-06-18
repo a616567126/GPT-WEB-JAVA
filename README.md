@@ -143,7 +143,8 @@ Our contributors have made this project possible. Thank you! 🙏
 
 
 ## 🪜  USE Proxy
-<p align="center">GPT、Midjourney 国内网络环境下使用代理访问</p>
+<p align="center">GPT、Midjourney 国内网络环境下使用代理访问</p>  
+
 - 代理使用，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E4%BD%BF%E7%94%A8%E4%BB%A3%E7%90%86%E8%AF%B7%E6%B1%82GPT%E3%80%81Midjourney)
 
 
