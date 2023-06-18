@@ -121,7 +121,7 @@ Our contributors have made this project possible. Thank you! 🙏
 
 
 
-## 🎨  USE Midjourney  
+## 📄  USE Baidu  
 <p align="center">GPT，Midjourney、Stable-Diffusion 使用文本审核，Midjourney、Stable-Diffusion，使用百度翻译</p>    
 
 - 1.百度翻译申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91)
