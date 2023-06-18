@@ -63,9 +63,10 @@
         12.在/etc/systemd/system/下创建bot.service 并开机启动
         13.打包成功之后会运行systemctl restart bot 运行jar包
         14.使用journalctl -fu bot 命令可查看当前服务状态日志
+        15.管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码
+        16.相关配置请往下滑！
 
 
-🧨 <span>管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码</span>
 
 ## 🕹  Precautions For Using Nginx
 
@@ -110,6 +111,27 @@ Our contributors have made this project possible. Thank you! 🙏
 <a href="https://github.com/a616567126/GPT-WEB-JAVA/graphs/contributors"><img src="https://opencollective.com/gpt-web-java/contributors.svg?width=890&button=false" /></a>
 
 
+## 💬  USE GPT
+- 1.在gpt_key中配置对应的gpt key，注意区分3.5与4.0
+- 2.若国内环境使用请使用代理访问，或使用cloudflare搭理，[教程地址](https://github.com/x-dr/chatgptProxyAPI)
+- 3.gpt使用sse方式进行消息推送与前端交互，若使用nginx请查看上方nginx配置
+
+
+## 🧩  USE Image Upload(图片上传)
+- 1.创建指定的文件夹如：/usr/local/upload
+- 2.创建成功后在"sys_config"表中"img_upload_url"配置第一步创建的目录记得最后边加上"/"如：/usr/local/upload/
+- 3.使用nginx进行文件夹代理
+- 4.nginx代理的域名或ip配置到sys_config中img_return_url如："https://www.baidu.com"
+- 5.上传的图片会以每天的年月日来进行创建文件夹
+- 6.图片名称分为两种，Midjourney的名字为任务id，其余的图片为当前时间戳
+- 7.图片最终的地址为："img_return_url"+"img_upload_url"+文件名，如："https://www.baidu.com/20230618/123.jpg"
+
+
+## 🎨  USE Stable-Diffusion
+- 1.在"sd_model"表中配置模型（名字（全部内容包括后缀），图片）
+- 2.若有lora在"sd_lora"表中配置lora（名字，图片）
+- 3.配置"sys_config"表中"is_open_sd"为1，开启状态
+- 4.配置"sys_config"表中"sd_url"的地址，本地默认地址为http://127.0.0.1:7860(记得打开api开关)
 
 
 ## 🎨  USE Midjourney
@@ -120,13 +142,16 @@ Our contributors have made this project possible. Thank you! 🙏
 - 5.如果使用机器人监听可参考步骤4
 
 
+## 🪜  USE Proxy
+<p align="center">GPT、Midjourney 国内网络环境下使用代理访问</p>
+- 代理使用，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E4%BD%BF%E7%94%A8%E4%BB%A3%E7%90%86%E8%AF%B7%E6%B1%82GPT%E3%80%81Midjourney)
+
 
 ## 📄  USE Baidu  
-<p align="center">GPT，Midjourney、Stable-Diffusion 使用文本审核，Midjourney、Stable-Diffusion，使用百度翻译</p>    
+<p align="center">GPT、Midjourney、Stable-Diffusion 使用文本审核，Midjourney、Stable-Diffusion，使用百度翻译</p>    
 
 - 1.百度翻译申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91)
 - 1.百度文本审核申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E5%86%85%E5%AE%B9%E5%AE%A1%E6%A0%B8%E5%B9%B3%E5%8F%B0-%E6%96%87%E6%9C%AC)
-
 
 
 ## 🍾  Put It Last
