@@ -46,7 +46,7 @@
 * **产品管理**
 * **系统配置**
 
-## 💻 INSTALL AND START  
+## 💻  INSTALL AND START  
     ## 系统依赖jdk1.8 其中redis mysql 8.0 需自行安装
     ## shell运行安装步骤
         1.安装mysql，redis
@@ -67,7 +67,7 @@
 
 🧨 <span>管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码</span>
 
-## 🕹️  Precautions For Using Nginx
+## 🕹  Precautions For Using Nginx
 
 <span> 🪧  若使用nginx反向代理到后端需要增加SEE支持，与SEE长连接时间</span>
 
@@ -94,13 +94,13 @@
     }
 ```
 
-### 🧭 And coding style tests
+### ⌨️  And coding style tests
 
 **<h3>🧧 2.0全新ui，客户端与管理前端源码不开源，加入VIP群持续更新，加入价格500RMB</h3>**  
 
 **[📽️后台管理ui演示地址地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA)**  
 
-## 💪 Contributors 
+## 💪  Contributors 
 
 
 <p align="center">
@@ -112,14 +112,15 @@ Our contributors have made this project possible. Thank you! 🙏
 
 
 
-## 🎨USE Midjourney
+## 🎨  USE Midjourney
 - 1.注册 MidJourney创建自己的频道、[参考地址](https://docs.midjourney.com/docs/quick-start)
 - 2.添加成功之后查看浏览器中的地址如：<SMALL>https://discord.com/channels/123/456 </SMALL> 其中123为mj_guild_id,456为mj_channel_id
 - 3.获取mj_user_token，浏览器打开F12随便发送一个信息查看Network,Authorization为用户token
 - 4.~~添加自己的机器人~~、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8E)  
 - 5.如果使用机器人监听可参考步骤4
 
-## 📃USE Baidu(GPT，Midjourney、Stable-Diffusion 使用文本审核，Midjourney、Stable-Diffusion，使用百度翻译)
+## 📃  USE Baidu
+<p align="center">GPT，Midjourney、Stable-Diffusion 使用文本审核，Midjourney、Stable-Diffusion，使用百度翻译</p>
 - 1.百度翻译申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91)
 - 1.百度文本审核申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E5%86%85%E5%AE%B9%E5%AE%A1%E6%A0%B8%E5%B9%B3%E5%8F%B0-%E6%96%87%E6%9C%AC)
 
@@ -182,7 +183,7 @@ stable_studio_key|StableStudio key|无
 
 
 
-## ☕  Reward（有能力的可以请作者喝一杯冰可落）
+## 🥤  Reward（有能力的可以请作者喝一杯冰可落）
 - 支付宝  
 
 <img src="https://user-images.githubusercontent.com/43660702/228105535-144d09cd-6326-4c22-b9b9-8c69c299caac.png" width="100px" height="100px">  
@@ -199,7 +200,7 @@ stable_studio_key|StableStudio key|无
 
 
 
-## ℹ️ Pay attention to the official account（关注公众号）
+## 🎯  Pay attention to the official account（关注公众号）
 ![关注公众号](https://user-images.githubusercontent.com/43660702/229270101-4f11a841-51fc-4625-b498-833629fe7934.png)
 
 
