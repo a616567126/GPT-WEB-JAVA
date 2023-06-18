@@ -47,8 +47,8 @@
 * **系统配置**
 
 ## 💻  INSTALL AND START  
-    ## 系统依赖jdk1.8 其中redis mysql 8.0 需自行安装
-    ## shell运行安装步骤
+    一、系统依赖jdk1.8 其中redis mysql 8.0 需自行安装（建议修改mysql与redis端口，redis可能会被挖矿）
+    二、shell运行安装步骤
         1.安装mysql，redis
         2.创建数据库名字为：intelligent_bot
         3.导入src/resources/下的intelligent_bot.sql 文件
@@ -70,7 +70,7 @@
 
 ## 🕹  Precautions For Using Nginx
 
-<span> 🪧  若使用nginx反向代理到后端需要增加SEE支持，与SEE长连接时间</span>
+<p align="center">🪧  若使用nginx反向代理到后端需要增加SEE支持，与SEE长连接时间 </p>
 
 ```powershell
  server {
@@ -99,16 +99,7 @@
 
 **<h3>🧧 2.0全新ui，客户端与管理前端源码不开源，加入VIP群持续更新，加入价格500RMB</h3>**  
 
-**[📽️后台管理ui演示地址地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA)**  
-
-## 💪  Contributors 
-
-
-<p align="center">
-Our contributors have made this project possible. Thank you! 🙏
-</p>
-
-<a href="https://github.com/a616567126/GPT-WEB-JAVA/graphs/contributors"><img src="https://opencollective.com/gpt-web-java/contributors.svg?width=890&button=false" /></a>
+**[📽️后台管理ui演示地址地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA)**
 
 
 ## 💬  USE GPT
@@ -209,7 +200,9 @@ stable_studio_api|StableStudioapi地址前缀|写死：https://api.stability.ai
 stable_studio_key|StableStudio key|无
 
 
+## 💪  Contributors
 
+<a href="https://github.com/a616567126/GPT-WEB-JAVA/graphs/contributors"><img src="https://opencollective.com/gpt-web-java/contributors.svg?width=890&button=false" /></a>
 
 
 ## 🥤  Reward（有能力的可以请作者喝一杯冰可落）
