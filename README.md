@@ -11,7 +11,9 @@
 
 </div>
 
-**<h1 align="center">✨  2.0全新版本，全新ui，全新体验</h1>**
+<h1 align="center">✨  2.0全新版本，全新ui，全新体验</h1>  
+
+<p align="center">注意：获取1.0请切换到wx分支</p>
 
 
 ## 👨‍🚀  Major Function
@@ -176,7 +178,7 @@ stable_studio_key|StableStudio key|无
 
 
 
-## ☕  Reward
+## ☕  Reward（有能力的可以请作者喝一杯冰可落）
 - 支付宝  
 
 <img src="https://user-images.githubusercontent.com/43660702/228105535-144d09cd-6326-4c22-b9b9-8c69c299caac.png" width="100px" height="100px">  
@@ -188,12 +190,12 @@ stable_studio_key|StableStudio key|无
 
 ## ⭐  记得点一个Star哦!!!!
 
-## ✉  Scan code to add friends
+## ✉  Scan code to add friends（扫码添加微信好友）
 ![扫码添加好友](https://user-images.githubusercontent.com/43660702/232187172-9d971a97-b7a3-407f-9ba1-a35516505733.jpeg)
 
 
 
-## ℹ️ Pay attention to the official account
+## ℹ️ Pay attention to the official account（关注公众号）
 ![关注公众号](https://user-images.githubusercontent.com/43660702/229270101-4f11a841-51fc-4625-b498-833629fe7934.png)
 
 
