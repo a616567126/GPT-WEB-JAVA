@@ -6,10 +6,12 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.SysConfig;
+import com.intelligent.bot.utils.gpt.Proxys;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
+import java.net.Proxy;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -69,7 +71,16 @@ public class FileUtil {
         ByteArrayOutputStream outStream = null;
         try {
             if (!StringUtils.isEmpty(imgUrl)) {
-                HttpResponse res = HttpRequest.get(imgUrl).execute();
+                SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+                Proxy proxy = null ;
+                if(null != sysConfig.getIsOpenProxy() && sysConfig.getIsOpenProxy() == 1){
+                    proxy = Proxys.http(sysConfig.getProxyIp(), sysConfig.getProxyPort());
+                }
+                HttpResponse res =
+                        HttpRequest
+                                .get(imgUrl)
+                                .setProxy(proxy)
+                                .execute();
                 // 获取输入流
                 is = res.bodyStream();
                 outStream = new ByteArrayOutputStream();

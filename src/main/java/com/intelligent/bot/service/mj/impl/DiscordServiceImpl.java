@@ -9,16 +9,18 @@ import com.intelligent.bot.base.result.B;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.service.mj.DiscordService;
+import com.intelligent.bot.utils.gpt.Proxys;
 import com.intelligent.bot.utils.sys.RedisUtil;
 import eu.maxschuster.dataurl.DataUrl;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.net.Proxy;
 import java.util.List;
 
 @Slf4j
@@ -174,7 +176,14 @@ public class DiscordServiceImpl implements DiscordService {
 		headers.set("Authorization", sysConfig.getMjUserToken());
 		headers.add("User-Agent", CommonConst.USERAGENT);
 		HttpEntity<String> httpEntity = new HttpEntity<>(paramsStr, headers);
-		return new RestTemplate().postForEntity(url, httpEntity, String.class);
+		if(null != sysConfig.getIsOpenProxy() && sysConfig.getIsOpenProxy() == 1){
+			Proxy proxy  = Proxys.http(sysConfig.getProxyIp(), sysConfig.getProxyPort());
+			SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+			requestFactory.setProxy(proxy);
+			return new RestTemplate(requestFactory).postForEntity(url, httpEntity, String.class);
+		}else{
+			return new RestTemplate().postForEntity(url, httpEntity, String.class);
+		}
 	}
 
 	private B<Void> postJsonAndCheckStatus(String paramsStr) {
