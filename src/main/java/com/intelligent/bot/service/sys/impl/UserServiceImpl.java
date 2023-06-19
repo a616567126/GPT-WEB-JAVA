@@ -76,6 +76,6 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements IUser
 
     @Override
     public User getOne(String fromUser, String mobile) {
-        return null;
+        return this.baseMapper.getOne(fromUser, mobile);
     }
 }
