@@ -19,7 +19,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://127.0.0.1:3307/intelligent_bot?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
-    password: mysql2023
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     filters: stat
     maxActive: 30
@@ -36,7 +36,7 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6380
-    password: redis2023
+    password: 123456
     database: 1
     jedis:
       pool:
