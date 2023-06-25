@@ -1,9 +1,25 @@
 spring:
+  profiles:
+    active: prod
+  mvc:
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${file.uploadPath}
+  jackson:
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  #    设置上传文件大小
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      location: /www/temp/data
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1:3306/intelligent_bot?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://127.0.0.1:3307/intelligent_bot?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
-    password: root
+    password: mysql2023
     driver-class-name: com.mysql.cj.jdbc.Driver
     filters: stat
     maxActive: 30
@@ -20,7 +36,7 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6380
-    password: 123456
+    password: redis2023
     database: 1
     jedis:
       pool:
@@ -29,6 +45,18 @@ spring:
         max-active: 1000
         max-wait: -1
     timeout: 100s
-  servlet:
-    multipart:
-      location: /www/temp/data
+server:
+  port: 8081
+  tomcat:
+    uri-encoding: utf-8
+#配置mybatis-plus 开启日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
+  mapper-locations: classpath:mapper/*.xml
+wx:
+  mp:
+    app-id: wx226b6a31691e9641
+    secret: d2dd24c4caa9a0839dfbd96fa6e99fba
+    config-storage:
+      type: redistemplate
