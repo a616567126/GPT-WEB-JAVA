@@ -224,7 +224,8 @@ stable_studio_key|StableStudio key|无
 
 
 ## 🎯  Pay attention to the official account（关注公众号）
-![关注公众号](https://user-images.githubusercontent.com/43660702/229270101-4f11a841-51fc-4625-b498-833629fe7934.png)
+
+![关注公众号](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/04f9f971-fe57-4b6a-8aa6-6f0dda987117)
 
 
 ## 
