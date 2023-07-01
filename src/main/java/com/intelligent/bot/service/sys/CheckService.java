@@ -53,4 +53,18 @@ public class CheckService {
         }
         userService.saveOrUpdate(user);
     }
+
+    public boolean checkWxUser(Long userId,Integer number) {
+        //查询当前用户信息
+        User user = userService.getById(userId);
+        if(user.getType() != -1){
+            //判断剩余次数
+            if(user.getRemainingTimes() < number){
+                return false;
+            }
+            user.setRemainingTimes(user.getRemainingTimes() - number);
+        }
+        userService.saveOrUpdate(user);
+        return true;
+    }
 }

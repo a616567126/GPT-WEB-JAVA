@@ -222,7 +222,7 @@ public class CommonConst {
     /**
      * mj等待队列长度
      */
-    public static final Integer MJ_TASK_QUEUE_QUEUE_SIZE = 3;
+    public static final Integer MJ_TASK_QUEUE_QUEUE_SIZE = 10;
 
     /**
      * 任务超时时间(分钟)
@@ -283,6 +283,13 @@ public class CommonConst {
      * get 查询使用情况
      */
     public static final String CPT_BILLING_USAGE_URL =  "/v1/dashboard/billing/usage?start_date=%s&end_date=%s";
+
+    /**
+     * mj session id
+     */
+    public static final String MJ_SESSION_ID = "9c4055428e13bcbf2248a6b36084c5f3";
+
+
 
 
 }

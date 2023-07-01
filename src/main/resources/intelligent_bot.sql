@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 大四喜饼家
+ Source Server         : app
  Source Server Type    : MySQL
  Source Server Version : 80024
- Source Host           : 103.106.189.163:3307
+ Source Host           : 103.106.189.148:3307
  Source Schema         : intelligent_bot
 
  Target Server Type    : MySQL
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 10/06/2023 17:07:42
+ Date: 01/07/2023 17:37:43
 */
 
 SET NAMES utf8mb4;
@@ -36,13 +36,6 @@ CREATE TABLE `announcement` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='公告';
 
 -- ----------------------------
--- Records of announcement
--- ----------------------------
-BEGIN;
-INSERT INTO `announcement` (`id`, `title`, `content`, `sort`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, '公告', '当前版本：2.1 包含功能 gpt3.5/4.0对话 gpt3.5画图 newbing对话，stableDiffusion 画图 ，Midjourney画图 ，想部署本系统添加作者微信 ssp941003', 1, 3, 0, 0, '2023-03-23 09:19:16', 0, '2023-06-09 08:25:56');
-COMMIT;
-
--- ----------------------------
 -- Table structure for card_pin
 -- ----------------------------
 DROP TABLE IF EXISTS `card_pin`;
@@ -60,12 +53,6 @@ CREATE TABLE `card_pin` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='卡密表';
-
--- ----------------------------
--- Records of card_pin
--- ----------------------------
-BEGIN;
-COMMIT;
 
 -- ----------------------------
 -- Table structure for email_config
@@ -88,12 +75,6 @@ CREATE TABLE `email_config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='微信日志';
 
 -- ----------------------------
--- Records of email_config
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
 -- Table structure for error_message
 -- ----------------------------
 DROP TABLE IF EXISTS `error_message`;
@@ -111,12 +92,6 @@ CREATE TABLE `error_message` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='使用记录表';
-
--- ----------------------------
--- Records of error_message
--- ----------------------------
-BEGIN;
-COMMIT;
 
 -- ----------------------------
 -- Table structure for gpt_key
@@ -137,13 +112,6 @@ CREATE TABLE `gpt_key` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='gptkey\n';
-
--- ----------------------------
--- Records of gpt_key
--- ----------------------------
-BEGIN;
-INSERT INTO `gpt_key` (`id`, `key`, `use_number`, `sort`, `state`, `type`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 'sk-xxxxxxx', 0, 1, 0, 3, 0, 0, 0, '2023-05-10 22:20:47', 0, '2023-06-10 16:58:00');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for message_log
@@ -167,12 +135,6 @@ CREATE TABLE `message_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='使用记录表';
 
 -- ----------------------------
--- Records of message_log
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
 -- Table structure for mj_task
 -- ----------------------------
 DROP TABLE IF EXISTS `mj_task`;
@@ -186,7 +148,7 @@ CREATE TABLE `mj_task` (
   `state` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '自定义参数',
   `index` int DEFAULT NULL COMMENT '图片位置',
   `status` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '任务状态',
-  `image_url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '图片地址',
+  `image_url` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '图片地址',
   `start_time` bigint DEFAULT NULL COMMENT '任务开始时间',
   `submit_time` bigint DEFAULT NULL COMMENT '任务提交时间\n',
   `finish_time` bigint DEFAULT NULL COMMENT '任务完成时间',
@@ -197,6 +159,9 @@ CREATE TABLE `mj_task` (
   `message_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '消息 id',
   `message_hash` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '消息 hash',
   `progress` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '任务进度',
+  `sub_type` tinyint DEFAULT '1' COMMENT '提交类型 1：web 2：公众号',
+  `progress_message_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `flags` int DEFAULT NULL,
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -204,13 +169,7 @@ CREATE TABLE `mj_task` (
   `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Mj任务';
-
--- ----------------------------
--- Records of mj_task
--- ----------------------------
-BEGIN;
-COMMIT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='Mj任务';
 
 -- ----------------------------
 -- Table structure for pay_config
@@ -220,6 +179,8 @@ CREATE TABLE `pay_config` (
   `id` bigint NOT NULL,
   `pid` int DEFAULT NULL COMMENT '易支付商户id',
   `secret_key` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '易支付商户密钥',
+  `notify_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '易支付回调域名',
+  `return_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '易支付跳转通知地址',
   `submit_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '易支付支付请求域名',
   `api_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '易支付订单查询api',
   `pay_type` tinyint DEFAULT '0' COMMENT '支付类型 0 易支付 1卡密',
@@ -231,13 +192,6 @@ CREATE TABLE `pay_config` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='支付配置';
-
--- ----------------------------
--- Records of pay_config
--- ----------------------------
-BEGIN;
-INSERT INTO `pay_config` (`id`, `pid`, `secret_key`, `submit_url`, `api_url`, `pay_type`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 1, '1', 'https://my.mmywl.cn/submit.php', 'https://my.mmywl.cn/mapi.php', 1, 0, 0, 0, '2023-03-20 20:54:23', 0, '2023-06-10 16:59:20');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for product
@@ -260,14 +214,6 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='产品表';
 
 -- ----------------------------
--- Records of product
--- ----------------------------
-BEGIN;
-INSERT INTO `product` (`id`, `name`, `price`, `number_times`, `sort`, `stock`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, '请作者喝一杯冰可落', 3.00, 99, 1, 999976, 23, 0, 0, '2023-03-28 21:28:30', 0, '2023-06-08 14:36:53');
-INSERT INTO `product` (`id`, `name`, `price`, `number_times`, `sort`, `stock`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (3, '尝试一下', 0.10, 3, 2, 888871, 8, 0, 0, '2023-05-20 14:37:16', 0, '2023-06-09 09:21:05');
-COMMIT;
-
--- ----------------------------
 -- Table structure for sd_lora
 -- ----------------------------
 DROP TABLE IF EXISTS `sd_lora`;
@@ -283,12 +229,6 @@ CREATE TABLE `sd_lora` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='sdlora表';
-
--- ----------------------------
--- Records of sd_lora
--- ----------------------------
-BEGIN;
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sd_model
@@ -308,12 +248,6 @@ CREATE TABLE `sd_model` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Sd模型表';
 
 -- ----------------------------
--- Records of sd_model
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
 -- Table structure for sys_config
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_config`;
@@ -328,6 +262,7 @@ CREATE TABLE `sys_config` (
   `client_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '客户端页面地址',
   `is_open_sd` tinyint DEFAULT '0' COMMENT '是否开启sd 0未开启 1开启',
   `sd_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'Sd接口地址',
+  `sd_lora_url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'sd lora地址',
   `is_open_flag_studio` tinyint DEFAULT '0' COMMENT '是否开启FlagStudio 0-未开启 1开启',
   `flag_studio_key` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'FlagStudio key',
   `flag_studio_url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'FlagStudio 接口地址',
@@ -361,13 +296,6 @@ CREATE TABLE `sys_config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='系统配置';
 
 -- ----------------------------
--- Records of sys_config
--- ----------------------------
-BEGIN;
-INSERT INTO `sys_config` (`id`, `registration_method`, `default_times`, `gpt_url`, `img_upload_url`, `img_return_url`, `api_url`, `client_url`, `is_open_sd`, `sd_url`, `is_open_flag_studio`, `flag_studio_key`, `flag_studio_url`, `baidu_appid`, `baidu_secret`, `baidu_key`, `baidu_secret_key`, `is_open_mj`, `mj_guild_id`, `mj_channel_id`, `mj_user_token`, `mj_bot_token`, `mj_bot_name`, `is_open_proxy`, `proxy_ip`, `proxy_port`, `is_open_bing`, `bing_cookie`, `is_open_stable_studio`, `stable_studio_api`, `stable_studio_key`, `client_logo`, `client_name`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 1, 5, 'https://api.openai.com', '/www/uploads/', 'https://img.xxx.com', 'https://api.xxx.com', 'https://bot.xxx.com', 0, 'http://127.0.0.1:7860', 0, '111', 'https://flagopen.baai.ac.cn/flagStudio', '20230507001111', 'xxxx', 'xxxx', 'xxxx', 0, 111, 222, 'xxx', 'xxx', 'Midjourney Bot', 0, '127.0.0.1', 7890, 0, 'xxx', 1, 'https://api.stability.ai', 'xxx', '/20230608/work_logo.jpg', 'Siana', 22, 0, 0, '2023-04-16 17:46:01', 0, '2023-06-10 17:03:21');
-COMMIT;
-
--- ----------------------------
 -- Table structure for t_order
 -- ----------------------------
 DROP TABLE IF EXISTS `t_order`;
@@ -391,12 +319,6 @@ CREATE TABLE `t_order` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='订单表';
 
 -- ----------------------------
--- Records of t_order
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
 -- Table structure for t_user
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user`;
@@ -413,7 +335,7 @@ CREATE TABLE `t_user` (
   `email` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'email地址',
   `ip_address` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户ip地址',
   `browser_fingerprint` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '浏览器指纹',
-  `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' COMMENT '头像地址',
+  `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '头像地址',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -422,13 +344,6 @@ CREATE TABLE `t_user` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户表';
-
--- ----------------------------
--- Records of t_user
--- ----------------------------
-BEGIN;
-INSERT INTO `t_user` (`id`, `name`, `mobile`, `password`, `last_login_time`, `type`, `remaining_times`, `from_user_name`, `is_event`, `email`, `ip_address`, `browser_fingerprint`, `avatar`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (0, 'admin', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '2023-06-10 14:27:33', -1, 0, NULL, 0, NULL, NULL, NULL, NULL, 0, 0, 0, '2023-03-28 22:41:47', 0, '2023-06-10 17:01:27');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for wx_log
@@ -446,11 +361,5 @@ CREATE TABLE `wx_log` (
   `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='微信日志';
-
--- ----------------------------
--- Records of wx_log
--- ----------------------------
-BEGIN;
-COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

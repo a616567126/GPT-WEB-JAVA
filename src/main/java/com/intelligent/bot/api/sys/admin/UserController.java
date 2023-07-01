@@ -3,6 +3,7 @@ package com.intelligent.bot.api.sys.admin;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.intelligent.bot.base.result.B;
 import com.intelligent.bot.model.base.BaseDeleteEntity;
+import com.intelligent.bot.model.req.sys.admin.UserAddReq;
 import com.intelligent.bot.model.req.sys.admin.UserQueryPageReq;
 import com.intelligent.bot.model.req.sys.admin.UserUpdateReq;
 import com.intelligent.bot.model.res.sys.admin.AdminHomeRes;
@@ -29,6 +30,11 @@ public class UserController {
     @RequestMapping(value = "/queryPage",name = "分页查询User", method = RequestMethod.POST)
     public B<Page<UserQueryPageRes>> queryPage(@Validated @RequestBody UserQueryPageReq req) {
         return userService.queryPage(req);
+    }
+
+    @RequestMapping(value = "/add",name = "修改用户", method = RequestMethod.POST)
+    public B<Void>  add(@Validated @RequestBody UserAddReq req) {
+        return userService.add(req);
     }
     @RequestMapping(value = "/update",name = "修改用户", method = RequestMethod.POST)
     public B<Void>  update(@Validated @RequestBody UserUpdateReq req) {

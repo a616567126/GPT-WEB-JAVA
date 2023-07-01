@@ -45,7 +45,7 @@ public class SdCreateReq {
     /**
      * 生成图片数量默认1
      */
-    @Max(value = 4)
+    @Max(value = 8)
     private Integer batchSize = 1;
 
     /**
@@ -82,6 +82,26 @@ public class SdCreateReq {
      * 图生图base64数组
      */
     private List<String> initImages;
+
+    /**
+     * 高清修复(放大算法)
+     */
+    private String hrUpscaler;
+
+    /**
+     * 高清修复(放大倍数)
+     */
+    private Double hrScale;
+
+    /**
+     * 高清修复(重绘幅度)
+     */
+    private Double  denoisingStrength;
+
+    /**
+     * 高清修复(高分迭代步数)
+     */
+    private Integer hrSecondPassSteps;
 
 }
 

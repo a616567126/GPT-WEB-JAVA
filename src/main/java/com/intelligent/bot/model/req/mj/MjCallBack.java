@@ -1,5 +1,6 @@
 package com.intelligent.bot.model.req.mj;
 
+import com.intelligent.bot.enums.mj.TaskAction;
 import com.intelligent.bot.enums.mj.TaskStatus;
 import lombok.Data;
 
@@ -32,4 +33,15 @@ public class MjCallBack {
      * 任务进度
      */
     private String progress;
+
+
+    /**
+     * 提交类型 1：web 2：公众号
+     */
+    private Integer subType;
+
+    /**
+     * 任务类型
+     */
+    private TaskAction action;
 }

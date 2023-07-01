@@ -74,7 +74,7 @@ public class AuthController {
         }
         User user = list.get(0);
         if (sysConfig.getRegistrationMethod() == 3 && (null == user.getFromUserName() || user.getIsEvent() == 0)) {
-            throw new E("请关注公众号'图灵程序员'进行绑定账号'");
+            throw new E("请关注公众号'Ai图灵程序员'进行绑定账号'");
         }
         User nweUser = new User();
         nweUser.setId(user.getId());

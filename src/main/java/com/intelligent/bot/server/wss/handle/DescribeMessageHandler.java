@@ -2,7 +2,7 @@ package com.intelligent.bot.server.wss.handle;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.intelligent.bot.enums.mj.MessageType;
-import com.intelligent.bot.model.MjTask;
+import com.intelligent.bot.model.Task;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.utils.data.DataArray;
@@ -37,11 +37,12 @@ public class DescribeMessageHandler extends MessageHandler {
 		String imageUrl = imageOptional.get().getString("url");
 		int hashStartIndex = imageUrl.lastIndexOf("/");
 		String taskId = CharSequenceUtil.subBefore(imageUrl.substring(hashStartIndex + 1), ".", true);
-		MjTask task = this.taskQueueHelper.getRunningTask(Long.valueOf(taskId));
+		Task task = this.taskQueueHelper.getRunningTask(Long.valueOf(taskId));
 		if (task == null) {
 			return;
 		}
 		task.setMessageId(message.getString("id"));
+		task.setFlags(message.getInt("flags", 0));
 		task.setPrompt(prompt);
 		task.setPromptEn(prompt);
 		task.setImageUrl(replaceCdnUrl(task));
@@ -62,11 +63,12 @@ public class DescribeMessageHandler extends MessageHandler {
 		String imageUrl = embeds.get(0).getImage().getUrl();
 		int hashStartIndex = imageUrl.lastIndexOf("/");
 		String taskId = CharSequenceUtil.subBefore(imageUrl.substring(hashStartIndex + 1), ".", true);
-		MjTask task = this.taskQueueHelper.getRunningTask(Long.valueOf(taskId));
+		Task task = this.taskQueueHelper.getRunningTask(Long.valueOf(taskId));
 		if (task == null) {
 			return;
 		}
 		task.setMessageId(message.getId());
+		task.setFlags((int) message.getFlagsRaw());
 		task.setPrompt(prompt);
 		task.setPromptEn(prompt);
 		task.setImageUrl(replaceCdnUrl(task));

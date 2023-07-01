@@ -1,10 +1,10 @@
 package com.intelligent.bot.service.mj;
 
 
-import com.intelligent.bot.model.MjTask;
+import com.intelligent.bot.model.Task;
 
 public interface NotifyService {
 
-	void notifyTaskChange(MjTask task);
+	void notifyTaskChange(Task task);
 
 }

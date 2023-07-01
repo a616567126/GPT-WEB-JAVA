@@ -46,6 +46,7 @@ public class UserWebSocketStarter extends WebSocketAdapter implements WebSocketS
 	@Resource
 	private UserMessageListener userMessageListener;
 
+
 	public UserWebSocketStarter() {
 		this.auth = createAuthData();
 	}
@@ -153,7 +154,7 @@ public class UserWebSocketStarter extends WebSocketAdapter implements WebSocketS
 	}
 
 	@Override
-	public void handleCallbackError(WebSocket websocket, Throwable cause) throws Exception {
+	public void handleCallbackError(WebSocket websocket, Throwable cause) {
 		log.error("[gateway] There was some websocket error", cause);
 	}
 
@@ -220,10 +221,10 @@ public class UserWebSocketStarter extends WebSocketAdapter implements WebSocketS
 
 	private DataObject createAuthData() {
 		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
-		UserAgent agent = UserAgent.parseUserAgentString(CommonConst.USERAGENT);
+		UserAgent agent = UserAgent.parseUserAgentString((CommonConst.USERAGENT));
 		DataObject connectionProperties = DataObject.empty().put("os", agent.getOperatingSystem().getName())
 				.put("browser", agent.getBrowser().getGroup().getName()).put("device", "").put("system_locale", "zh-CN")
-				.put("browser_version", agent.getBrowserVersion().toString()).put("browser_user_agent",CommonConst.USERAGENT)
+				.put("browser_version", agent.getBrowserVersion().toString()).put("browser_user_agent",(CommonConst.USERAGENT))
 				.put("referer", "").put("referring_domain", "").put("referrer_current", "")
 				.put("referring_domain_current", "").put("release_channel", "stable").put("client_build_number", 117300)
 				.put("client_event_source", null);

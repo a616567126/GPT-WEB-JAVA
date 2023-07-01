@@ -5,10 +5,14 @@ import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.intelligent.bot.api.midjourney.support.TaskCondition;
+import com.intelligent.bot.api.midjourney.support.TaskQueueHelper;
 import com.intelligent.bot.constant.CommonConst;
+import com.intelligent.bot.enums.mj.TaskStatus;
 import com.intelligent.bot.enums.sys.SendType;
 import com.intelligent.bot.model.MessageLog;
 import com.intelligent.bot.model.SysConfig;
+import com.intelligent.bot.model.Task;
 import com.intelligent.bot.model.req.sd.SdCreateReq;
 import com.intelligent.bot.model.req.sys.MessageLogSave;
 import com.intelligent.bot.server.SseEmitterServer;
@@ -23,7 +27,11 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Component
 @Log4j2
@@ -39,6 +47,9 @@ public class MyTask {
 
     @Resource
     BaiDuService baiDuService;
+
+    @Resource
+    TaskQueueHelper taskQueueHelper;
 
 
 
@@ -112,6 +123,27 @@ public class MyTask {
                 queueUtil.remove(promptList.get(0));
                 asyncService.updateRemainingTimes(req.getUserId(), CommonConst.SD_NUMBER);
             }
+        }
+    }
+    @Scheduled(fixedRate = 30000L)
+    public void checkTasks() {
+        long currentTime = System.currentTimeMillis();
+        long timeout = TimeUnit.MINUTES.toMillis(CommonConst.TIMEOUT_MINUTES);
+        List<Task> tasks = this.taskQueueHelper.findRunningTask(new TaskCondition())
+                .filter(t -> currentTime - t.getStartTime() > timeout)
+                .collect(Collectors.toList());
+        for (Task task : tasks) {
+            if (Arrays.asList(TaskStatus.FAILURE, TaskStatus.SUCCESS).contains(task.getStatus())) {
+                log.warn("task status is failure/success but is in the queue, end it. id: {}", task.getId());
+            } else {
+                log.debug("task timeout, id: {}", task.getId());
+                task.fail("任务超时");
+            }
+            Future<?> future = this.taskQueueHelper.getRunningFuture(task.getId());
+            if (future != null) {
+                future.cancel(true);
+            }
+            this.taskQueueHelper.changeStatusAndNotify(task, task.getStatus());
         }
     }
 }

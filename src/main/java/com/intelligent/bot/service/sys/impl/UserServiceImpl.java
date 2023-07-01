@@ -4,11 +4,13 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.intelligent.bot.base.exception.E;
 import com.intelligent.bot.base.result.B;
 import com.intelligent.bot.dao.OrderDao;
 import com.intelligent.bot.dao.UserDao;
 import com.intelligent.bot.model.User;
 import com.intelligent.bot.model.base.BaseDeleteEntity;
+import com.intelligent.bot.model.req.sys.admin.UserAddReq;
 import com.intelligent.bot.model.req.sys.admin.UserQueryPageReq;
 import com.intelligent.bot.model.req.sys.admin.UserUpdateReq;
 import com.intelligent.bot.model.res.sys.admin.AdminHomeOrder;
@@ -35,6 +37,18 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements IUser
     public B<Page<UserQueryPageRes>> queryPage(UserQueryPageReq req) {
         Page<UserQueryPageRes> page = new Page<>(req.getPageNumber(),req.getPageSize());
         return B.okBuild(this.baseMapper.queryUserPage(page,req));
+    }
+
+    @Override
+    public B<Void> add(UserAddReq req) {
+        Long count = this.lambdaQuery().eq(User::getMobile, req.getMobile()).count();
+        if(count > 0){
+            throw new E("用户已存在");
+        }
+        User user = BeanUtil.copyProperties(req, User.class);
+        user.setPassword(SecureUtil.md5(req.getPassword()));
+        this.save(user);
+        return B.okBuild();
     }
 
     @Override

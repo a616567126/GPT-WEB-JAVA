@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class ContentParseData {
-	protected Long taskId;
 	protected String prompt;
 	protected String status;
 }

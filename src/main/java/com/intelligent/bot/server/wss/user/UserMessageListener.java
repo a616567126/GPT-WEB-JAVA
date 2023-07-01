@@ -7,6 +7,7 @@ import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.server.wss.handle.MessageHandler;
 import com.intelligent.bot.utils.sys.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.common.error.WxErrorException;
 import net.dv8tion.jda.api.utils.data.DataObject;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
@@ -25,9 +26,9 @@ public class UserMessageListener implements ApplicationListener<ApplicationStart
 		this.messageHandlers.addAll(event.getApplicationContext().getBeansOfType(MessageHandler.class).values());
 	}
 
-	public void onMessage(DataObject raw) throws IOException {
+	public void onMessage(DataObject raw) throws IOException, WxErrorException {
 		MessageType messageType = MessageType.of(raw.getString("t"));
-		if (messageType == null) {
+		if (messageType == null || MessageType.DELETE == messageType) {
 			return;
 		}
 		DataObject data = raw.getObject("d");
@@ -41,7 +42,6 @@ public class UserMessageListener implements ApplicationListener<ApplicationStart
 
 	private boolean ignoreAndLogMessage(DataObject data, MessageType messageType) {
 		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
-
 		String channelId = data.getString("channel_id");
 		if (!sysConfig.getMjChannelId().equals(channelId)) {
 			return true;
@@ -50,8 +50,8 @@ public class UserMessageListener implements ApplicationListener<ApplicationStart
 		if (!author.isPresent()) {
 			return true;
 		}
-		String authorName = author.get().getString("username");
-		log.debug("{} - {}: {}", messageType.name(), authorName, data.getString("content"));
-		return !sysConfig.getMjBotName().equals(authorName);
+		String authorName = data.optObject("author").map(a -> a.getString("username")).orElse("System");
+		log.debug("{} - {}: {}", messageType.name(), authorName, data.opt("content").orElse(""));
+		return false;
 	}
 }

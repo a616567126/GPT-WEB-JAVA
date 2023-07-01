@@ -3,7 +3,7 @@
   "guild_id": "$guild_id",
   "channel_id": "$channel_id",
   "application_id": "936929561302675456",
-  "session_id": "ebc4812d26343c5c2a4fec02a3e13f87",
+  "session_id": "$session_id",
   "data": {
     "version": "1118961510123847772",
     "id": "938956540159881230",

@@ -65,9 +65,9 @@ public class AsyncService {
     }
 
     @Async
-    public void updateMjTask(MjTask mjTask){
-        mjTask.setFinishTime(System.currentTimeMillis());
-        mjTaskService.updateById(mjTask);
+    public void updateMjTask(Task task){
+        task.setFinishTime(System.currentTimeMillis());
+        mjTaskService.updateById(task);
     }
 
     @Async

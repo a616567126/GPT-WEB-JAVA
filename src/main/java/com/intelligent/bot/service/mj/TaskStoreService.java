@@ -2,17 +2,18 @@ package com.intelligent.bot.service.mj;
 
 
 import com.intelligent.bot.api.midjourney.support.TaskCondition;
-import com.intelligent.bot.model.MjTask;
+import com.intelligent.bot.model.Task;
 
 public interface TaskStoreService {
 
-	void saveTask(MjTask task);
+	void save(Task task);
 
-	void deleteTask(Long id);
+	void delete(Long id);
 
-	MjTask getTask(Long id);
+	Task get(Long id);
 
-	MjTask findOne(TaskCondition taskCondition);
+
+	Task findOne(TaskCondition taskCondition);
 
 
 }
