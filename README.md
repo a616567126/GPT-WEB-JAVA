@@ -47,6 +47,12 @@
 * **产品管理**
 * **系统配置**
 
+<h2>📌 公众号</h2>
+* **扫码登录、注册（开发中）**
+* **Midjourney画图**
+* **SD画图（开发中）**
+* **GPT对话（开发中）**
+
 ## 💻  INSTALL AND START  
     一、系统依赖jdk1.8 其中redis mysql 8.0 需自行安装（建议修改mysql与redis端口，redis可能会被挖矿）
     二、shell运行安装步骤
