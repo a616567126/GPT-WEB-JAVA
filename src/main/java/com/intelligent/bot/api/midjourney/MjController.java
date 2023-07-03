@@ -83,7 +83,7 @@ public class MjController {
 				+(!StringUtils.isEmpty(req.getStyle()) ? " " +req.getStyle() : "")
 				+(!StringUtils.isEmpty(req.getAr()) ? " " +req.getAr() : "")
 				+(!StringUtils.isEmpty(req.getQ()) ? " " +req.getQ() : "")
-				+(!StringUtils.isEmpty(req.getStylize()) ? req.getStylize() : "")
+				+(!StringUtils.isEmpty(req.getStylize()) ? " " +req.getStylize() : "")
 				+(!StringUtils.isEmpty(req.getChaos()) ? " " +req.getChaos() : ""));
 		this.taskService.submitImagine(task,req.getImgList());
 		return B.okBuild(task);
