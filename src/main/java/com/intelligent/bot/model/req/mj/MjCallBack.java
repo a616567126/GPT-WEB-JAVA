@@ -44,4 +44,14 @@ public class MjCallBack {
      * 任务类型
      */
     private TaskAction action;
+
+    /**
+     * 提示词
+     */
+    private String prompt;
+
+    /**
+     * 提示词-英文
+     */
+    private String promptEn;
 }

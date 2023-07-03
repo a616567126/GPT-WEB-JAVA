@@ -142,7 +142,7 @@ public class AuthController {
         if (null == user) {
             user = reqUser;
             user.setRemainingTimes(sysConfig.getDefaultTimes());
-            user.setAvatar("https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png");
+            user.setAvatar(CommonConst.AVATAR);
             //判断是否临时用户请求
             if (isTemp) {
                 user.setType(2);

@@ -65,27 +65,31 @@ public class NotifyServiceImpl implements NotifyService {
 			SseEmitterServer.sendMessage(mjTask.getUserId(),mjTask);
 		}else {
 			if(mjTask.getStatus().equals(TaskStatus.SUCCESS)){
-				User user = userService.getById(mjTask.getUserId());
-				String content;
-				if(mjTask.getAction().equals(TaskAction.UPSCALE)){
-					content = "绘图完成\n\n"+
-							"任务id："+mjTask.getId();
-				}else {
-					content = "绘图完成\n\n" +
-							"任务id："+mjTask.getId()+"\n\n"+
-							"放大命令：/U +空格+ 图片位置1.2.3.4 + 空格 +任务id\n\n"
-							+"例如放大图片1：/U 1 "+mjTask.getId()+"\n\n"+
-							"变换命令：/V +空格+ 图片位置1.2.3.4 + 空格 +任务id\n\n"
-							+"例如变换图片1：/V 1 "+mjTask.getId();
-				}
-				WxMpKefuMessage message=WxMpKefuMessage.TEXT().toUser(user.getFromUserName()).content(content).build();
-				wxMpService.getKefuService().sendKefuMessage(message);
 				if(null != mjTask.getImageUrl()){
+					User user = userService.getById(mjTask.getUserId());
+					String content;
+					if(mjTask.getAction().equals(TaskAction.UPSCALE)){
+						content = "\uD83C\uDFA8绘图完成\n\n"+
+								"\uD83D\uDECE\uFE0F任务id："+mjTask.getId()+"\n"+
+								"\uD83E\uDD73本次消耗次数："+CommonConst.MJ_NUMBER;
+					}else {
+						content = "\uD83C\uDFA8绘图完成\n" +
+								"\uD83E\uDD73本次消耗次数："+CommonConst.MJ_NUMBER+"\n"+
+								"\uD83D\uDECE\uFE0F任务id："+mjTask.getId()+"\n"+
+								"\uD83D\uDCAC咒语："+mjTask.getPrompt()+"\n"+
+								"\uD83D\uDDEF译文："+mjTask.getPromptEn()+"\n"+
+								"\uD83D\uDD0D\uFE0E放大命令：/U +空格+ 图片位置1.2.3.4 + 空格 +任务id\n"
+								+"例如放大图片1：/U 1 "+mjTask.getId()+"\n\n"+
+								"\uD83D\uDCAB变换命令：/V +空格+ 图片位置1.2.3.4 + 空格 +任务id\n"
+								+"例如变换图片1：/V 1 "+mjTask.getId();
+					}
 					String fileUrl = cacheObject.getImgUploadUrl() + fileLocalPath;
 					PicUtils.commpressPicForScale(fileUrl,fileUrl);
 					File file = new File(fileUrl);
 					WxMediaUploadResult wxMediaUploadResult = wxMpService.getMaterialService().mediaUpload(WxConsts.MediaFileType.IMAGE, file);
-					message = WxMpKefuMessage.IMAGE().toUser(user.getFromUserName()).mediaId(wxMediaUploadResult.getMediaId()).build();
+					WxMpKefuMessage message = WxMpKefuMessage.IMAGE().toUser(user.getFromUserName()).mediaId(wxMediaUploadResult.getMediaId()).build();
+					wxMpService.getKefuService().sendKefuMessage(message);
+					message=WxMpKefuMessage.TEXT().toUser(user.getFromUserName()).content(content).build();
 					wxMpService.getKefuService().sendKefuMessage(message);
 				}
 			}

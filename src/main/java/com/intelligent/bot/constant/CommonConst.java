@@ -74,9 +74,14 @@ public class CommonConst {
     public static final String Yi_PAY_RETURN_RUL = "/#/product";
 
     /**
-     * 公众号自动回复消息类型
+     * 公众号自动回复消息类型(文本)
      */
     public static final String REQ_MESSAGE_TYPE_TEXT = "text";
+
+    /**
+     * 公众号自动回复消息类型(图片消息)
+     */
+    public static final String REQ_MESSAGE_TYPE_IMAGE = "image";
 
     /**
      * 事件推送
@@ -288,6 +293,11 @@ public class CommonConst {
      * mj session id
      */
     public static final String MJ_SESSION_ID = "9c4055428e13bcbf2248a6b36084c5f3";
+
+    /**
+     * 默认头像地址
+     */
+    public static final String AVATAR = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
 
 
 

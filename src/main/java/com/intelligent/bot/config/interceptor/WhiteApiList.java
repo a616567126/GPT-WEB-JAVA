@@ -28,5 +28,7 @@ public class WhiteApiList {
         list.add("/wx/callBack");
         //获取客户端配置
         list.add("/client/client/conf");
+        //微信获取二维码
+        list.add("/wx/getTicket");
     }
 }

@@ -36,7 +36,8 @@ public class ImgUtil {
      */
     public static String uploadBufferedImage(BufferedInputStream buff,String oldFileName) throws IOException {
         String[] fileStr = createFileName();
-        String fileName = "/"+fileStr[1]+"/"+oldFileName + ".jpg";
+//        String fileName = "/"+fileStr[1]+"/"+oldFileName + ".jpg";
+        String fileName = "/"+fileStr[1] +"/"+ System.currentTimeMillis() + ".jpg";
         String savePath = fileStr[0]+ fileName;
         OutputStream os = Files.newOutputStream(Paths.get(savePath));
         int len;
