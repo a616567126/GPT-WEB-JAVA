@@ -26,6 +26,7 @@ public class MjTaskImpl extends ServiceImpl<MjTaskDao, Task> implements IMjTaskS
     public int emptyMjTask(Long userId) {
         List<Task> list = this.lambdaQuery()
                 .eq(Task::getUserId, userId)
+                .isNotNull(Task::getImageUrl)
                 .list();
         if(null != list && list.size() > 0){
             List<String> imageUrls = list.stream().map(Task::getImageUrl).filter(imageUrl -> imageUrl.contains("jpg")).collect(Collectors.toList());
