@@ -3,9 +3,7 @@ package com.intelligent.bot.server.wss.handle;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.intelligent.bot.api.midjourney.support.TaskQueueHelper;
 import com.intelligent.bot.enums.mj.MessageType;
-import com.intelligent.bot.enums.mj.TaskAction;
 import com.intelligent.bot.model.Task;
-import com.intelligent.bot.utils.sys.FileUtil;
 import me.chanjar.weixin.common.error.WxErrorException;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.utils.data.DataArray;
@@ -85,7 +83,8 @@ public abstract class MessageHandler {
 		if (CharSequenceUtil.isBlank(task.getImageUrl())) {
 			return "";
 		}
-		return FileUtil.base64ToImage(FileUtil.imageUrlToBase64(task.getImageUrl()),task.getAction() == TaskAction.IMAGINE ? String.valueOf(task.getId()) : null);
+//		return FileUtil.base64ToImage(FileUtil.imageUrlToBase64(task.getImageUrl()),task.getAction() == TaskAction.IMAGINE ? String.valueOf(task.getId()) : null);
+		return task.getImageUrl();
 	}
 
 }

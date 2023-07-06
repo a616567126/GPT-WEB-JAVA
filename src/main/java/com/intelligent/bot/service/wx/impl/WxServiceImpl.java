@@ -21,9 +21,13 @@ import com.intelligent.bot.utils.sys.IDUtil;
 import com.intelligent.bot.utils.sys.PasswordUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
 import lombok.extern.log4j.Log4j2;
+import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutTextMessage;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,6 +67,12 @@ public class WxServiceImpl implements WxService {
     @Resource
     IOrderService orderService;
 
+    @Resource
+    IMjTaskService mjTaskService;
+
+    @Resource
+    WxMpService wxMpService;
+
 
     @Override
     @Transactional(rollbackFor = E.class)
@@ -75,23 +85,9 @@ public class WxServiceImpl implements WxService {
                 "https://github.com/a616567126/GPT-WEB-JAVA\n" +
                 "\uD83D\uDD0Fdemo演示地址：\n" +
                 url + "\n" +
-                "\uD83D\uDCF1客户端功能：1-GPT3.5/4.0流式上下文对话，2-GPT画图，3-SD画图（联系作者开启功能），4-newBing流式对话，5-MJ画图\n\n" +
-                "\uD83D\uDCE4微信公众号：1-扫码登录（暂未开放），2-MJ画图\n\n" +
-                "\uD83D\uDC5B支付能力：1-易支付（微信，qq，支付宝），2-卡密支付\n\n" +
-                "\uD83E\uDEAB注册能力：1-账号密码，2-邮箱，3-公众号\n\n" +
-                "\uD83E\uDDD1\uD83C\uDFFB\u200D\uD83D\uDCBB管理端功能：1-用户管理，2-商品管理，3-订单管理，4-GPTKEY管理，5-卡密管理，6-邮箱管理，7-系统配置，8-操作日志\n\n" +
-                "\uD83E\uDD77作者承接App，公众号，小程序，网站，物联网，定制软件，需要可添加作者微信：ssp941003\n\n" +
-                "\uD83E\uDD77使用Mj等命令时记得开通或绑定现有账号，否则无法使用命令\n\n" +
-                "\uD83C\uDFBC菜单\n\n" +
-                "输 入 '查询' 即可剩余次数，账号创建时间\n\n" +
-                "输 入 '绑定-手机号' 即可与当前微信用户绑定例如(绑定-13344445556)\n\n" +
-                "输 入 '开通-手机号' 即可开通账号例如(开通-13344445556)同一个微信号只能开通一个账号默认使用次数5次，默认密码123456\n\n" +
-                "输 入 '加群' 即可扫码添加作者微信,备注github\n\n" +
-                "输 入 '/mj' 即可使用mj画图，例如'/mj 一只小狗'记得有空格,支持垫图，需先发送图片或直接使用图片地址进行垫图，注意图片地址中不要携带'#',多张空格分割 例如：/mj 一只小狗 # https://a.img.com https://b.img.com\n\n" +
-                "输 入 '兑换-卡密' 即可兑换卡密例如'兑换-ABC1234'\n\n" +
-//                "输 入 '迁移-手机号' 即可将当前微信用户迁移到手机号所在用户账号例如(迁移-13344444444)，并合并剩余次数，注意迁移账号后，微信关联用户则删除，请谨慎迁移，并核对手机号\n\n"+
-                "输 入 '重置密码' 即可重置一个随机密码\n\n" +
-                "输 入 '菜单' 进入菜单模式";
+                "输 入 '功能' 即可查询本系统全部功能\n" +
+                "输 入 '加群' 即可扫码添加作者微信,备注github,购买卡密备注卡密\n" +
+                "输 入 '菜单' 即可查询公众号菜单功能(开通、绑定、Mj画图、卡密兑换、重置密码、修改密码、查询余额)";
         // 调用parseXml方法解析请求消息
         WxMpXmlMessage message = WxMpXmlMessage.fromXml(request.getInputStream());
         // 发送方帐号
@@ -100,7 +96,7 @@ public class WxServiceImpl implements WxService {
         String touser = message.getToUser();
         // 消息类型
         String msgType = message.getMsgType();
-        Long tempUserId = null != message.getEventKey() ? Long.valueOf(message.getEventKey()) :0L;
+        Long tempUserId = StringUtils.isNoneBlank(message.getEventKey())  ? Long.valueOf(message.getEventKey()) :0L;
         // 回复文本消息
         if (msgType.equals(CommonConst.REQ_MESSAGE_TYPE_EVENT)) {
             // 事件类型
@@ -109,18 +105,20 @@ public class WxServiceImpl implements WxService {
             if (null != user) {
                 if (user.getIsEvent() == 1 && tempUserId == 0) {
                     user.setIsEvent(0);
-                } else {
+                }else {
+                    user.setIsEvent(1);
+                }
+                if(tempUserId > 0) {
                     user.setIsEvent(1);
                     wxUserLogin(user,request,tempUserId);
-                    respContent =
-                            "✅扫码成功，正在登录...\n\n"+
-                                    respContent;
+                    respContent = "✅扫码成功，正在登录...\n\n";
                 }
                 userService.saveOrUpdate(user);
-            }else {
+            }
+            if(tempUserId > 0){
                 user = new User();
                 String password =  PasswordUtil.getRandomPassword();
-                user.setName("用户"+System.currentTimeMillis());
+                user.setName("用户"+fromUser);
                 user.setPassword(SecureUtil.md5(password));
                 user.setAvatar(CommonConst.AVATAR);
                 user.setFromUserName(fromUser);
@@ -129,9 +127,7 @@ public class WxServiceImpl implements WxService {
                 user.setType(1);
                 userService.save(user);
                 wxUserLogin(user,request,tempUserId);
-                respContent =
-                        "✅开通成功，正在登录...\n\n"+
-                                respContent;
+                respContent = "✅开通成功，正在登录...\n\n";
             }
         } else if (!msgType.equals(CommonConst.REQ_MESSAGE_TYPE_TEXT)) {
             if(msgType.equals(CommonConst.REQ_MESSAGE_TYPE_IMAGE)){
@@ -162,7 +158,7 @@ public class WxServiceImpl implements WxService {
                         respContent = "❗\uFE0F请输入正确的手机号";
                     } else {
                         User user = userService.getOne(fromUser,null);
-                        if (null != user) {
+                        if (null != user && null != user.getMobile()) {
                             respContent = "❗\uFE0F当前微信已绑定账号：" + user.getMobile();
                         } else {
                             user = userService.getOne(null,split[1]);
@@ -218,7 +214,7 @@ public class WxServiceImpl implements WxService {
                     }
                 }
             }
-            else if (content.equals("查询")) {
+            if (content.equals("查询")) {
                 User user = userService.getOne(fromUser,null);
                 if (null == user) {
                     respContent = "❗\uFE0F当微信用户前暂未绑定账号";
@@ -226,18 +222,17 @@ public class WxServiceImpl implements WxService {
                     respContent = "✅剩余次数：" + user.getRemainingTimes();
                 }
             }
-            else if (content.equals("菜单")) {
-                respContent = "********菜单********\n\n" +
+            if (content.equals("菜单")) {
+                respContent = "❗❗注意：使用Mj等命令时记得开通或绑定现有账号，否则无法使用命令\n\n"+
                         "输 入 '查询' 即可查询剩余次数，账号创建时间\n\n" +
                         "输 入 '绑定-手机号' 即可与当前微信用户绑定例如(绑定-13344445556)\n\n" +
                         "输 入 '开通-手机号' 即可开通账号例如(开通-13344445556)同一个微信号只能开通一个账号默认使用次数5次，默认密码123456\n\n" +
-                        "输 入 '加群' 即可扫码添加作者微信,备注github\n\n" +
                         "输 入 '修改密码-新密码' 即可修改当前用户密码例如(修改密码-123456),长度不能超过16位\n\n" +
                         "输 入 '重置密码' 即可重置一个随机密码\n\n" +
-                        "输 入 '/mj' 即可使用mj画图，例如'/mj 一只小狗'记得有空格,支持垫图，需先发送图片或直接使用图片地址进行垫图 例如：/mj 一只小狗 https://a.img.com\n\n" +
-                        "输 入 '兑换-卡密' 即可兑换卡密例如'兑换-ABC1234'\n\n" +
-//                        "输 入 '迁移-手机号' 即可将当前微信用户迁移到手机号所在用户账号例如(迁移-13344444444)，并合并剩余次数，注意迁移账号后，微信关联用户则删除，请谨慎迁移，并核对手机号\n\n"+
-                        "输 入 '菜单' 进入菜单模式";
+                        "输 入 '/mj' 即可使用mj画图，例如'/mj 一只小狗'记得有空格,支持垫图，" +
+                        "需先发送图片或直接使用图片地址进行垫图 例如：/mj 一只小狗 # https://a.img.com，/mj + 空格 + 咒语 + 空格 + '#' + 空格 +图片地址，多个度图片地址用空格隔开\n\n" +
+                        "输 入 '兑换-卡密' 即可兑换卡密例如'兑换-ABC1234'";
+//                        "输 入 '迁移-手机号' 即可将当前微信用户迁移到手机号所在用户账号例如(迁移-13344444444)，并合并剩余次数，注意迁移账号后，微信关联用户则删除，请谨慎迁移，并核对手机号";
             }
             if (content.equals("加群")) {
                 WxMpXmlOutMessage texts = WxMpXmlOutTextMessage
@@ -328,13 +323,12 @@ public class WxServiceImpl implements WxService {
                         respContent = "❗\uFE0F命令有误，请重新输入";
                     }
                 }
-
             }
             if(content.startsWith("/U") || content.startsWith("/V")){
                 try {
                     User user = userService.getOne(fromUser, null);
                     boolean checkWxUser = checkService.checkWxUser(user.getId(), CommonConst.MJ_NUMBER);
-                    String[] subContent = content.split(" ");
+                    String[] subContent = content.split("-");
                     if (checkWxUser) {
                         respContent = "✅提交成功，请等待出图";
                         if (subContent.length < 3) {
@@ -383,37 +377,37 @@ public class WxServiceImpl implements WxService {
                     respContent = "❗\uFE0F命令有误，请重新输入";
                 }
             }
-            if (content.contains("迁移")) {
-                User user = userService.getOne(fromUser,null);
-                if (null == user) {
-                    respContent = "❗\uFE0F微信暂未开通账号";
-                }else {
-                    if(null != user.getMobile()){
-                        respContent = "❗\uFE0F请勿重复迁移";
-                    }else {
-                        String[] split = content.split("-");
-                        if (split.length == 1) {
-                            respContent = "❗\uFE0F输入内容格式不正确，请检查";
-                        } else {
-                            if (!Validator.isMobile(split[1])) {
-                                respContent = "❗\uFE0F请输入正确的手机号";
-                            } else {
-                                User mobuleUser = userService.getOne(null,split[1]);
-                                if (null == mobuleUser) {
-                                    respContent = "❗\uFE0F手机号关联账号不存在";
-                                }else {
-                                    mobuleUser.setFromUserName(user.getFromUserName());
-                                    mobuleUser.setRemainingTimes(mobuleUser.getRemainingTimes() + user.getRemainingTimes());
-                                    userService.saveOrUpdate(mobuleUser);
-                                    respContent = "✅账号迁移成功，只合并次数，消息，对话记录以手机号关联账号为准，微信原用户则删除";
-                                    userService.removeById(user.getId());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else if (content.contains("修改密码")) {
+//            if (content.contains("迁移")) {
+//                User user = userService.getOne(fromUser,null);
+//                if (null == user) {
+//                    respContent = "❗\uFE0F微信暂未开通账号";
+//                }else {
+//                    if(null != user.getMobile()){
+//                        respContent = "❗\uFE0F请勿重复迁移";
+//                    }else {
+//                        String[] split = content.split("-");
+//                        if (split.length == 1) {
+//                            respContent = "❗\uFE0F输入内容格式不正确，请检查";
+//                        } else {
+//                            if (!Validator.isMobile(split[1])) {
+//                                respContent = "❗\uFE0F请输入正确的手机号";
+//                            } else {
+//                                User mobuleUser = userService.getOne(null,split[1]);
+//                                if (null == mobuleUser) {
+//                                    respContent = "❗\uFE0F手机号关联账号不存在";
+//                                }else {
+//                                    mobuleUser.setFromUserName(user.getFromUserName());
+//                                    mobuleUser.setRemainingTimes(mobuleUser.getRemainingTimes() + user.getRemainingTimes());
+//                                    userService.saveOrUpdate(mobuleUser);
+//                                    respContent = "✅账号迁移成功，只合并次数，消息，对话记录以手机号关联账号为准，微信原用户则删除";
+//                                    userService.removeById(user.getId());
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+            if (content.contains("修改密码")) {
                 User user = userService.getOne(fromUser,null);
                 if (null == user) {
                     respContent = "❗\uFE0F请先开通或绑定账号";
@@ -432,16 +426,24 @@ public class WxServiceImpl implements WxService {
                     }
                 }
             }
-            else if (content.equals("重置密码")) {
+           if (content.equals("重置密码")) {
                 User user = userService.getOne(fromUser,null);
                 if (null == user) {
                     respContent = "❗\uFE0F请先开通或绑定账号";
                 } else {
                     String password =  PasswordUtil.getRandomPassword();
                     user.setPassword(SecureUtil.md5(password));
-                    respContent = "✅重置密码完成，新密码："+password;
                     userService.saveOrUpdate(user);
+                    respContent = "✅重置密码完成，新密码："+password;
                 }
+            }
+            if (content.equals("功能")) {
+             respContent =  "\uD83D\uDCF1客户端功能：1-GPT3.5/4.0流式上下文对话，2-GPT画图，3-SD画图（联系作者开启功能），4-newBing流式对话，5-MJ画图\n\n" +
+                     "\uD83D\uDCE4微信公众号：1-扫码登录（暂未开放），2-MJ画图\n\n" +
+                     "\uD83D\uDC5B支付能力：1-易支付（微信，qq，支付宝），2-卡密支付\n\n" +
+                     "\uD83E\uDEAB注册能力：1-账号密码，2-邮箱，3-公众号\n\n" +
+                     "\uD83E\uDDD1\uD83C\uDFFB\u200D\uD83D\uDCBB管理端功能：1-用户管理，2-商品管理，3-订单管理，4-GPTKEY管理，5-卡密管理，6-邮箱管理，7-系统配置，8-操作日志\n\n" +
+                     "\uD83E\uDD77作者承接App，公众号，小程序，网站，物联网，定制软件，需要可添加作者微信：ssp941003\n\n";
             }
         }
         WxMpXmlOutTextMessage texts = WxMpXmlOutTextMessage
@@ -474,5 +476,58 @@ public class WxServiceImpl implements WxService {
         task.setNotifyHook(sysConfig.getApiUrl() + CommonConst.MJ_CALL_BACK_URL);
         task.setUserId(userId);
         return task;
+    }
+
+    @Override
+    public void mj(Long id, Integer index, Integer action,String fromUserName) throws WxErrorException {
+        String content = "余额不足请充值";
+        Task task = mjTaskService.getById(id);
+        if(null == task) {
+            content = "任务异常";
+        }else {
+            boolean checkWxUser = checkService.checkWxUser(task.getUserId(), CommonConst.MJ_NUMBER);
+            if(checkWxUser){
+                content = "✅提交成功，请等待出图";
+                if (task.getStatus() != TaskStatus.SUCCESS || !Arrays.asList(TaskAction.IMAGINE, TaskAction.VARIATION).contains(task.getAction())) {
+                    content = "❗\uFE0F关联任务异常";
+                } else {
+                    TaskAction taskAction = action == 1 ? TaskAction.UPSCALE : TaskAction.VARIATION;
+                    String description = "/up "
+                            + id
+                            + " "
+                            + taskAction.name().charAt(0)
+                            + index;
+                    TaskCondition condition = new TaskCondition().setDescription(description);
+                    Task existTask = this.taskStoreService.findOne(condition);
+                    if (null != existTask) {
+                        content = "❗\uFE0F任务已存在";
+                    } else {
+                        Task mjTask = newTask(task.getUserId());
+                        mjTask.setAction(taskAction);
+                        mjTask.setPrompt(task.getPrompt());
+                        mjTask.setPromptEn(task.getPromptEn());
+                        mjTask.setFinalPrompt(task.getFinalPrompt());
+                        mjTask.setRelatedTaskId(task.getId());
+                        mjTask.setDescription(description);
+                        mjTask.setIndex(index);
+                        mjTask.setSubType(2);
+                        if (TaskAction.UPSCALE.equals(taskAction)) {
+                            this.taskService.submitUpscale(mjTask, task.getMessageId(), task.getMessageHash(), index,task.getFlags());
+                        } else if (TaskAction.VARIATION.equals(taskAction)) {
+                            this.taskService.submitVariation(mjTask, task.getMessageId(), task.getMessageHash(), index,task.getFlags());
+                        } else {
+                            content = "❗\uFE0F不支持的操作";
+                        }
+                    }
+                }
+        }
+        }
+        WxMpKefuMessage message= WxMpKefuMessage.TEXT().toUser(fromUserName).content(content).build();
+        wxMpService.getKefuService().sendKefuMessage(message);
+    }
+
+    public static void main(String[] args) {
+        String a = "<a href=\"weixin://bizmsgmenu?msgmenucontent=/U 1 "+7075454679932469248L+"&msgmenuid=1\">放大1</a>";
+        System.out.println(a);
     }
 }

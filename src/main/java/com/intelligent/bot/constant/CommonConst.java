@@ -107,7 +107,7 @@ public class CommonConst {
     /**
      * 永久素材id
      */
-    public static final String MEDIA_ID = "yQW1hbBnX-2LcEXW8kghesqMWfIM2S4IfA6SXevO-bUiafR51ufOUCRPtyEshUhy";
+    public static final String MEDIA_ID = "N_5W6hqkdod_UDKGWseTDQDtzJiCnOCXsuVGbkvWXSEx74uuuQfUJC_1lZedJ1mL";
 
     /**
      * gpt3.5对话消耗次数
@@ -298,6 +298,11 @@ public class CommonConst {
      * 默认头像地址
      */
     public static final String AVATAR = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+
+    /**
+     * 线程池CorePoolSize
+     */
+    public static final Integer NOTIFY_POOL_SIZE = 10;
 
 
 
