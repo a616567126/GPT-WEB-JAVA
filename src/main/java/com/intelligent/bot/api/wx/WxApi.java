@@ -90,16 +90,4 @@ public class WxApi {
         return B.okBuild(qrCodeUrl);
     }
 
-    /**
-     * @param id 任务id
-     * @param index 图片位置
-     * @param action 任务类型 1放大 2变换
-     * @param fromUserName 接收人openId
-     * @throws WxErrorException
-     */
-    @RequestMapping(value = "/mj/{id}/{index}/{action}/{fromUserName}",method = RequestMethod.GET)
-    public void mj(@PathVariable Long id,@PathVariable Integer index,
-                   @PathVariable Integer action,@PathVariable String fromUserName) throws WxErrorException {
-        wxService.mj(id,index,action,fromUserName);
-    }
 }

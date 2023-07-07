@@ -29,29 +29,30 @@ public class PicUtils {
         if (StringUtils.isEmpty(srcPath) || StringUtils.isEmpty(srcPath)) {
             return null;
         }
-        if (!new File(srcPath).exists()) {
-            return null;
-        }
-        try {
-            File srcFile = new File(srcPath);
-            long srcFileSize = srcFile.length();
-//            log.info("源图片：" + srcPath + "，大小：" + srcFileSize / 1024
-//                    + "kb");
-            // 1、先转换成jpg
-            if(!desPath.contains("jpg")){
-                Thumbnails.of(srcPath).scale(1f).toFile(desPath);
-            }
-            // 递归压缩，直到目标文件大小小于desFileSize
-            commpressPicCycle(desPath, 500L, 0.9);
-
-            File desFile = new File(desPath);
-//            log.info("目标图片：" + desPath + "，大小" + desFile.length()
-//                    / 1024 + "kb");
-//            log.info("图片压缩完成！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+//        if (!new File(srcPath).exists()) {
+//            return null;
+//        }
+//        try {
+//            File srcFile = new File(srcPath);
+//            long srcFileSize = srcFile.length();
+////            log.info("源图片：" + srcPath + "，大小：" + srcFileSize / 1024
+////                    + "kb");
+//            // 1、先转换成jpg
+//            if(!desPath.contains("jpg")){
+//                Thumbnails.of(srcPath).scale(1f).toFile(desPath);
+//            }
+//            // 递归压缩，直到目标文件大小小于desFileSize
+//            commpressPicCycle(desPath, 500L, 0.9);
+//
+//            File desFile = new File(desPath);
+////            log.info("目标图片：" + desPath + "，大小" + desFile.length()
+////                    / 1024 + "kb");
+////            log.info("图片压缩完成！");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+        cn.hutool.core.img.ImgUtil.scale(new File(srcPath), new File(desPath), 0.4f);
         return desPath;
     }
 
@@ -76,4 +77,6 @@ public class PicUtils {
                 .outputQuality(accuracy).toFile(desPath);
         commpressPicCycle(desPath, desFileSize, accuracy);
     }
+
+
 }

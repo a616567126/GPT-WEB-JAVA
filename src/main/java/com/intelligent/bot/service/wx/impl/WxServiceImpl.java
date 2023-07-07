@@ -21,9 +21,6 @@ import com.intelligent.bot.utils.sys.IDUtil;
 import com.intelligent.bot.utils.sys.PasswordUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
 import lombok.extern.log4j.Log4j2;
-import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutTextMessage;
@@ -71,7 +68,7 @@ public class WxServiceImpl implements WxService {
     IMjTaskService mjTaskService;
 
     @Resource
-    WxMpService wxMpService;
+    AsyncService asyncService;
 
 
     @Override
@@ -85,9 +82,10 @@ public class WxServiceImpl implements WxService {
                 "https://github.com/a616567126/GPT-WEB-JAVA\n" +
                 "\uD83D\uDD0Fdemo演示地址：\n" +
                 url + "\n" +
+                "输 入 '开通-你的真实手机号' 即可开通账号，例如（开通-13333333333）\n" +
                 "输 入 '功能' 即可查询本系统全部功能\n" +
                 "输 入 '加群' 即可扫码添加作者微信,备注github,购买卡密备注卡密\n" +
-                "输 入 '菜单' 即可查询公众号菜单功能(开通、绑定、Mj画图、卡密兑换、重置密码、修改密码、查询余额)";
+                "输 入 '菜单' 即可查询公众号菜单功能(开通、绑定、画图、卡密兑换、重置密码、修改密码、查询余额)";
         // 调用parseXml方法解析请求消息
         WxMpXmlMessage message = WxMpXmlMessage.fromXml(request.getInputStream());
         // 发送方帐号
@@ -134,9 +132,9 @@ public class WxServiceImpl implements WxService {
                 respContent =
                         "图片地址：\n\n"
                         +message.getPicUrl()+"\n\n"
-                        +"若想使用此图片垫图mj 使用以下命令：\n\n"
-                        +"/mj 一只猫 # "+message.getPicUrl()+"\n\n"
-                        +"注意图片地址中不要携带'#'，注意空格及顺序 /mj + 空格 + 咒语 + 空格 + '#' + 图片地址（多张用空格分割）";
+                        +"若想使用此图片垫图画画 使用以下命令：\n\n"
+                        +"/画画 一只猫 # "+message.getPicUrl()+"\n\n"
+                        +"注意图片地址中不要携带'#'，注意空格及顺序 /画画 + 空格 + 咒语 + 空格 + '#' + 图片地址（多张用空格分割）";
             }else {
                 respContent = "❗\uFE0F暂不支持该消息类型";
                 log.info("其他消息");
@@ -223,14 +221,14 @@ public class WxServiceImpl implements WxService {
                 }
             }
             if (content.equals("菜单")) {
-                respContent = "❗❗注意：使用Mj等命令时记得开通或绑定现有账号，否则无法使用命令\n\n"+
+                respContent = "❗❗注意：使用画画等命令时记得开通或绑定现有账号，否则无法使用命令\n\n"+
                         "输 入 '查询' 即可查询剩余次数，账号创建时间\n\n" +
                         "输 入 '绑定-手机号' 即可与当前微信用户绑定例如(绑定-13344445556)\n\n" +
                         "输 入 '开通-手机号' 即可开通账号例如(开通-13344445556)同一个微信号只能开通一个账号默认使用次数5次，默认密码123456\n\n" +
                         "输 入 '修改密码-新密码' 即可修改当前用户密码例如(修改密码-123456),长度不能超过16位\n\n" +
                         "输 入 '重置密码' 即可重置一个随机密码\n\n" +
-                        "输 入 '/mj' 即可使用mj画图，例如'/mj 一只小狗'记得有空格,支持垫图，" +
-                        "需先发送图片或直接使用图片地址进行垫图 例如：/mj 一只小狗 # https://a.img.com，/mj + 空格 + 咒语 + 空格 + '#' + 空格 +图片地址，多个度图片地址用空格隔开\n\n" +
+                        "输 入 '/画画' 即可使用mj画图，例如'/画画 一只小狗'记得有空格,支持垫图，" +
+                        "需先发送图片或直接使用图片地址进行垫图 例如：/画画 一只小狗 # https://a.img.com，/画画 + 空格 + 咒语 + 空格 + '#' + 空格 +图片地址，多个度图片地址用空格隔开\n\n" +
                         "输 入 '兑换-卡密' 即可兑换卡密例如'兑换-ABC1234'";
 //                        "输 入 '迁移-手机号' 即可将当前微信用户迁移到手机号所在用户账号例如(迁移-13344444444)，并合并剩余次数，注意迁移账号后，微信关联用户则删除，请谨慎迁移，并核对手机号";
             }
@@ -279,7 +277,7 @@ public class WxServiceImpl implements WxService {
 
                 }
             }
-            if(content.startsWith("/mj")){
+            if(content.startsWith("/画画")){
                 User user = userService.getOne(fromUser,null);
                 if (null == user) {
                     respContent = "❗\uFE0F请先开通或绑定用户";
@@ -315,7 +313,9 @@ public class WxServiceImpl implements WxService {
                                 }
                             }
                             taskService.submitImagine(task,imageUrlList);
-                            respContent = "✅咒语已提交，请等待出图";
+                            respContent = "✅咒语已提交，请等待出图\n"+
+                                    "若长时间无返回点击查看\n"+
+                                    "<a href=\"weixin://bizmsgmenu?msgmenucontent=/select-"+task.getId()+"&msgmenuid=1\">查看</a>\t";
                         } else {
                             respContent = "❗\uFE0F余额不足，请充值";
                         }
@@ -330,7 +330,6 @@ public class WxServiceImpl implements WxService {
                     boolean checkWxUser = checkService.checkWxUser(user.getId(), CommonConst.MJ_NUMBER);
                     String[] subContent = content.split("-");
                     if (checkWxUser) {
-                        respContent = "✅提交成功，请等待出图";
                         if (subContent.length < 3) {
                             respContent = "❗\uFE0F命令有误请检查";
                         } else {
@@ -360,6 +359,9 @@ public class WxServiceImpl implements WxService {
                                     mjTask.setDescription(description);
                                     mjTask.setIndex(index);
                                     mjTask.setSubType(2);
+                                    respContent = "✅提交成功，请等待出图\n " +
+                                            "若长时间无返回点击查看\n"+
+                                            "<a href=\"weixin://bizmsgmenu?msgmenucontent=/select-"+mjTask.getId()+"&msgmenuid=1\">查看</a>\t";
                                     if (TaskAction.UPSCALE.equals(taskAction)) {
                                         this.taskService.submitUpscale(mjTask, task.getMessageId(), task.getMessageHash(), index,task.getFlags());
                                     } else if (TaskAction.VARIATION.equals(taskAction)) {
@@ -375,6 +377,33 @@ public class WxServiceImpl implements WxService {
                     }
                 }catch (Exception e) {
                     respContent = "❗\uFE0F命令有误，请重新输入";
+                }
+            }
+            if(content.startsWith("/select")){
+                String[] subContent = content.split("-");
+                if (subContent.length < 2) {
+                    respContent = "❗\uFE0F命令有误请检查";
+                } else {
+                    Long taskId = Long.valueOf(subContent[1]);
+                    Task task = mjTaskService.getById(taskId);
+                    if(null == task){
+                        respContent = "❗\uFE0F任务异常";
+                    }else if(null != task.getFailReason()){
+                        respContent =  "❗\uFE0F任务异常："+task.getFailReason();
+                    }else {
+                        if(task.getAction().equals(TaskAction.UPSCALE) && task.getStatus().equals(TaskStatus.SUCCESS)) {
+                            respContent = "\uD83C\uDFA8绘图完成\n" +
+                                    "\uD83E\uDD73本次消耗次数：" + CommonConst.MJ_NUMBER;
+                        }else {
+                            if(task.getStatus().equals(TaskStatus.SUCCESS)){
+                                asyncService.sendMjWxMessage(task);
+                                respContent = "查询中请稍等";
+                            }else {
+                                respContent = "\uD83C\uDFA8画图中请等待...\n"+
+                                        "\uD83D\uDD0E当前进度："+task.getProgress();
+                            }
+                        }
+                    }
                 }
             }
 //            if (content.contains("迁移")) {
@@ -476,54 +505,6 @@ public class WxServiceImpl implements WxService {
         task.setNotifyHook(sysConfig.getApiUrl() + CommonConst.MJ_CALL_BACK_URL);
         task.setUserId(userId);
         return task;
-    }
-
-    @Override
-    public void mj(Long id, Integer index, Integer action,String fromUserName) throws WxErrorException {
-        String content = "余额不足请充值";
-        Task task = mjTaskService.getById(id);
-        if(null == task) {
-            content = "任务异常";
-        }else {
-            boolean checkWxUser = checkService.checkWxUser(task.getUserId(), CommonConst.MJ_NUMBER);
-            if(checkWxUser){
-                content = "✅提交成功，请等待出图";
-                if (task.getStatus() != TaskStatus.SUCCESS || !Arrays.asList(TaskAction.IMAGINE, TaskAction.VARIATION).contains(task.getAction())) {
-                    content = "❗\uFE0F关联任务异常";
-                } else {
-                    TaskAction taskAction = action == 1 ? TaskAction.UPSCALE : TaskAction.VARIATION;
-                    String description = "/up "
-                            + id
-                            + " "
-                            + taskAction.name().charAt(0)
-                            + index;
-                    TaskCondition condition = new TaskCondition().setDescription(description);
-                    Task existTask = this.taskStoreService.findOne(condition);
-                    if (null != existTask) {
-                        content = "❗\uFE0F任务已存在";
-                    } else {
-                        Task mjTask = newTask(task.getUserId());
-                        mjTask.setAction(taskAction);
-                        mjTask.setPrompt(task.getPrompt());
-                        mjTask.setPromptEn(task.getPromptEn());
-                        mjTask.setFinalPrompt(task.getFinalPrompt());
-                        mjTask.setRelatedTaskId(task.getId());
-                        mjTask.setDescription(description);
-                        mjTask.setIndex(index);
-                        mjTask.setSubType(2);
-                        if (TaskAction.UPSCALE.equals(taskAction)) {
-                            this.taskService.submitUpscale(mjTask, task.getMessageId(), task.getMessageHash(), index,task.getFlags());
-                        } else if (TaskAction.VARIATION.equals(taskAction)) {
-                            this.taskService.submitVariation(mjTask, task.getMessageId(), task.getMessageHash(), index,task.getFlags());
-                        } else {
-                            content = "❗\uFE0F不支持的操作";
-                        }
-                    }
-                }
-        }
-        }
-        WxMpKefuMessage message= WxMpKefuMessage.TEXT().toUser(fromUserName).content(content).build();
-        wxMpService.getKefuService().sendKefuMessage(message);
     }
 
     public static void main(String[] args) {
