@@ -22,7 +22,6 @@ import com.intelligent.bot.service.gpt.ChatGPTStream;
 import com.intelligent.bot.service.sys.*;
 import com.intelligent.bot.utils.gpt.Proxys;
 import com.intelligent.bot.utils.sys.*;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -79,6 +78,7 @@ public final class GptController {
         }
         String gptKey = InitUtil.getRandomKey(req.getType());
         List<Message> messages = messageLogService.createMessageLogList(req.getLogId(),req.getProblem());
+        messages.add(Message.ofSystem(req.getRole()));
         Long logId = checkService.checkUser(MessageLog.builder()
                 .useNumber(req.getType() == 3 ? CommonConst.GPT_NUMBER : CommonConst.GPT_4_NUMBER)
                 .sendType(req.getType() == 3 ? SendType.GPT.getType() : SendType.GPT_4.getType())

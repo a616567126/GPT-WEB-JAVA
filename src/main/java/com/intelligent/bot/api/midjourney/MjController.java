@@ -59,6 +59,9 @@ public class MjController {
 		if (CharSequenceUtil.isBlank(prompt)) {
 			throw new E("prompt不能为空");
 		}
+		if(CharSequenceUtil.isBlank(req.getPrompt()) || req.getPrompt().contains("nsfw") || !baiDuService.textToExamine(req.getPrompt())){
+			throw new E("生成内容不合规");
+		}
 		prompt = prompt.trim();
 		Task task = newTask();
 		task.setAction(TaskAction.IMAGINE);
