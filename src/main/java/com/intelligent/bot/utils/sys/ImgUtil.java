@@ -48,7 +48,7 @@ public class ImgUtil {
         }
         os.close();
         //是否开启压缩
-        PicUtils.commpressPicForScale(savePath,savePath);
+        PicUtils.commpressPicForScale(fileName,fileName,0.8f);
         return fileName;
     }
 

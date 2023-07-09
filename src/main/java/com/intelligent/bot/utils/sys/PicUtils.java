@@ -22,7 +22,7 @@ public class PicUtils {
      * @param desPath     目标图片地址
      * @return
      */
-    public static String commpressPicForScale(String srcPath, String desPath) {
+    public static String commpressPicForScale(String srcPath, String desPath,float scale) {
         SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         srcPath = sysConfig.getImgUploadUrl() + srcPath;
         desPath = sysConfig.getImgUploadUrl() + desPath;
@@ -52,7 +52,7 @@ public class PicUtils {
 //            e.printStackTrace();
 //            return null;
 //        }
-        cn.hutool.core.img.ImgUtil.scale(new File(srcPath), new File(desPath), 0.4f);
+        cn.hutool.core.img.ImgUtil.scale(new File(srcPath), new File(desPath), scale);
         return desPath;
     }
 

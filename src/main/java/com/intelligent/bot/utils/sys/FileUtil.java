@@ -52,7 +52,7 @@ public class FileUtil {
         out.flush();
         out.close();
         String savePath = "/"+dayFilePatch+newFileName;
-        PicUtils.commpressPicForScale(savePath,savePath);
+        PicUtils.commpressPicForScale(savePath,savePath,0.6f);
         return savePath;
     }
 

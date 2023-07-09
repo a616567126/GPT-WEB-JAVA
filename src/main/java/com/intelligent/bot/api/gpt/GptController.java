@@ -96,7 +96,9 @@ public final class GptController {
                 .userId(JwtUtil.getUserId())
                 .userService(userService)
                 .gptKeyService(gptKeyService)
-                .asyncService(asyncService).build();
+                .asyncService(asyncService)
+                .logId(logId)
+                .build();
         listener.setOnComplate(msg -> {
             asyncService.endOfAnswer(logId,msg.toString());
         });

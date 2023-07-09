@@ -17,6 +17,8 @@ public class ConsoleStreamListener extends AbstractStreamListener {
 
     final Long userId;
 
+    final Long logId;
+
     final AsyncService asyncService;
 
     final IUserService userService;
@@ -40,6 +42,7 @@ public class ConsoleStreamListener extends AbstractStreamListener {
         SseEmitterServer.sendMessage(userId, message);
         message = Message.ofAssistant("[DONE]");
         SseEmitterServer.sendMessage(userId, message);
+        asyncService.endOfAnswer(logId,"AI对话服务异常请稍后再试");
 
     }
 
