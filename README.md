@@ -140,6 +140,7 @@
 - 3.获取mj_user_token，浏览器打开F12随便发送一个信息查看Network,Authorization为用户token
 - 4.~~添加自己的机器人~~、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8E)  
 - 5.如果使用机器人监听可参考步骤4
+- 5.此功能基于开源项目集成[midjourney-proxy](https://github.com/novicezk/midjourney-proxy/tree/main)
 
 
 ## 🪜  USE Proxy
