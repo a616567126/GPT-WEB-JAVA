@@ -7,6 +7,7 @@
     <img alt="Redis version" src="https://img.shields.io/static/v1?label=redis&message=7&logo=redis&color=ff69b4" />&nbsp; &nbsp;
     <a style="padding-left:10px"><img src="https://img.shields.io/github/stars/a616567126/GPT-WEB-JAVA"/></a>&nbsp; &nbsp;
     <a style="padding-left:10px"><img src="https://img.shields.io/github/forks/a616567126/GPT-WEB-JAVA?color=red&logo=red"/></a>&nbsp; &nbsp;
+    [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 
 </div>
