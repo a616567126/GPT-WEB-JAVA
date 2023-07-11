@@ -102,32 +102,33 @@ public class WxServiceImpl implements WxService {
             log.info("关注事件");
             User user = userService.getOne(fromUser, null);
             if (null != user) {
-                if (user.getIsEvent() == 1 && tempUserId == 0) {
-                    user.setIsEvent(0);
-                } else {
-                    user.setIsEvent(1);
-                }
-                if (tempUserId > 0) {
+                if(tempUserId > 0){
                     user.setIsEvent(1);
                     wxUserLogin(user, request, tempUserId);
                     respContent = "✅扫码成功，正在登录...\n\n";
+                }else {
+                    if(tempUserId == 0 && user.getIsEvent() == 1){
+                        user.setIsEvent(0);
+                    }
                 }
                 userService.saveOrUpdate(user);
+            }else {
+                if (tempUserId > 0) {
+                    user = new User();
+                    String password = PasswordUtil.getRandomPassword();
+                    user.setName("用户" + fromUser);
+                    user.setPassword(SecureUtil.md5(password));
+                    user.setAvatar(CommonConst.AVATAR);
+                    user.setFromUserName(fromUser);
+                    user.setIsEvent(1);
+                    user.setRemainingTimes(sysConfig.getDefaultTimes());
+                    user.setType(1);
+                    userService.save(user);
+                    wxUserLogin(user, request, tempUserId);
+                    respContent = "✅开通成功，正在登录...\n\n";
+                }
             }
-            if (tempUserId > 0) {
-                user = new User();
-                String password = PasswordUtil.getRandomPassword();
-                user.setName("用户" + fromUser);
-                user.setPassword(SecureUtil.md5(password));
-                user.setAvatar(CommonConst.AVATAR);
-                user.setFromUserName(fromUser);
-                user.setIsEvent(1);
-                user.setRemainingTimes(sysConfig.getDefaultTimes());
-                user.setType(1);
-                userService.save(user);
-                wxUserLogin(user, request, tempUserId);
-                respContent = "✅开通成功，正在登录...\n\n";
-            }
+
         } else if (!msgType.equals(CommonConst.REQ_MESSAGE_TYPE_TEXT)) {
             if (msgType.equals(CommonConst.REQ_MESSAGE_TYPE_IMAGE)) {
                 respContent =
@@ -191,7 +192,11 @@ public class WxServiceImpl implements WxService {
                         } else {
                             user = userService.getOne(null, split[1]);
                             if (null != user) {
-                                respContent = "❗\uFE0F当前手机号已被绑定";
+                                if(null != user.getFromUserName()){
+                                    respContent = "❗\uFE0F当前手机号已被绑定";
+                                }else {
+                                    respContent = "❗\uFE0F手机号已存在请发送绑定-"+split[1]+"绑定此手机号";
+                                }
                             } else {
                                 user = new User();
                                 String password = PasswordUtil.getRandomPassword();
@@ -501,6 +506,7 @@ public class WxServiceImpl implements WxService {
         }
         UserAuthRes loginResult = AuthController.createLoginResult(user);
         SseEmitterServer.sendMessage(tempUserId, loginResult);
+        RedisUtil.deleteObject(CommonConst.REDIS_KEY_PREFIX_TOKEN + tempUserId);
     }
 
     private Task newTask(Long userId) {

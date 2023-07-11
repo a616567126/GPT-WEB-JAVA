@@ -1,6 +1,7 @@
 package com.intelligent.bot.api.wx;
 
 import com.intelligent.bot.base.result.B;
+import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.req.wx.GetTicketReq;
 import com.intelligent.bot.service.wx.WxService;
 import com.intelligent.bot.utils.sys.RedisUtil;
@@ -13,11 +14,15 @@ import me.chanjar.weixin.mp.bean.material.WxMpMaterial;
 import me.chanjar.weixin.mp.bean.material.WxMpMaterialUploadResult;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 
 @RestController
@@ -87,6 +92,9 @@ public class WxApi {
                 this.wxMpService.getQrcodeService().qrCodeCreateTmpTicket(req.getTempUserId().toString(), 10 * 60);
         String qrCodeUrl =
                 this.wxMpService.getQrcodeService().qrCodePictureUrl(wxMpQrCodeTicket.getTicket());
+        RedisUtil.setCacheObject(CommonConst.REDIS_KEY_PREFIX_TOKEN + req.getTempUserId(), qrCodeUrl,
+                CommonConst.TOKEN_EXPIRE_TIME, TimeUnit.MINUTES);
+        log.error("获取微信二维码，id：{}",req.getTempUserId());
         return B.okBuild(qrCodeUrl);
     }
 
