@@ -15,7 +15,6 @@
 
 <p align="center"> 注意：获取1.0请切换到[wx]分支,About中的地址为1.0客户端地址</p>
 <p align="center"> 演示地址：https://ai.v-wim.xyz</p>
-<p align="center"> 注册方式：关注公众号发送'开通-手机号'，如开通-13333333333 即可开通账号登录测试</p>
 
 
   ## 👨‍🚀  Major Function
