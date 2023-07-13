@@ -175,7 +175,11 @@ pid|易支付商户id|无
 secret_key|易支付商户秘钥|无
 submit_url|易支付支付请求域名|易支付发起支付的api地址，例如：https://pay888.mfysc.shop/submit.php
 api_url|易支付订单查询api|后端核对订单时，易支付使用订单查询的api地址例如：https://pay888.mfysc.shop/api.php
-pay_type|支付类型 0 易支付 1卡密|开启对应类型之后记得配置相关支付参数
+wx_appid|微信支付的appid|无
+wx_mchid|微信支付商户号|微信支付平台-商户信息-微信支付商户号
+wx_v3_secret|微信apiv3秘钥|微信支付平台-账户中心-设置APIv3秘钥
+wx_serial_no|证书序列号|微信支付平台-账户中心-API安全-API证书管理-证书序列号（若没有则申请新证书）
+wx_private_key|商户证书内容|微信支付平台-账户中心-API安全-API证书管理-与证书序列号一一对应内容为生成的apiclient_key.pem文件全部内容
 
 **系统配置(sys_config)**
 字段|描述|注意
