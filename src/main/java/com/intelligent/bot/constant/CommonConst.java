@@ -67,6 +67,11 @@ public class CommonConst {
      */
     public static final String YI_PAY_CALL_BACK = "/order/yi/callback";
 
+    /**
+     * 微信支付回调地址
+     */
+    public static final String WX_PAY_CALL_BACK = "/order/wx/callback";
+
 
     /**
      * 易支付页面跳转地址
@@ -305,6 +310,10 @@ public class CommonConst {
     public static final Integer NOTIFY_POOL_SIZE = 10;
 
 
+    /**
+     * 微信native接口地址
+     */
+    public static final String WX_NATIVE_URL = "https://api.mch.weixin.qq.com/v3/pay/transactions/native";
 
 
 }

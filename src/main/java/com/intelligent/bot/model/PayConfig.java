@@ -40,4 +40,30 @@ public class PayConfig extends BaseEntity implements Serializable {
      */
     private Integer payType;
 
+    /**
+     * 微信支付的appid
+     */
+    private String wxAppid;
+
+    /**
+     * 微信支付直连商户号
+     */
+    private String wxMchid;
+
+    /**
+     * 微信apiV3秘钥
+     */
+    private String wxV3Secret;
+
+    /**
+     * 商户api序列号
+     */
+    private String wxSerialNo;
+
+    /**
+     * 商户证书内容apiclient_key.pem
+     */
+    private String wxPrivateKey;
+
+
 }

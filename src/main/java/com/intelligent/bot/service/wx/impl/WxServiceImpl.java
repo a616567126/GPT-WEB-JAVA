@@ -4,6 +4,9 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.http.Header;
+import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.intelligent.bot.api.midjourney.support.TaskCondition;
 import com.intelligent.bot.api.sys.AuthController;
 import com.intelligent.bot.base.exception.E;
@@ -18,19 +21,24 @@ import com.intelligent.bot.service.mj.TaskService;
 import com.intelligent.bot.service.mj.TaskStoreService;
 import com.intelligent.bot.service.sys.*;
 import com.intelligent.bot.service.wx.WxService;
-import com.intelligent.bot.utils.sys.IDUtil;
-import com.intelligent.bot.utils.sys.PasswordUtil;
-import com.intelligent.bot.utils.sys.RedisUtil;
+import com.intelligent.bot.utils.sys.*;
 import lombok.extern.log4j.Log4j2;
+import me.chanjar.weixin.common.api.WxConsts;
+import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutTextMessage;
+import okhttp3.HttpUrl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,6 +79,9 @@ public class WxServiceImpl implements WxService {
     @Resource
     AsyncService asyncService;
 
+    @Resource
+    WxMpService wxMpService;
+
 
     @Override
     @Transactional(rollbackFor = E.class)
@@ -85,7 +96,8 @@ public class WxServiceImpl implements WxService {
                 url + "\n" +
                 "输 入 '开通-你的真实手机号' 即可开通账号，例如（开通-13333333333）\n" +
                 "输 入 '功能' 即可查询本系统全部功能\n" +
-                "输 入 '加群' 即可扫码添加作者微信,备注github,购买卡密备注卡密\n" +
+                "输 入 '加群' 即可扫码添加作者微信,备注github\n" +
+                "输 入 '卡密' 获取卡密兑换方式\n" +
                 "输 入 '菜单' 即可查询公众号菜单功能(开通、绑定、画图、卡密兑换、重置密码、修改密码、查询余额)";
         // 调用parseXml方法解析请求消息
         WxMpXmlMessage message = WxMpXmlMessage.fromXml(request.getInputStream());
@@ -484,6 +496,67 @@ public class WxServiceImpl implements WxService {
                         "\uD83E\uDDD1\uD83C\uDFFB\u200D\uD83D\uDCBB管理端功能：1-用户管理，2-商品管理，3-订单管理，4-GPTKEY管理，5-卡密管理，6-邮箱管理，7-系统配置，8-操作日志\n\n" +
                         "\uD83E\uDD77作者承接App，公众号，小程序，网站，物联网，定制软件，需要可添加作者微信：ssp941003\n\n";
             }
+            if (content.equals("卡密")) {
+                content = "卡密列表\n" +
+                        "<a href=\"weixin://bizmsgmenu?msgmenucontent=/recharge-"+1+"&msgmenuid=2\">5#100点</a>\t"+
+                        "<a href=\"weixin://bizmsgmenu?msgmenucontent=/recharge-"+2+"&msgmenuid=2\">10#220</a>\t"+
+                        "<a href=\"weixin://bizmsgmenu?msgmenucontent=/recharge-"+3+"&msgmenuid=2\">50#1500</a>";
+                WxMpKefuMessage wxMpKefuMessage = WxMpKefuMessage.TEXT().toUser(fromUser).content(content).build();
+                wxMpService.getKefuService().sendKefuMessage(wxMpKefuMessage);
+                return null;
+            }
+            if (content.startsWith("/recharge")) {
+                String[] subContent = content.split("-");
+                if (subContent.length < 2) {
+                    respContent = "❗\uFE0F命令有误请检查";
+                } else {
+                    User user = userService.getOne(fromUser, null);
+                    if (null == user) {
+                        respContent = "❗\uFE0F请先开通或绑定账号";
+                    }else {
+                        int price = 5;
+                        int type = Integer.valueOf(subContent[1]);
+                        if(type == 2){
+                            price = 10;
+                        }
+                        if(type == 3){
+                            price = 50;
+                        }
+                        Order order = new Order();
+                        order.setId(IDUtil.getNextId());
+                        order.setUserId(user.getId());
+                        order.setPrice(new BigDecimal(price));
+                        order.setPayNumber(1);
+                        order.setState(0);
+                        order.setPayType("wxpay");
+                        order.setTradeNo(subContent[1]);
+                        order.setMsg("微信公众号获取卡密");
+                        String bodyParam = WxPayUtil.buildNativePayJson(order.getPrice(),
+                                order.getId().toString(),
+                                "获取卡密#"+price);
+                        HttpUrl httpurl = HttpUrl.parse(CommonConst.WX_NATIVE_URL);
+                        String sign = WxPayUtil.getToken("POST", httpurl, bodyParam);
+                        String body = HttpUtil.createPost(CommonConst.WX_NATIVE_URL)
+                                .header(Header.AUTHORIZATION, sign)
+                                .header(Header.CONTENT_TYPE, "application/json")
+                                .body(bodyParam)
+                                .execute()
+                                .body();
+                        if(!body.contains("code_url")){
+                            respContent = "❗\uFE0F微信预订单生成失败";
+                        }else {
+                            File file = FileUtil.createQrCode(JSONObject.parseObject(body).getString("code_url"));
+                            WxMediaUploadResult wxMediaUploadResult = wxMpService.getMaterialService().mediaUpload(WxConsts.MediaFileType.IMAGE, file);
+                            WxMpKefuMessage wxMpKefuMessage = WxMpKefuMessage.IMAGE().toUser(user.getFromUserName()).mediaId(wxMediaUploadResult.getMediaId()).build();
+                            wxMpService.getKefuService().sendKefuMessage(wxMpKefuMessage);
+                            file.delete();
+                            respContent = "✅订单创建完成，将此二维码发送到其他终端上使用微信扫码进行获取卡密";
+                            orderService.saveOrUpdate(order);
+                        }
+                    }
+
+                }
+            }
         }
         WxMpXmlOutTextMessage texts = WxMpXmlOutTextMessage
                 .TEXT()
@@ -517,10 +590,5 @@ public class WxServiceImpl implements WxService {
         task.setNotifyHook(sysConfig.getApiUrl() + CommonConst.MJ_CALL_BACK_URL);
         task.setUserId(userId);
         return task;
-    }
-
-    public static void main(String[] args) {
-        String a = "<a href=\"weixin://bizmsgmenu?msgmenucontent=/U 1 " + 7075454679932469248L + "&msgmenuid=1\">放大1</a>";
-        System.out.println(a);
     }
 }

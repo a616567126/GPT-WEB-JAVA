@@ -2,7 +2,9 @@ package com.intelligent.bot.service.sys.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.intelligent.bot.base.exception.E;
@@ -19,25 +21,32 @@ import com.intelligent.bot.model.res.sys.ClientOrderRes;
 import com.intelligent.bot.model.res.sys.CreateOrderRes;
 import com.intelligent.bot.model.res.sys.ReturnUrlRes;
 import com.intelligent.bot.model.res.sys.admin.OrderQueryRes;
+import com.intelligent.bot.model.res.wx.NativeCallBackRes;
 import com.intelligent.bot.service.sys.ICardPinService;
 import com.intelligent.bot.service.sys.IOrderService;
 import com.intelligent.bot.service.sys.IProductService;
 import com.intelligent.bot.service.sys.IUserService;
+import com.intelligent.bot.utils.sys.HttpUtils;
 import com.intelligent.bot.utils.sys.JwtUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
 import lombok.extern.log4j.Log4j2;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
+import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service("orderService")
@@ -53,6 +62,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
 
     @Resource
     private ICardPinService cardPinService;
+
+    @Resource
+    WxMpService wxMpService;
+
 
 
     @Override
@@ -87,7 +100,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
     }
 
     @Override
-    public String yiCallback(OrderYiCallBackReq req) {
+    public String yiCallBack(OrderYiCallBackReq req) {
         log.info("支付开始回调，回调参数：{}",req.toString());
         Order order = this.getById(req.getOut_trade_no());
         if(order.getState() == 1){
@@ -119,6 +132,65 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
         okOrder(order);
         return "success";
     }
+
+    @Override
+    public NativeCallBackRes wxCallBack(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        cn.hutool.json.JSONObject requestData = HttpUtils.readData(request);
+        PayConfig payConfig = RedisUtil.getCacheObject(CommonConst.PAY_CONFIG);
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        String key = payConfig.getWxV3Secret();
+        cn.hutool.json.JSONObject resource = requestData.getJSONObject("resource");
+        String associatedData = resource.getStr("associated_data");
+        String nonce = resource.getStr("nonce");
+        String content = resource.getStr("ciphertext");
+        byte[] decode = Base64.getDecoder().decode(content);
+        cipher.init(2, new SecretKeySpec(key.getBytes(), "AES"), new GCMParameterSpec(128, nonce.getBytes()));
+        if (StringUtils.isNotEmpty(associatedData)) {
+            cipher.updateAAD(associatedData.getBytes());
+        }
+        JSONObject ciphertext = JSONObject.parseObject(new String(cipher.doFinal(decode), StandardCharsets.UTF_8));
+        String tradeState = ciphertext.getString("trade_state");
+        String outTradeNo = ciphertext.getString("out_trade_no");
+        Order order = this.getById(Long.valueOf(outTradeNo));
+        User user = userService.getById(order.getUserId());
+        String messageContent = "卡密获取失败";
+        if(tradeState.equals("SUCCESS")) {
+            Integer number = 100;
+            if (order.getTradeNo().equals("2")) {
+                number = 220;
+            }
+            if (order.getTradeNo().equals("3")) {
+                number = 1500;
+            }
+            String cardPin = cardPinService.add(number);
+            messageContent = "卡密获取成功，点击下方兑换\t" +
+                    "<a href=\"weixin://bizmsgmenu?msgmenucontent=兑换-" + cardPin + "&msgmenuid=2\">兑换</a>";
+            BigDecimal total = ciphertext.getJSONObject("amount").getBigDecimal("total");
+            String transactionId = ciphertext.getString("transaction_id");
+            JSONArray promotionDetail = ciphertext.getJSONArray("promotion_detail");
+            BigDecimal promotionPrice = new BigDecimal("0");
+            if (null != promotionDetail && promotionDetail.size() > 0) {
+                for (int i = 0; i < promotionDetail.size(); i++) {
+                    JSONObject promotion = promotionDetail.getJSONObject(i);
+                    promotionPrice = promotionPrice.add(promotion.getBigDecimal("amount"));
+                }
+            }
+            if (null != order && order.getState() == 0) {
+                if (order.getPrice().compareTo(total.add(promotionPrice)) != 0) {
+                    order.setState(1);
+                    order.setTradeNo(transactionId);
+                    order.setOperateTime(LocalDateTime.now());
+                    order.setMsg(order.getMsg() + "，卡密：" + cardPin);
+                    this.saveOrUpdate(order);
+                }
+            }
+        }
+        WxMpKefuMessage wxMpKefuMessage = WxMpKefuMessage.TEXT().toUser(user.getFromUserName()).content(messageContent).build();
+        wxMpService.getKefuService().sendKefuMessage(wxMpKefuMessage);
+        response.setStatus(200);
+        return new NativeCallBackRes();
+    }
+
     @Override
     public B<Void> yiReturnUrl(OrderYiReturnReq req) {
         Order order = this.getById(req.getOrderId());

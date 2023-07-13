@@ -60,4 +60,13 @@ public class CardPinServiceImpl extends ServiceImpl<CardPinDao, CardPin> impleme
         List<String> cardPinList = null == list ? new ArrayList<>() : list.stream().map(CardPin::getCardPin).collect(Collectors.toList());
         return B.okBuild(cardPinList);
     }
+
+    @Override
+    public String add(Integer number) {
+        CardPin cardPin = new CardPin();
+        cardPin.setNumber(number);
+        cardPin.setCardPin(PasswordUtil.getRandomPassword());
+        this.saveOrUpdate(cardPin);
+        return cardPin.getCardPin();
+    }
 }

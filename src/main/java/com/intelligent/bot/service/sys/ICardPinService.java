@@ -25,5 +25,7 @@ public interface ICardPinService extends IService<CardPin> {
 
     B<List<String>> getAllCardPin();
 
+    String add(Integer number);
+
 
 }

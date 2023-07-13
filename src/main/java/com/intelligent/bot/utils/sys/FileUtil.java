@@ -2,6 +2,7 @@ package com.intelligent.bot.utils.sys;
 
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.intelligent.bot.constant.CommonConst;
@@ -155,5 +156,19 @@ public class FileUtil {
         return fileNames;
     }
 
-
+    public static File createQrCode(String value) throws IOException {
+        SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+        String fileFullPath =  cacheObject.getImgUploadUrl()
+                + DateUtil.format(new Date(), "yyyyMMdd");
+        File file = new File(fileFullPath);
+        if (!file.exists()) {
+            //不存在就创建
+            file.mkdir();
+        }
+        String newFileName ="/"+System.currentTimeMillis()+".jpg";
+        file = new File(fileFullPath+newFileName);
+        QrCodeUtil.generate(value, 300, 300,
+                file);
+        return file;
+    }
 }

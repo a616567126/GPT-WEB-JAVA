@@ -18,6 +18,8 @@ public class WhiteApiList {
         list.add("/send/email");
         //易支付回调
         list.add("/order/yi/callback");
+        //微信支付回调
+        list.add("/order/wx/callback");
         //sse
         list.add("/sse/**");
         //获取注册方式
