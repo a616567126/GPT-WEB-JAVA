@@ -15,7 +15,6 @@
 
 <p align="center"> 注意：获取1.0请切换到[wx]分支,About中的地址为1.0客户端地址</p>
 <p align="center"> 演示地址：https://ai.v-wim.xyz</p>
-<p align="center"> 注册方式：关注公众号发送'开通-手机号'，如开通-13333333333 即可开通账号登录测试</p>
 
 
   ## 👨‍🚀  Major Function
@@ -107,7 +106,7 @@
 
 ## ⌨️  And coding style tests
 
-**<h3>🧧 2.0全新ui，客户端与管理前端源码不开源，加入VIP群持续更新，加入价格500RMB</h3>**  
+**<h3>🧧 2.0全新ui，客户端与管理前端源码不开源，加入VIP群持续更新，扫码下方作者微信添加好友咨询加群</h3>**  
 
 **[📽️后台管理ui演示地址地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA)**
 
@@ -158,7 +157,6 @@
 
 
 ## 🍾  Put It Last
-- 易支付网站地址：[白辰易支付](https://my.mmywl.cn/)
 - 作者使用服务器地址：[浅夏云](https://www.qxqxa.com/aff/ZGWPEDLQ)
 - 作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)
 - 默认启动时需配置如下三个表的数据（根据自己实际情况）
