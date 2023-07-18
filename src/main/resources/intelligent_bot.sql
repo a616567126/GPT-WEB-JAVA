@@ -90,10 +90,6 @@ CREATE TABLE `email_config` (
 -- ----------------------------
 -- Records of email_config
 -- ----------------------------
-BEGIN;
-INSERT INTO `email_config` (`id`, `host`, `port`, `username`, `password`, `protocol`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 'smtp.163.com', 25, 'ssp19941003@163.com', 'IFLBMFQHZCVNTQZC', 'SMTP', 0, 0, 0, '2023-04-23 09:36:00', 0, '2023-04-23 14:56:07');
-INSERT INTO `email_config` (`id`, `host`, `port`, `username`, `password`, `protocol`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (2, 'smtp.qq.com', 465, '616567126@qq.com', 'ywwpoqpqpjgzbgae', 'SMTP', 1, 0, 0, '2023-04-23 13:34:46', 0, '2023-04-23 13:48:07');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for error_message
