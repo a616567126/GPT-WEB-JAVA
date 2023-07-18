@@ -1,5 +1,6 @@
 package com.intelligent.bot.model.res.sys;
 
+import com.intelligent.bot.model.res.sys.admin.GptRoleQueryRes;
 import lombok.Builder;
 import lombok.Data;
 
@@ -49,6 +50,11 @@ public class ClientHomeRes {
     /**
      * mj任务列表
      */
-    List<MjTaskRes> mjTaskList;
+    private List<MjTaskRes> mjTaskList;
+
+    /**
+     * 随机gpt角色列表
+     */
+    private List<GptRoleQueryRes> gptRoleList;
 
 }

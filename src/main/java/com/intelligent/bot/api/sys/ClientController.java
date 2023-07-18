@@ -53,6 +53,8 @@ public class ClientController {
     MjTaskDao mjTaskDao;
     @Resource
     IMjTaskService mjTaskService;
+    @Resource
+    IGptRoleService gptRoleService;
 
 
     @RequestMapping(value = "/home", name = "用户首页信息")
@@ -125,6 +127,7 @@ public class ClientController {
             });
             clientHomeRes.setLogList(homeLogResList);
         }
+        clientHomeRes.setGptRoleList(gptRoleService.getGptRoleLimit10());
         return B.okBuild(clientHomeRes);
     }
 

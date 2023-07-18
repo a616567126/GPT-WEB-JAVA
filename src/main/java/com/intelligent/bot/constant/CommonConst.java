@@ -302,7 +302,7 @@ public class CommonConst {
     /**
      * 默认头像地址
      */
-    public static final String AVATAR = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+    public static final String AVATAR = "https://guanbb.oss-accelerate.aliyuncs.com/1681116124739145728.png";
 
     /**
      * 线程池CorePoolSize
