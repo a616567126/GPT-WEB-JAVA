@@ -157,7 +157,6 @@
 
 
 ## 🍾  Put It Last
-- 易支付网站地址：[白辰易支付](https://my.mmywl.cn/)
 - 作者使用服务器地址：[浅夏云](https://www.qxqxa.com/aff/ZGWPEDLQ)
 - 作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)
 - 默认启动时需配置如下三个表的数据（根据自己实际情况）
