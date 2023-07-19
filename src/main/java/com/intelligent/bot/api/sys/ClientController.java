@@ -111,7 +111,9 @@ public class ClientController {
                         || e.getSendType().equals(SendType.GPT_4.getType())
                         || e.getSendType().equals(SendType.BING.getType())) {
                     res.setTitle(JSONObject.parseArray(e.getUseValue(), Message.class).get(0).getContent());
-                    res.setContent(e.getUseValue());
+                    List<Message> messages = JSONObject.parseArray(e.getUseValue(), Message.class);
+                    messages.removeIf(m -> m.getRole().equals(Message.Role.SYSTEM.getValue()));
+                    res.setContent(JSONObject.toJSONString(messages));
                 } else {
                     MessageLogSave messageLogSave = JSONObject.parseObject(e.getUseValue(), MessageLogSave.class);
                     List<String> imgList = new ArrayList<>();
