@@ -35,6 +35,7 @@
         <websocket.version>1.5.2</websocket.version>
         <dataurl.version>2.0.0</dataurl.version>
         <user-agent-utils.verison>1.21</user-agent-utils.verison>
+        <com.google.zxing.verison>3.5.1</com.google.zxing.verison>
     </properties>
 
     <dependencies>
@@ -162,6 +163,11 @@
             <groupId>eu.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
             <version>${user-agent-utils.verison}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${com.google.zxing.verison}</version>
         </dependency>
     </dependencies>
 
