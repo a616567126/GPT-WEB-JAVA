@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.intelligent.bot.dao.GptRoleDao">
+
+
+    <select id="queryGptRole" resultType="com.intelligent.bot.model.res.sys.admin.GptRoleQueryRes">
+        select id,role_name,role_describe,create_time from gpt_role
+        where deleted = 0
+        <if test="roleName != null and roleName != ''">
+            <bind name="roleName" value="'%'+roleName+'%'"/>
+            and role_name like #{roleName}
+        </if>
+        order by id desc
+    </select>
+    <select id="getGptRoleLimit10" resultType="com.intelligent.bot.model.res.sys.admin.GptRoleQueryRes">
+        select role_name,role_describe from gpt_role where deleted = 0 ORDER BY RAND() LIMIT 10
+    </select>
+</mapper>
