@@ -79,20 +79,25 @@ public class NotifyServiceImpl implements NotifyService {
 	private void postJson(String notifyHook, String paramsJson) throws WxErrorException, IOException {
 		MjCallBack mjTask = JSONObject.parseObject(paramsJson, MjCallBack.class);
 		log.info("mj开始回调,回调内容：{}", mjTask);
-		if(mjTask.getStatus().equals(TaskStatus.SUCCESS) && null != mjTask.getImageUrl()){
-			String fileLocalPath = FileUtil.base64ToImage(FileUtil.imageUrlToBase64(mjTask.getImageUrl()), mjTask.getAction() == TaskAction.IMAGINE ? String.valueOf(mjTask.getId()) : null);
-			if(mjTask.getSubType() == 2){
-				mjTask.setImageUrl(fileLocalPath);
-				asyncService.sendMjWxMessage(BeanUtil.copyProperties(mjTask,Task.class));
-			}else {
+		if(mjTask.getStatus().equals(TaskStatus.SUCCESS)){
+			if(mjTask.getAction() == TaskAction.DESCRIBE){
 				SseEmitterServer.sendMessage(mjTask.getUserId(),mjTask);
 			}
-			Task task = new Task();
-			task.setId(mjTask.getId());
-			task.setImageUrl(fileLocalPath);
-			task.setStatus(TaskStatus.SUCCESS);
-			mjTaskService.updateById(task);
-		}else {
+			if(null != mjTask.getImageUrl()){
+				String fileLocalPath = FileUtil.base64ToImage(FileUtil.imageUrlToBase64(mjTask.getImageUrl()), mjTask.getAction() == TaskAction.IMAGINE ? String.valueOf(mjTask.getId()) : null);
+				if(mjTask.getSubType() == 2){
+					mjTask.setImageUrl(fileLocalPath);
+					asyncService.sendMjWxMessage(BeanUtil.copyProperties(mjTask,Task.class));
+				}else {
+					SseEmitterServer.sendMessage(mjTask.getUserId(),mjTask);
+				}
+				Task task = new Task();
+				task.setId(mjTask.getId());
+				task.setImageUrl(fileLocalPath);
+				task.setStatus(TaskStatus.SUCCESS);
+				mjTaskService.updateById(task);
+			}
+		} else {
 			if(mjTask.getSubType() == 1 && null != mjTask.getImageUrl()){
 				mjTask.setImageUrl(FileUtil.imageUrlToBase64(mjTask.getImageUrl()));
 				SseEmitterServer.sendMessage(mjTask.getUserId(),mjTask);

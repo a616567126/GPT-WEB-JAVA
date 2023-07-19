@@ -158,14 +158,17 @@ public class DiscordServiceImpl implements DiscordService {
 
 	@Override
 	public B<String> upload(String fileName, DataUrl dataUrl) {
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
 		try {
 			JSONObject fileObj = new JSONObject();
 			fileObj.put("filename", fileName);
 			fileObj.put("file_size", dataUrl.getData().length);
 			fileObj.put("id", "0");
 			JSONObject params = new JSONObject();
-			params.put("files", new JSONArray().add(fileObj));
-			ResponseEntity<String> responseEntity = postJson(CommonConst.DISCORD_UPLOAD_URL, params.toString());
+			JSONArray files = new JSONArray();
+			files.add(fileObj);
+			params.put("files", files);
+			ResponseEntity<String> responseEntity = postJson(String.format(CommonConst.DISCORD_UPLOAD_URL,sysConfig.getMjChannelId()), params.toString());
 			if (responseEntity.getStatusCode() != HttpStatus.OK) {
 				log.error("上传图片到discord失败, status: {}, msg: {}", responseEntity.getStatusCodeValue(), responseEntity.getBody());
 				return B.finalBuild("上传图片到discord失败");

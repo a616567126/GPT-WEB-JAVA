@@ -69,7 +69,7 @@ public class DiscordHelper {
 		}
 		int hashStartIndex = url.lastIndexOf("/");
 		String taskId = CharSequenceUtil.subBefore(url.substring(hashStartIndex + 1), ".", true);
-		if (CharSequenceUtil.length(taskId) == 16) {
+		if (CharSequenceUtil.length(taskId) == 19) {
 			return taskId;
 		}
 		return null;

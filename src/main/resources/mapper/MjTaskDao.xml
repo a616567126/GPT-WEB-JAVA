@@ -16,7 +16,7 @@
                final_prompt,
                fail_reason
         from mj_task
-        where user_id = #{userId} and deleted = 0
+        where user_id = #{userId} and deleted = 0 and action != 'DESCRIBE'
         order by id desc
     </select>
     <select id="selectTransform" resultType="com.intelligent.bot.model.res.sys.MjTaskTransformRes">
