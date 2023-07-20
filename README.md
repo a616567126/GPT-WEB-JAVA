@@ -72,7 +72,12 @@
         13.打包成功之后会运行systemctl restart bot 运行jar包
         14.使用journalctl -fu bot 命令可查看当前服务状态日志
         15.管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码
-        16.相关配置请往下滑！
+        ----------------以下说明为客户端与管理端部署说明---------------------
+        16.在服务器上配置启动好服务之后，在客户端与管理端修改api.js里的接口地址
+        17.使用npm run dev 测试是否接口请求正常
+        18.使用npm run build 打包代码，并部署到服务器
+        19.可使用nginx，代理图片服务器，客户端及管理端页面
+    
 
 
 
@@ -83,7 +88,7 @@
 ```powershell
  server {
         listen 443 ssl http2;  # 1.1版本后这样写
-        server_name baidu.com; #填写绑定证书的域名
+        server_name api.baidu.com; #填写绑定证书的域名
         ssl_certificate /www/server/nginx/ssl/baidu.pem;# 指定证书的位置，绝对路径
         ssl_certificate_key /www/server/nginx/ssl/baidu.key; # 绝对路径，同上
         ssl_session_timeout 5m;
@@ -100,6 +105,57 @@
           proxy_http_version  1.1;
           proxy_read_timeout 600s; ##设置SSE长链接保持时间为 600s
           }
+    }
+    server {
+         #SSL 默认访问端口号为 443
+         listen 443 ssl http2; 
+         #请填写绑定证书的域名客户端、管理端通用
+         server_name bot.baidu.com;
+         #请填写证书文件的相对路径或绝对路径
+         ssl_certificate /www/server/nginx/ssl/bot/bot.baidu.com.crt;
+         #请填写私钥文件的相对路径或绝对路径
+         ssl_certificate_key /www/server/nginx/ssl/bot/bot.baidu.com.key;
+         ssl_session_timeout 5m;
+         #请按照以下协议配置
+         ssl_protocols TLSv1.2 TLSv1.3; 
+         #请按照以下套件配置，配置加密套件，写法遵循 openssl 标准。
+         ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE; 
+         ssl_prefer_server_ciphers on;
+         location / {
+             #网站主页路径。此路径仅供参考，具体请您按照实际目录操作。
+             #例如，您的网站主页在 Nginx 服务器的 /etc/www 目录下，则请修改 root 后面的 html 为 /etc/www。
+            root    /usr/local/siana/bot;
+            index   index.html;
+            try_files  $uri $uri/ /index.html;
+            }
+   }
+   server {
+        listen       80;
+        server_name  bot.baidu.com;#客户端、管理端通用80强制443
+        rewrite ^ https://$http_host$request_uri? permanent;
+
+    }
+   server {
+        listen 443 ssl http2;
+        server_name img.baidu.com; #图片服务器
+        location    / {
+            root   /www/uploads/;
+            charset utf-8;          #显示中文
+            add_header 'Access-Control-Allow-Origin' '*'; #允许来自所有的访问地址
+            add_header 'Access-Control-Allow-Credentials' 'true';
+            add_header 'Access-Control-Allow-Methods' 'GET, PUT, POST, DELETE, OPTIONS'; #支持请求方式
+            add_header 'Access-Control-Allow-Headers' 'Content-Type,*';
+        }
+         #请填写证书文件的相对路径或绝对路径
+         ssl_certificate /www/server/nginx/ssl/img/img.xx.crt;
+         #请填写私钥文件的相对路径或绝对路径
+         ssl_certificate_key /www/server/nginx/ssl/img/img.xx.key;
+         ssl_session_timeout 5m;
+         #请按照以下协议配置
+         ssl_protocols TLSv1.2 TLSv1.3; 
+         #请按照以下套件配置，配置加密套件，写法遵循 openssl 标准。
+         ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE; 
+         ssl_prefer_server_ciphers on;
     }
 ```
 
