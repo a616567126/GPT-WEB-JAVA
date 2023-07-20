@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 18/07/2023 08:31:50
+ Date: 20/07/2023 09:11:16
 */
 
 SET NAMES utf8mb4;
@@ -90,6 +90,8 @@ CREATE TABLE `email_config` (
 -- ----------------------------
 -- Records of email_config
 -- ----------------------------
+BEGIN;
+COMMIT;
 
 -- ----------------------------
 -- Table structure for error_message
@@ -399,8 +401,6 @@ CREATE TABLE `pay_config` (
   `id` bigint NOT NULL,
   `pid` int DEFAULT NULL COMMENT '易支付商户id',
   `secret_key` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '易支付商户密钥',
-  `notify_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '易支付回调域名',
-  `return_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '易支付跳转通知地址',
   `submit_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '易支付支付请求域名',
   `api_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '易支付订单查询api',
   `pay_type` tinyint DEFAULT '0' COMMENT '支付类型 0 易支付 1卡密',
@@ -422,7 +422,7 @@ CREATE TABLE `pay_config` (
 -- Records of pay_config
 -- ----------------------------
 BEGIN;
-INSERT INTO `pay_config` (`id`, `pid`, `secret_key`, `notify_url`, `return_url`, `submit_url`, `api_url`, `pay_type`, `wx_appid`, `wx_mchid`, `wx_v3_secret`, `wx_serial_no`, `wx_private_key`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 1, '1', NULL, NULL, 'https://bkpay.66kag.com/submit.php', 'https://bkpay.66kag.com/mapi.php', 0, '1', '2', '3', '4', '-----BEGIN PRIVATE KEY-----\n1-----END PRIVATE KEY-----', 10, 0, 0, '2023-03-20 20:54:23', 0, '2023-07-13 14:01:37');
+INSERT INTO `pay_config` (`id`, `pid`, `secret_key`, `submit_url`, `api_url`, `pay_type`, `wx_appid`, `wx_mchid`, `wx_v3_secret`, `wx_serial_no`, `wx_private_key`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 1, '1', 'https://bkpay.66kag.com/submit.php', 'https://bkpay.66kag.com/mapi.php', 0, '1', '2', '3', '4', '-----BEGIN PRIVATE KEY-----\n1-----END PRIVATE KEY-----', 10, 0, 0, '2023-03-20 20:54:23', 0, '2023-07-13 14:01:37');
 COMMIT;
 
 -- ----------------------------
@@ -505,9 +505,12 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config` (
   `id` bigint NOT NULL,
-  `registration_method` tinyint DEFAULT '1' COMMENT '注册模式 1账号密码  2 短信注册 3 关闭注册 4邮件注册',
+  `registration_method` tinyint DEFAULT '1' COMMENT '注册模式 1账号密码  2 短信注册 3 公众号 4邮件注册',
   `default_times` int DEFAULT '10' COMMENT '默认注册次数',
   `gpt_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'gpt请求地址',
+  `gpt4_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'gpt4请求地址',
+  `is_open_gpt` tinyint DEFAULT '1' COMMENT 'gpt开关 0-未开启、1-开启gpt3.5、2-开启gpt4.0、3-全部',
+  `is_open_gpt_official` tinyint DEFAULT '0' COMMENT 'gpt画图开关 0-未开启、1-开启',
   `img_upload_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '图片上传地址',
   `img_return_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '图片域名前缀',
   `api_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '后台接口地址',
@@ -517,10 +520,10 @@ CREATE TABLE `sys_config` (
   `is_open_flag_studio` tinyint DEFAULT '0' COMMENT '是否开启FlagStudio 0-未开启 1开启',
   `flag_studio_key` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'FlagStudio key',
   `flag_studio_url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'FlagStudio 接口地址',
-  `baidu_appid` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '百度appid',
-  `baidu_secret` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '百度Secret\n',
-  `baidu_key` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '百度应用key',
-  `baidu_secret_key` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '百度应用Secret',
+  `baidu_appid` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '百度翻译appid',
+  `baidu_secret` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '百度翻译Secret\n',
+  `baidu_key` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '百度内容审核应用key',
+  `baidu_secret_key` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '百度内容审核应用Secret',
   `is_open_mj` tinyint DEFAULT '0' COMMENT '是否开启mj 0未开启 1开启',
   `mj_guild_id` bigint DEFAULT NULL COMMENT 'Mj服务器id',
   `mj_channel_id` bigint DEFAULT NULL COMMENT 'Mj频道id',
@@ -550,7 +553,7 @@ CREATE TABLE `sys_config` (
 -- Records of sys_config
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_config` (`id`, `registration_method`, `default_times`, `gpt_url`, `img_upload_url`, `img_return_url`, `api_url`, `client_url`, `is_open_sd`, `sd_url`, `is_open_flag_studio`, `flag_studio_key`, `flag_studio_url`, `baidu_appid`, `baidu_secret`, `baidu_key`, `baidu_secret_key`, `is_open_mj`, `mj_guild_id`, `mj_channel_id`, `mj_user_token`, `mj_bot_token`, `mj_bot_name`, `is_open_proxy`, `proxy_ip`, `proxy_port`, `is_open_bing`, `bing_cookie`, `is_open_stable_studio`, `stable_studio_api`, `stable_studio_key`, `client_logo`, `client_name`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 3, 5, 'https://api.openai.com', '/www/uploads/', 'https://img.aaa.com', 'https://api.aaa.com', 'https://bot.aaa.com', 1, 'http://127.0.0.1:7860', 0, '1', 'https://flagopen.baai.ac.cn/flagStudio', '1', '2', '3', '4', 1, 5, 6, '7', '8', 'Midjourney Bot', 0, '127.0.0.1', 7890, 0, '9', 1, 'https://api.stability.ai', '10', '/20230608/work_logo.jpg', 'Siana', 22, 0, 0, '2023-04-16 17:46:01', 0, '2023-07-13 14:02:53');
+INSERT INTO `sys_config` (`id`, `registration_method`, `default_times`, `gpt_url`, `gpt4_url`, `is_open_gpt`, `is_open_gpt_official`, `img_upload_url`, `img_return_url`, `api_url`, `client_url`, `is_open_sd`, `sd_url`, `is_open_flag_studio`, `flag_studio_key`, `flag_studio_url`, `baidu_appid`, `baidu_secret`, `baidu_key`, `baidu_secret_key`, `is_open_mj`, `mj_guild_id`, `mj_channel_id`, `mj_user_token`, `mj_bot_token`, `mj_bot_name`, `is_open_proxy`, `proxy_ip`, `proxy_port`, `is_open_bing`, `bing_cookie`, `is_open_stable_studio`, `stable_studio_api`, `stable_studio_key`, `client_logo`, `client_name`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 3, 5, 'https://api.openai.com', 'https://api.openai.com', 1, 1, '/www/uploads/', 'https://img.aaa.com', 'https://api.aaa.com', 'https://bot.aaa.com', 1, 'http://127.0.0.1:7860', 0, '1', 'https://flagopen.baai.ac.cn/flagStudio', '1', '2', '3', '4', 1, 5, 6, '7', '8', 'Midjourney Bot', 0, '127.0.0.1', 7890, 0, '9', 1, 'https://api.stability.ai', '10', '/20230608/work_logo.jpg', 'Siana', 22, 0, 0, '2023-04-16 17:46:01', 0, '2023-07-20 09:09:33');
 COMMIT;
 
 -- ----------------------------

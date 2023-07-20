@@ -179,7 +179,9 @@ public class ClientController {
                 .isOpenSd(sysConfig.getIsOpenSd())
                 .isOpenFlagStudio(sysConfig.getIsOpenFlagStudio())
                 .isOpenBing(sysConfig.getIsOpenBing())
-                .isOpenMj(sysConfig.getIsOpenMj()).build()
+                .isOpenMj(sysConfig.getIsOpenMj())
+                .isOpenGpt(sysConfig.getIsOpenGpt())
+                .isOpenGptOfficial(sysConfig.getIsOpenGptOfficial()).build()
         );
     }
 

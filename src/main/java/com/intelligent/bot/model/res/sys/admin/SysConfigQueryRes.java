@@ -15,15 +15,31 @@ public class SysConfigQueryRes implements Serializable {
      */
     private Integer registrationMethod;
 
+
+    /**
+     * 默认注册次数
+     */
+    private Integer defaultTimes;
+
     /**
      * gpt请求地址
      */
     private String gptUrl;
 
     /**
-     * 默认注册次数
+     * gpt4请求地址
      */
-    private Integer defaultTimes;
+    private String gpt4Url;
+
+    /**
+     * gpt开关 0-未开启、1-开启gpt3.5、2-开启gpt4.0、3-全部
+     */
+    private Integer isOpenGpt;
+
+    /**
+     * gpt画图开关 0-未开启、1-开启
+     */
+    private Integer isOpenGptOfficial;
 
     /**
      * 图片上传路径

@@ -28,4 +28,15 @@ public class GetFunctionState {
      * 是否开启bing 0未开启 1开启
      */
     private Integer isOpenBing;
+
+    /**
+     * gpt开关 0-未开启、1-开启gpt3.5、2-开启gpt4.0、3-全部
+     */
+    private Integer isOpenGpt;
+
+
+    /**
+     * gpt画图开关 0-未开启、1-开启
+     */
+    private Integer isOpenGptOfficial;
 }

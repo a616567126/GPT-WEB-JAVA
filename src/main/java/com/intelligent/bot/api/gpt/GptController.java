@@ -64,6 +64,14 @@ public final class GptController {
 
     @PostMapping(value = "/chat",name = "流式对话")
     public B<Long> gptChat(@Validated @RequestBody GptStreamReq req) {
+        SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+        if(cacheObject.getIsOpenGpt() == 0){
+            throw new E("Ai对话已关闭");
+        }
+        if((cacheObject.getIsOpenGpt() == 1 && req.getType() != 3)
+                || (cacheObject.getIsOpenGpt() == 2 && req.getType() != 4)){
+            throw new E("Ai模型已关闭");
+        }
         if(StringUtils.isEmpty(req.getProblem())){
             throw new E("请输入有效的内容");
         }
@@ -71,7 +79,6 @@ public final class GptController {
             throw new E("提问违反相关规定，请更换内容重新尝试");
         }
         //国内需要代理 国外不需要
-        SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         Proxy proxy = null ;
         if(null != cacheObject.getIsOpenProxy() && cacheObject.getIsOpenProxy() == 1){
             proxy = Proxys.http(cacheObject.getProxyIp(), cacheObject.getProxyPort());
@@ -89,7 +96,7 @@ public final class GptController {
                 .timeout(600)
                 .apiKey(gptKey)
                 .proxy(proxy)
-                .apiHost(cacheObject.getGptUrl())
+                .apiHost(req.getType() == 3 ? cacheObject.getGptUrl() : cacheObject.getGpt4Url())
                 .build()
                 .init();
         ConsoleStreamListener listener = ConsoleStreamListener.builder()
@@ -105,8 +112,12 @@ public final class GptController {
         chatGPTStream.streamChatCompletion(messages, listener,req.getType());
         return B.okBuild(logId);
     }
-    @PostMapping(value = "/official", name = "GPT-画图")
+    @PostMapping(value = "/official", name = "AI-画图")
     public B<MessageLogSave> gptAlpha(@Validated @RequestBody GptAlphaReq req) throws IOException {
+        SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+        if(cacheObject.getIsOpenGptOfficial() == 0){
+            throw new E("Ai画图已关闭");
+        }
         final String randomKey = InitUtil.getRandomKey(req.getType());
         List<String> imgUrlList = new ArrayList<>();
         List<String> returnImgUrlList = new ArrayList<>();
@@ -121,7 +132,6 @@ public final class GptController {
                         .imgList(imgUrlList).build()))
                 .gptKey(randomKey)
                 .userId(JwtUtil.getUserId()).build(),null);
-        SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
         Proxy proxy = null ;
         if(null != cacheObject.getIsOpenProxy() && cacheObject.getIsOpenProxy() == 1){
             proxy = Proxys.http(cacheObject.getProxyIp(), cacheObject.getProxyPort());
