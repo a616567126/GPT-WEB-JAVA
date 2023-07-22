@@ -241,6 +241,9 @@ wx_private_key|商户证书内容|微信支付平台-账户中心-API安全-API�
 registration_method|注册模式 1 账号密码 2 邮箱注册 3 公众号 |开启邮件注册后需要在emil_config中配置邮件相关参数
 default_times|默认注册次数|用户注册时默认赠送请求次数
 gpt_url|gpt请求地址|可使用官方或替换第三方
+gpt4_url|gpt4请求地址|可使用官方或替换第三方
+is_open_gpt|gpt开关 0-未开启、1-开启gpt3.5、2-开启gpt4.0、3-全部|默认开启3.5
+is_open_gpt_official|gpt画图开关 0-未开启、1-开启|默认关闭
 img_upload_url|图片上传地址|例如：/usr/local 配置图片上传路径
 img_return_url|图片域名前缀|上传图片后与图片名组合成可访问的url 例如：https://baidu.com 图片上传成功后 则返回 https://baidu.com /2023/04/26/2222.jpg
 api_url|后台接口地址|用于mj、支付、微信等回调使用
