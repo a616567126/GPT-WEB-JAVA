@@ -229,4 +229,17 @@ public class ClientController {
         clientConfRes.setClientLogo(cacheObject.getImgReturnUrl() + clientConfRes.getClientLogo());
         return B.okBuild(clientConfRes);
     }
+
+    @RequestMapping(value = "/gallery", name = "画廊")
+    public B<List<GalleryRes>> gallery(){
+        List<GalleryRes> gallery = mjTaskDao.getGallery();
+        SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+        gallery.forEach( g ->{
+            g.setImageUrl(cacheObject.getImgReturnUrl() + g.getImageUrl());
+            if(!g.getAvatar().contains("http")){
+                g.setAvatar(cacheObject.getImgReturnUrl() + g.getAvatar());
+            }
+        });
+        return B.okBuild(gallery);
+    }
 }

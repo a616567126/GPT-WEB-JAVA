@@ -142,6 +142,27 @@ public class CommonConst {
     public static final Integer MJ_NUMBER =  5;
 
     /**
+     * mj放大消耗次数
+     */
+    public static final Integer MJ_U_NUMBER =  2;
+
+    /**
+     * mj变换消耗次数
+     */
+    public static final Integer MJ_V_NUMBER =  5;
+
+    /**
+     * mj图生文消耗次数
+     */
+    public static final Integer MJ_DESCRIBE_NUMBER =  3;
+
+
+    /**
+     * mj混合生图消耗次数
+     */
+    public static final Integer MJ_BLEND_NUMBER =  5;
+
+    /**
      * sd画图消耗次数
      */
     public static final Integer SD_NUMBER =  2;

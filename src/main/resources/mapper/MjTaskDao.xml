@@ -30,4 +30,22 @@
     <delete id="deleteByKeyId">
         delete from mj_task where id = #{id}
     </delete>
+    <select id="getGallery" resultType="com.intelligent.bot.model.res.sys.GalleryRes">
+        SELECT
+            m.prompt_en,
+            m.prompt,
+            m.image_url,
+            m.create_time,
+            t.NAME,
+            t.avatar
+        FROM
+            mj_task m
+                LEFT JOIN t_user t ON t.id = m.user_id
+        WHERE
+            m.deleted = 0
+          AND action != 'DESCRIBE'
+          AND STATUS = 'SUCCESS'
+        ORDER BY
+            m.id DESC
+    </select>
 </mapper>

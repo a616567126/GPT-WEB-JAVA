@@ -94,6 +94,7 @@ public class MjController {
 
 	@PostMapping(value = "/submit/uv",name = "提交选中放大或变换任务")
 	public B<Task> submitUV(@RequestBody UVSubmitReq req) {
+		checkService.checkUser(JwtUtil.getUserId(),req.getTaskAction().equals(TaskAction.VARIATION) ? CommonConst.MJ_V_NUMBER : CommonConst.MJ_U_NUMBER);
 		if (null == req.getId()) {
 			throw new E("id 不能为空");
 		}
@@ -141,6 +142,7 @@ public class MjController {
 
 	@PostMapping(value = "/describe",name = "提交Describe图生文任务")
 	public B<Task> describe(@RequestBody DescribeReq req) {
+		checkService.checkUser(JwtUtil.getUserId(), CommonConst.MJ_DESCRIBE_NUMBER);
 		if (CharSequenceUtil.isBlank(req.getBase64())) {
 			throw new E("校验错误");
 		}
@@ -161,6 +163,7 @@ public class MjController {
 
 	@PostMapping(value = "/blend",name = "提交Blend任务")
 	public B<Task> blend(@RequestBody SubmitBlendReq req) {
+		checkService.checkUser(JwtUtil.getUserId(), CommonConst.MJ_BLEND_NUMBER);
 		List<String> base64Array = req.getBase64Array();
 		if (base64Array == null || base64Array.size() < 2 || base64Array.size() > 5) {
 			throw new E("base64List参数错误");
