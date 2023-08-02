@@ -1,4 +1,4 @@
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/73e5ffa1-1b28-48a5-88e9-7b5ff2a44eab"><div align="center">
+<div align="center">
     <p style="font-size:40px;font-weight: 800;color: coral">Siana 智能Ai机器人 </p>
 </div>
 <div align="center" style="text-align:center;margin-top:30px;margin-bottom:20px">
@@ -57,9 +57,8 @@
 ## 客户端UI演示
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b7a63a3b-d3b4-40e4-85ba-a12c7c8a24d5">
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/810c6485-ce70-4c33-9f51-58084714aae1">
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/6048676d-8996-40a2-8278-08b440c6a5d3)
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/cbc52f30-4943-415f-aaba-6ef315d5fd53">
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/42e7817d-9641-4910-83a4-141e4bbd2b2c">
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/29ebf598-0e28-4e55-b7c2-bc54ee660c8a)
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ce2edc3b-d90a-4ad0-ac3e-51bdcda678e3">
 
 
