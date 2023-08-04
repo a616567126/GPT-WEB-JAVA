@@ -56,6 +56,7 @@
 
 ## 客户端UI演示
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/a3a98a22-5e87-4f16-a6dc-371fc3307322">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/a5a0002a-c0d9-4737-805b-6c77e4b9afe8">
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b7a63a3b-d3b4-40e4-85ba-a12c7c8a24d5">
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b846f77c-7fd4-48aa-8a8d-f39ab899add3">
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/810c6485-ce70-4c33-9f51-58084714aae1">
