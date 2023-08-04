@@ -63,6 +63,8 @@
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b748616f-2e74-4ae3-a672-3f2800601b2e">
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/8571c1a1-c7bc-4dfc-b47c-0444ea9c3c9a">
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/42e7817d-9641-4910-83a4-141e4bbd2b2c">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b3fc5030-c22e-4bb6-98eb-1bfe695f5eb9">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ce79af3c-2d03-4ac8-8b4f-f7226f6d3027">
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ce2edc3b-d90a-4ad0-ac3e-51bdcda678e3">
 
 
