@@ -14,6 +14,7 @@ import com.intelligent.bot.service.baidu.BaiDuService;
 import com.intelligent.bot.service.mj.TaskService;
 import com.intelligent.bot.service.mj.TaskStoreService;
 import com.intelligent.bot.service.sys.CheckService;
+import com.intelligent.bot.service.sys.IMjTaskService;
 import com.intelligent.bot.utils.mj.BannedPromptUtils;
 import com.intelligent.bot.utils.mj.MimeTypeUtils;
 import com.intelligent.bot.utils.sys.IDUtil;
@@ -48,6 +49,9 @@ public class MjController {
 	CheckService checkService;
 	@Resource
 	TaskService taskService;
+
+	@Resource
+	IMjTaskService mjTaskService;
 
 	@PostMapping(value = "/submit",name = "提交Imagine或UV任务")
 	public B<Task> submit(@RequestBody SubmitReq req) {
@@ -184,6 +188,16 @@ public class MjController {
 		this.taskService.submitBlend(task, dataUrlList,req.getDimensions());
 		return B.okBuild(task);
 	}
+
+	@PostMapping(value = "/public/status",name = "mj任务公开状态修改")
+	public B<Void> privateTask(@RequestBody PrivateTask req) {
+		this.mjTaskService.lambdaUpdate()
+				.set(Task::getPublicStatus,req.getPublicStatus())
+				.eq(Task::getId,req.getId())
+				.update();
+		return B.okBuild();
+	}
+
 
 
 

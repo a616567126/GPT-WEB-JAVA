@@ -72,7 +72,7 @@ public class WxOutServiceImpl implements WxOutService {
     @Override
     public String bind(String content, String fromUser) {
         SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
-        String respContent;
+        String respContent = "";
         String[] split = content.split("-");
         if (split.length == 1) {
             respContent = "❗\uFE0F输入内容格式不正确，请检查，或输入'菜单'查看格式'";
@@ -80,17 +80,17 @@ public class WxOutServiceImpl implements WxOutService {
             if (!Validator.isMobile(split[1])) {
                 respContent = "❗\uFE0F请输入正确的手机号";
             } else {
-                User user = userService.getOne(fromUser, null);
-                if (null != user && null != user.getMobile()) {
-                    respContent = "❗\uFE0F当前微信已绑定账号：" + user.getMobile();
-                } else {
-                    user = userService.getOne(null, split[1]);
-                    if (null == user) {
-                        respContent = "❗\uFE0F当前手机未注册，请输入'开通' 开通账号";
-                    } else if (null != user.getFromUserName()) {
-                        respContent = "❗\uFE0F当前手机号已绑定微信";
+                User checkuser = userService.getOne(null, split[1]);
+                if (null != checkuser) {
+                    respContent = "❗\uFE0F当前手机号已被绑定";
+                }else {
+                    User user = userService.getOne(fromUser, null);
+                    if (null != user ) {
+                        if(null != user.getMobile()){
+                            respContent = "❗\uFE0F当前微信已绑定账号：" + user.getMobile();
+                        }
                     } else {
-                        user.setFromUserName(fromUser);
+                        user.setMobile(split[1]);
                         user.setIsEvent(1);
                         userService.saveOrUpdate(user);
                         respContent = "✅账号绑定成功!" +
@@ -100,14 +100,14 @@ public class WxOutServiceImpl implements WxOutService {
                 }
             }
         }
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
     @Override
     public String opened(String content, String fromUser) {
         SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
-        String respContent;
+        String respContent = "";
         String[] split = content.split("-");
         if (split.length == 1) {
             respContent = "❗\uFE0F输入内容格式不正确，请检查，或输入'菜单'查看格式'";
@@ -115,18 +115,19 @@ public class WxOutServiceImpl implements WxOutService {
             if (!Validator.isMobile(split[1])) {
                 respContent = "❗\uFE0F请输入正确的手机号";
             } else {
-                User user = userService.getOne(fromUser, null);
-                if (null != user) {
-                    respContent = "❗\uFE0F账号已存在请发送'绑定-" +split[1] + "'进行账号与手机号的绑定";
-                } else {
-                    user = userService.getOne(null, split[1]);
+                User checkUser = userService.getOne(null, split[1]);
+                if (null != checkUser) {
+                    respContent = "❗\uFE0F当前手机号已被绑定";
+                }else {
+                    User user = userService.getOne(fromUser, null);
                     if (null != user) {
-                        if (null != user.getFromUserName()) {
-                            respContent = "❗\uFE0F当前手机号已被绑定";
-                        } else {
-                            respContent = "❗\uFE0F手机号已存在请发送绑定-" + split[1] + "绑定此手机号";
+                        if (null != user.getMobile()) {
+                            respContent = "❗\uFE0F账号已开通，账号为：" + user.getMobile();
+                        }else {
+                            user.setMobile(split[1]);
+                            userService.saveOrUpdate(user);
                         }
-                    } else {
+                    }else {
                         user = new User();
                         String password = PasswordUtil.getRandomPassword();
                         user.setName(split[1]);
@@ -146,7 +147,7 @@ public class WxOutServiceImpl implements WxOutService {
                 }
             }
         }
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
@@ -159,7 +160,7 @@ public class WxOutServiceImpl implements WxOutService {
         } else {
             respContent = "✅剩余次数：" + user.getRemainingTimes();
         }
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
@@ -175,7 +176,7 @@ public class WxOutServiceImpl implements WxOutService {
                 "需先发送图片或直接使用图片地址进行垫图 例如：/画画 一只小狗 # https://a.img.com，/画画 + 空格 + 咒语 + 空格 + '#' + 空格 +图片地址，多个度图片地址用空格隔开\n\n" +
                 "输 入 '兑换-卡密' 即可兑换卡密例如'兑换-ABC1234'";
 //                        "输 入 '迁移-手机号' 即可将当前微信用户迁移到手机号所在用户账号例如(迁移-13344444444)，并合并剩余次数，注意迁移账号后，微信关联用户则删除，请谨慎迁移，并核对手机号";
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
@@ -216,7 +217,7 @@ public class WxOutServiceImpl implements WxOutService {
             }
 
         }
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
@@ -271,7 +272,7 @@ public class WxOutServiceImpl implements WxOutService {
                 }
             }
         }
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
@@ -331,7 +332,7 @@ public class WxOutServiceImpl implements WxOutService {
         } catch (Exception e) {
             respContent = "❗\uFE0F命令有误，请重新输入";
         }
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
@@ -363,7 +364,7 @@ public class WxOutServiceImpl implements WxOutService {
                 }
             }
         }
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
@@ -398,7 +399,7 @@ public class WxOutServiceImpl implements WxOutService {
                 }
             }
         }
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
@@ -422,7 +423,7 @@ public class WxOutServiceImpl implements WxOutService {
                 }
             }
         }
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
@@ -438,7 +439,7 @@ public class WxOutServiceImpl implements WxOutService {
             userService.saveOrUpdate(user);
             respContent = "✅重置密码完成，新密码：" + password;
         }
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
@@ -450,23 +451,23 @@ public class WxOutServiceImpl implements WxOutService {
                 "\uD83E\uDEAB注册能力：1-账号密码，2-邮箱，3-公众号\n\n" +
                 "\uD83E\uDDD1\uD83C\uDFFB\u200D\uD83D\uDCBB管理端功能：1-用户管理，2-商品管理，3-订单管理，4-GPTKEY管理，5-卡密管理，6-邮箱管理，7-系统配置，8-操作日志\n\n" +
                 "\uD83E\uDD77作者承接App，公众号，小程序，网站，物联网，定制软件，需要可添加作者微信：ssp941003\n\n";
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
     @Override
     public void cardPin(String fromUser) throws WxErrorException {
         String content = "卡密列表\n" +
-                "<a href=\"weixin://bizmsgmenu?msgmenucontent=/recharge-"+1+"&msgmenuid=2\">5#100点</a>\t"+
-                "<a href=\"weixin://bizmsgmenu?msgmenucontent=/recharge-"+2+"&msgmenuid=2\">10#220点</a>\t"+
-                "<a href=\"weixin://bizmsgmenu?msgmenucontent=/recharge-"+3+"&msgmenuid=2\">50#1500点</a>";
+                "<a href=\"weixin://bizmsgmenu?msgmenucontent=/recharge-" + 1 + "&msgmenuid=2\">5#100点</a>\t" +
+                "<a href=\"weixin://bizmsgmenu?msgmenucontent=/recharge-" + 2 + "&msgmenuid=2\">10#220点</a>\t" +
+                "<a href=\"weixin://bizmsgmenu?msgmenucontent=/recharge-" + 3 + "&msgmenuid=2\">50#1500点</a>";
         WxMpKefuMessage wxMpKefuMessage = WxMpKefuMessage.TEXT().toUser(fromUser).content(content).build();
         wxMpService.getKefuService().sendKefuMessage(wxMpKefuMessage);
-        saveWxLog("卡密",fromUser);
+        saveWxLog("卡密", fromUser);
     }
 
     @Override
-    public String recharge(String content, String fromUser) throws Exception{
+    public String recharge(String content, String fromUser) throws Exception {
         String respContent;
         String[] subContent = content.split("-");
         if (subContent.length < 2) {
@@ -475,13 +476,13 @@ public class WxOutServiceImpl implements WxOutService {
             User user = userService.getOne(fromUser, null);
             if (null == user) {
                 respContent = "❗\uFE0F请先开通或绑定账号";
-            }else {
+            } else {
                 int price = 5;
                 int type = Integer.valueOf(subContent[1]);
-                if(type == 2){
+                if (type == 2) {
                     price = 10;
                 }
-                if(type == 3){
+                if (type == 3) {
                     price = 50;
                 }
                 Order order = new Order();
@@ -495,7 +496,7 @@ public class WxOutServiceImpl implements WxOutService {
                 order.setMsg("微信公众号获取卡密");
                 String bodyParam = WxPayUtil.buildNativePayJson(order.getPrice(),
                         order.getId().toString(),
-                        "获取卡密#"+price);
+                        "获取卡密#" + price);
                 HttpUrl httpurl = HttpUrl.parse(CommonConst.WX_NATIVE_URL);
                 String sign = WxPayUtil.getToken("POST", httpurl, bodyParam);
                 String body = HttpUtil.createPost(CommonConst.WX_NATIVE_URL)
@@ -504,9 +505,9 @@ public class WxOutServiceImpl implements WxOutService {
                         .body(bodyParam)
                         .execute()
                         .body();
-                if(!body.contains("code_url")){
+                if (!body.contains("code_url")) {
                     respContent = "❗\uFE0F微信预订单生成失败";
-                }else {
+                } else {
                     File file = FileUtil.createQrCode(JSONObject.parseObject(body).getString("code_url"));
                     WxMediaUploadResult wxMediaUploadResult = wxMpService.getMaterialService().mediaUpload(WxConsts.MediaFileType.IMAGE, file);
                     WxMpKefuMessage wxMpKefuMessage = WxMpKefuMessage.IMAGE().toUser(user.getFromUserName()).mediaId(wxMediaUploadResult.getMediaId()).build();
@@ -518,7 +519,7 @@ public class WxOutServiceImpl implements WxOutService {
             }
 
         }
-        saveWxLog(content,fromUser);
+        saveWxLog(content, fromUser);
         return respContent;
     }
 
@@ -531,7 +532,8 @@ public class WxOutServiceImpl implements WxOutService {
         task.setUserId(userId);
         return task;
     }
-    public void saveWxLog(String content,String fromUser){
+
+    public void saveWxLog(String content, String fromUser) {
         WxLog wxLog = new WxLog();
         wxLog.setContent(content);
         wxLog.setFromUserName(fromUser);

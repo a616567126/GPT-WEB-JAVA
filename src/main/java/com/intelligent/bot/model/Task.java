@@ -124,11 +124,16 @@ public class Task extends BaseEntity implements Serializable {
 
     private Integer flags;
 
-
     /**
      * 提交类型 1：web 2：公众号
      */
     private Integer subType;
+
+
+    /**
+     * 公开状态 0-公开、1-私有
+     */
+    private Integer publicStatus;
 
 
     @JsonIgnore

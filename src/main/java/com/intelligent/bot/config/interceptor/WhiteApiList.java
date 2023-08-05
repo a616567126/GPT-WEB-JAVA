@@ -32,5 +32,7 @@ public class WhiteApiList {
         list.add("/client/client/conf");
         //微信获取二维码
         list.add("/wx/getTicket");
+        //画廊
+        list.add("/client/gallery");
     }
 }

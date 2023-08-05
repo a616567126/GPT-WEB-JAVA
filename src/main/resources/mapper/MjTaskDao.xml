@@ -14,7 +14,8 @@
                start_time,
                finish_time,
                final_prompt,
-               fail_reason
+               fail_reason,
+               public_status
         from mj_task
         where user_id = #{userId} and deleted = 0 and action != 'DESCRIBE'
         order by id desc
@@ -45,6 +46,7 @@
             m.deleted = 0
           AND action != 'DESCRIBE'
           AND STATUS = 'SUCCESS'
+          AND public_status = 0
         ORDER BY
             m.id DESC
     </select>

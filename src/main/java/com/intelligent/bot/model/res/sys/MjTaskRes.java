@@ -70,4 +70,9 @@ public class MjTaskRes  {
     List<MjTaskTransformRes> taskTransformList;
 
     private Long id;
+
+    /**
+     * 公开状态
+     */
+    private Integer publicStatus;
 }
