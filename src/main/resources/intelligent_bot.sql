@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 20/07/2023 09:11:16
+ Date: 05/08/2023 09:56:50
 */
 
 SET NAMES utf8mb4;
@@ -378,7 +378,7 @@ CREATE TABLE `mj_task` (
   `sub_type` tinyint DEFAULT '1' COMMENT '提交类型 1：web 2：公众号',
   `progress_message_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `flags` int DEFAULT NULL,
-   `public_status` tinyint DEFAULT '0' COMMENT '公开状态 0-公开、1-私有'
+  `public_status` tinyint DEFAULT '0' COMMENT '公开状态 0-公开、1-私有',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
