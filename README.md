@@ -23,10 +23,10 @@
 * **登录**
 * **临时用户**
 * **注册（公众号注册，邮箱注册，账号密码注册）**
-* **基于SSE GPT 3.5/4.0 流式对话+上下文**
+* **基于SSE GPT 3.5/4.0 流式对话+上下文，支持3.5/4.0第三方接口配置，支持默认角色设置**
 * **GPT 画图**
-* **FlagStudio画图**
-* **Stable-Diffusion画图**
+* **Midjourney画图，支持文生图，图生文，U,V，混合生图，垫图**
+* **Stable-Diffusion画图，支持模型，Lora配置，支持高清修复**
 * **个人信息展示（剩余次数，身份，昵称）**
 * **个人信息修改（头像，密码）**
 * **产品查询购买**
@@ -53,6 +53,26 @@
 * **SD画图（开发中）**
 * **GPT对话（开发中）**
 * **卡密获取、兑换**
+
+## 客户端UI演示
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/a3a98a22-5e87-4f16-a6dc-371fc3307322">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/a5a0002a-c0d9-4737-805b-6c77e4b9afe8">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b7a63a3b-d3b4-40e4-85ba-a12c7c8a24d5">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b846f77c-7fd4-48aa-8a8d-f39ab899add3">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/810c6485-ce70-4c33-9f51-58084714aae1">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/cbc52f30-4943-415f-aaba-6ef315d5fd53">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b748616f-2e74-4ae3-a672-3f2800601b2e">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/8571c1a1-c7bc-4dfc-b47c-0444ea9c3c9a">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/42e7817d-9641-4910-83a4-141e4bbd2b2c">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b3fc5030-c22e-4bb6-98eb-1bfe695f5eb9">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ce79af3c-2d03-4ac8-8b4f-f7226f6d3027">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ce2edc3b-d90a-4ad0-ac3e-51bdcda678e3">
+
+
+
+
+
+
 
 ## 💻  INSTALL AND START  
     一、系统依赖jdk1.8 其中redis mysql 8.0 需自行安装（建议修改mysql与redis端口，redis可能会被挖矿）
@@ -193,9 +213,6 @@
 - 1.注册 MidJourney创建自己的频道、[参考地址](https://docs.midjourney.com/docs/quick-start)
 - 2.添加成功之后查看浏览器中的地址如：<SMALL>https://discord.com/channels/123/456 </SMALL> 其中123为mj_guild_id,456为mj_channel_id
 - 3.获取mj_user_token，浏览器打开F12随便发送一个信息查看Network,Authorization为用户token
-- 4.~~添加自己的机器人~~、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/MJ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B7%BB%E5%8A%A0%E8%AF%B4%E6%98%8E)  
-- 5.如果使用机器人监听可参考步骤4
-- 5.此功能基于开源项目集成[midjourney-proxy](https://github.com/novicezk/midjourney-proxy/tree/main)
 
 
 ## 🪜  USE Proxy
