@@ -15,6 +15,8 @@
 
 <p align="center"> 注意：获取1.0请切换到[wx]分支,About中的地址为1.0客户端地址</p>
 <p align="center"> 演示地址：https://ai.v-wim.xyz</p>
+<p align="center">🧧 2.0全新ui，客户端与管理前端源码不开源，加入VIP群持续更新，扫码下方作者微信添加好友咨询加群</p>
+<p align="center"> 后台管理ui演示地址地址：https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA </p>
 
 
   ## 👨‍🚀  Major Function
@@ -179,11 +181,6 @@
     }
 ```
 
-## ⌨️  And coding style tests
-
-**<h3>🧧 2.0全新ui，客户端与管理前端源码不开源，加入VIP群持续更新，扫码下方作者微信添加好友咨询加群</h3>**  
-
-**[📽️后台管理ui演示地址地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA)**
 
 
 ## 💬  USE GPT
