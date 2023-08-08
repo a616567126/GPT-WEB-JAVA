@@ -2,79 +2,73 @@ package com.intelligent.bot.utils.mj;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.intelligent.bot.enums.mj.TaskAction;
-import com.intelligent.bot.model.mj.data.MessageData;
-import com.intelligent.bot.model.mj.data.UVData;
+import com.intelligent.bot.model.mj.data.ContentParseData;
+import com.intelligent.bot.model.mj.data.TaskChangeParams;
+import eu.maxschuster.dataurl.DataUrl;
+import eu.maxschuster.dataurl.DataUrlSerializer;
+import eu.maxschuster.dataurl.IDataUrlSerializer;
 import lombok.experimental.UtilityClass;
 
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @UtilityClass
 public class ConvertUtils {
-	private static final String MJ_I_CONTENT_REGEX = "\\*\\*(.*?)\\*\\* - <@(\\d+)> \\((.*?)\\)";
-	private static final String MJ_UV_CONTENT_REGEX = "\\*\\*(.*?)\\*\\* - (.*?) by <@(\\d+)> \\((.*?)\\)";
-	private static final String MJ_U_CONTENT_REGEX = "\\*\\*(.*?)\\*\\* - Image #(\\d) <@(\\d+)>";
+	/**
+	 * content正则匹配prompt和进度.
+	 */
+	public static final String CONTENT_REGEX = ".*?\\*\\*(.*?)\\*\\*.+<@\\d+> \\((.*?)\\)";
 
-	public static String findTaskIdByFinalPrompt(String finalPrompt) {
-		return CharSequenceUtil.subBetween(finalPrompt, "[", "]");
+	public static ContentParseData parseContent(String content) {
+		return parseContent(content, CONTENT_REGEX);
 	}
 
-	public static MessageData matchImagineContent(String content) {
-		Pattern pattern = Pattern.compile(MJ_I_CONTENT_REGEX);
-		Matcher matcher = pattern.matcher(content);
+	public static ContentParseData parseContent(String content, String regex) {
+		if (CharSequenceUtil.isBlank(content)) {
+			return null;
+		}
+		Matcher matcher = Pattern.compile(regex).matcher(content);
 		if (!matcher.find()) {
 			return null;
 		}
-		MessageData data = new MessageData();
-		data.setTaskAction(TaskAction.IMAGINE);
-		data.setPrompt(matcher.group(1));
-		data.setStatus(matcher.group(3));
-		return data;
+		ContentParseData parseData = new ContentParseData();
+		parseData.setPrompt(matcher.group(1));
+		parseData.setStatus(matcher.group(2));
+		return parseData;
 	}
 
-	public static MessageData matchUVContent(String content) {
-		Pattern pattern = Pattern.compile(MJ_UV_CONTENT_REGEX);
-		Matcher matcher = pattern.matcher(content);
-		if (!matcher.find()) {
-			return matchUContent(content);
+	public static List<DataUrl> convertBase64Array(List<String> base64Array) throws MalformedURLException {
+		if (base64Array == null || base64Array.isEmpty()) {
+			return Collections.emptyList();
 		}
-		MessageData data = new MessageData();
-		data.setPrompt(matcher.group(1));
-		String matchAction = matcher.group(2);
-		data.setTaskAction(matchAction.startsWith("Variation") ? TaskAction.VARIATION : TaskAction.UPSCALE);
-		data.setStatus(matcher.group(4));
-		return data;
-	}
-
-	private static MessageData matchUContent(String content) {
-		Pattern pattern = Pattern.compile(MJ_U_CONTENT_REGEX);
-		Matcher matcher = pattern.matcher(content);
-		if (!matcher.find()) {
-			return null;
+		IDataUrlSerializer serializer = new DataUrlSerializer();
+		List<DataUrl> dataUrlList = new ArrayList<>();
+		for (String base64 : base64Array) {
+			DataUrl dataUrl = serializer.unserialize(base64);
+			dataUrlList.add(dataUrl);
 		}
-		MessageData data = new MessageData();
-		data.setTaskAction(TaskAction.UPSCALE);
-		data.setPrompt(matcher.group(1));
-		data.setStatus("complete");
-		data.setIndex(Integer.parseInt(matcher.group(2)));
-		return data;
+		return dataUrlList;
 	}
 
-	public static UVData convertUVData(String content) {
+	public static TaskChangeParams convertChangeParams(String content) {
 		List<String> split = CharSequenceUtil.split(content, " ");
 		if (split.size() != 2) {
 			return null;
 		}
 		String action = split.get(1).toLowerCase();
-		if (action.length() != 2) {
-			return null;
-		}
-		UVData upData = new UVData();
+		TaskChangeParams changeParams = new TaskChangeParams();
+		changeParams.setId(Long.valueOf(split.get(0)));
 		if (action.charAt(0) == 'u') {
-			upData.setTaskAction(TaskAction.UPSCALE);
+			changeParams.setAction(TaskAction.UPSCALE);
 		} else if (action.charAt(0) == 'v') {
-			upData.setTaskAction(TaskAction.VARIATION);
+			changeParams.setAction(TaskAction.VARIATION);
+		} else if (action.equals("r")) {
+			changeParams.setAction(TaskAction.REROLL);
+			return changeParams;
 		} else {
 			return null;
 		}
@@ -83,12 +77,11 @@ public class ConvertUtils {
 			if (index < 1 || index > 4) {
 				return null;
 			}
-			upData.setIndex(index);
-		} catch (NumberFormatException e) {
+			changeParams.setIndex(index);
+		} catch (Exception e) {
 			return null;
 		}
-		upData.setId(split.get(0));
-		return upData;
+		return changeParams;
 	}
 
 }

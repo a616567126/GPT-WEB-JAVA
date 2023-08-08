@@ -116,16 +116,6 @@ public class SysConfig extends BaseEntity implements Serializable {
     private String mjUserToken;
 
     /**
-     * 机器人token
-     */
-    private String mjBotToken;
-
-    /**
-     * 机器人名称
-     */
-    private String mjBotName;
-
-    /**
      * 百度应用key
      */
     private String baiduKey;

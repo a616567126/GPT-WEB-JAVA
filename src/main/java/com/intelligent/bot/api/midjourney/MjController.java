@@ -17,6 +17,7 @@ import com.intelligent.bot.service.sys.CheckService;
 import com.intelligent.bot.service.sys.IMjTaskService;
 import com.intelligent.bot.utils.mj.BannedPromptUtils;
 import com.intelligent.bot.utils.mj.MimeTypeUtils;
+import com.intelligent.bot.utils.mj.SnowFlake;
 import com.intelligent.bot.utils.sys.IDUtil;
 import com.intelligent.bot.utils.sys.JwtUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
@@ -70,16 +71,7 @@ public class MjController {
 		Task task = newTask();
 		task.setAction(TaskAction.IMAGINE);
 		task.setPrompt(prompt);
-		String promptEn;
-		int paramStart = prompt.indexOf(" --");
-		if (paramStart > 0) {
-			promptEn = this.baiDuService.translateToEnglish(prompt.substring(0, paramStart)).trim() + prompt.substring(paramStart);
-		} else {
-			promptEn = this.baiDuService.translateToEnglish(prompt).trim();
-		}
-		if (CharSequenceUtil.isBlank(promptEn)) {
-			promptEn = prompt;
-		}
+		String promptEn = translatePrompt(prompt);
 		if (BannedPromptUtils.isBanned(promptEn)) {
 			throw new E("可能包含敏感词");
 		}
@@ -92,61 +84,65 @@ public class MjController {
 				+(!StringUtils.isEmpty(req.getQ()) ? " " +req.getQ() : "")
 				+(!StringUtils.isEmpty(req.getStylize()) ? " " + req.getStylize() : "")
 				+(!StringUtils.isEmpty(req.getChaos()) ? " " +req.getChaos() : ""));
+		task.setDescription("/imagine " + prompt);
 		this.taskService.submitImagine(task,req.getImgList());
 		return B.okBuild(task);
 	}
 
 	@PostMapping(value = "/submit/uv",name = "提交选中放大或变换任务")
 	public B<Task> submitUV(@RequestBody UVSubmitReq req) {
-		checkService.checkUser(JwtUtil.getUserId(),req.getTaskAction().equals(TaskAction.VARIATION) ? CommonConst.MJ_V_NUMBER : CommonConst.MJ_U_NUMBER);
 		if (null == req.getId()) {
 			throw new E("id 不能为空");
 		}
 		if(!Arrays.asList(TaskAction.UPSCALE, TaskAction.VARIATION, TaskAction.REROLL).contains(req.getTaskAction())){
 			throw new E("action参数错误");
 		}
-		Task task = taskStoreService.get(req.getId());
-		if(null == task){
-			throw new E(" 任务不存在");
-		}
-		if(task.getStatus() != TaskStatus.SUCCESS){
-			throw new E("关联任务状态错误");
-		}
-		if (!Arrays.asList(TaskAction.IMAGINE, TaskAction.VARIATION).contains(task.getAction())) {
-			throw new E("关联任务不允许执行变化");
-		}
-		String description = "/up " + task.getId();
+		String description = "/up " + req.getId();
 		if (TaskAction.REROLL.equals(req.getTaskAction())) {
 			description += " R";
 		} else {
 			description += " " + req.getTaskAction().name().charAt(0) + req.getIndex();
 		}
-		TaskCondition condition = new TaskCondition().setDescription(description);
-		Task existTask = this.taskStoreService.findOne(condition);
-		if(null != existTask){
-			throw new E(" 任务已存在 ");
+		if (TaskAction.UPSCALE.equals(req.getTaskAction())) {
+			TaskCondition condition = new TaskCondition().setDescription(description);
+			Task existTask = this.taskStoreService.findOne(condition);
+			if (existTask != null) {
+				throw new E("任务已存在");
+			}
 		}
+		Task task = this.taskStoreService.get(req.getId());
+		if (task == null) {
+			throw new E("关联任务不存在或已失效");
+		}
+		if (!TaskStatus.SUCCESS.equals(task.getStatus())) {
+			throw new E("关联任务状态错误");
+		}
+		if (!Arrays.asList(TaskAction.IMAGINE, TaskAction.VARIATION, TaskAction.REROLL, TaskAction.BLEND).contains(task.getAction())) {
+			throw new E("关联任务不允许执行变化");
+		}
+		checkService.checkUser(JwtUtil.getUserId(),req.getTaskAction().equals(TaskAction.VARIATION) ? CommonConst.MJ_V_NUMBER : CommonConst.MJ_U_NUMBER);
 		Task mjTask = newTask();
 		mjTask.setAction(req.getTaskAction());
 		mjTask.setPrompt(task.getPrompt());
 		mjTask.setPromptEn(task.getPromptEn());
+		mjTask.setFinalPrompt(task.getFinalPrompt());
 		mjTask.setRelatedTaskId(task.getId());
+		mjTask.setProgressMessageId(task.getMessageId());
+		mjTask.setFinalPrompt(task.getFinalPrompt());
 		mjTask.setDescription(description);
 		mjTask.setIndex(req.getIndex());
-		mjTask.setFinalPrompt(task.getFinalPrompt());
 		if (TaskAction.UPSCALE.equals(req.getTaskAction())) {
 			this.taskService.submitUpscale(mjTask, task.getMessageId(), task.getMessageHash(), req.getIndex(),task.getFlags());
 		} else if (TaskAction.VARIATION.equals(req.getTaskAction())) {
 			this.taskService.submitVariation(mjTask, task.getMessageId(), task.getMessageHash(), req.getIndex(),task.getFlags());
 		} else {
-			throw new E("不支持的操作");
+			this.taskService.submitReroll(task, task.getMessageId(), task.getMessageHash(), task.getFlags());
 		}
 		return B.okBuild(mjTask);
 	}
 
 	@PostMapping(value = "/describe",name = "提交Describe图生文任务")
 	public B<Task> describe(@RequestBody DescribeReq req) {
-		checkService.checkUser(JwtUtil.getUserId(), CommonConst.MJ_DESCRIBE_NUMBER);
 		if (CharSequenceUtil.isBlank(req.getBase64())) {
 			throw new E("校验错误");
 		}
@@ -157,6 +153,7 @@ public class MjController {
 		} catch (MalformedURLException e) {
 			throw new E("base64格式错误");
 		}
+		checkService.checkUser(JwtUtil.getUserId(), CommonConst.MJ_DESCRIBE_NUMBER);
 		Task task = newTask();
 		task.setAction(TaskAction.DESCRIBE);
 		String taskFileName = task.getId() + "." + MimeTypeUtils.guessFileSuffix(dataUrl.getMimeType());
@@ -226,9 +223,23 @@ public class MjController {
 		task.setId(IDUtil.getNextId());
 		task.setSubmitTime(System.currentTimeMillis());
 		task.setNotifyHook(sysConfig.getApiUrl() + CommonConst.MJ_CALL_BACK_URL);
+		task.setNonce(SnowFlake.INSTANCE.nextId());
 		task.setUserId(JwtUtil.getUserId());
 		task.setSubType(1);
 		return task;
 	}
 
+	private String translatePrompt(String prompt) {
+		String promptEn;
+		int paramStart = prompt.indexOf(" --");
+		if (paramStart > 0) {
+			promptEn = this.baiDuService.translateToEnglish(prompt.substring(0, paramStart)).trim() + prompt.substring(paramStart);
+		} else {
+			promptEn = this.baiDuService.translateToEnglish(prompt).trim();
+		}
+		if (CharSequenceUtil.isBlank(promptEn)) {
+			promptEn = prompt;
+		}
+		return promptEn;
+	}
 }

@@ -15,7 +15,7 @@ public enum TaskAction {
 	 */
 	VARIATION,
 	/**
-	 * 重新生成.
+	 * 重新执行.
 	 */
 	REROLL,
 	/**

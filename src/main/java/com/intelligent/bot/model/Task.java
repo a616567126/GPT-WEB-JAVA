@@ -135,6 +135,8 @@ public class Task extends BaseEntity implements Serializable {
      */
     private Integer publicStatus;
 
+    private String nonce;
+
 
     @JsonIgnore
     private final transient Object lock = new Object();

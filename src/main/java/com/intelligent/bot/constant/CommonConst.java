@@ -258,7 +258,7 @@ public class CommonConst {
     /**
      * 任务超时时间(分钟)
      */
-    public static final Integer TIMEOUT_MINUTES = 60;
+    public static final Integer TIMEOUT_MINUTES = 5;
 
     /**
      * mj请求地址

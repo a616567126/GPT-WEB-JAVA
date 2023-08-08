@@ -246,6 +246,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, Order> implements IO
         if(null == payConfig.getPayType() || payConfig.getPayType() != 1){
             throw new E("当前支付方式暂未开启");
         }
+        int i = cardPinService.checkUseBatchCardPin(JwtUtil.getUserId(), req.getCardPin());
+        if(i > 0){
+            throw new E("同一批次只能兑换一次");
+        }
         Order order = new Order();
         List<CardPin> list = cardPinService.lambdaQuery().eq(CardPin::getCardPin, req.getCardPin()).list();
         if(null == list || list.size() == 0 || list.get(0).getState() == 1){

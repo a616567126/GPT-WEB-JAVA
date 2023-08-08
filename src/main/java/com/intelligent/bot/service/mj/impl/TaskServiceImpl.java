@@ -37,19 +37,23 @@ public class TaskServiceImpl implements TaskService {
 				task.setPromptEn(image + task.getPromptEn());
 				task.setPrompt(image + task.getPrompt());
 			}
-			task.setDescription("/imagine " + task.getPrompt());
-			return this.discordService.imagine(task.getPromptEn());
+			return this.discordService.imagine(task.getPromptEn(),task.getNonce());
 		});
 	}
 
 	@Override
 	public B<Void> submitUpscale(Task task, String targetMessageId, String targetMessageHash, int index, int messageFlags) {
-		return this.taskQueueHelper.submitTask(task, () -> this.discordService.upscale(targetMessageId, index, targetMessageHash,messageFlags));
+		return this.taskQueueHelper.submitTask(task, () -> this.discordService.upscale(targetMessageId, index, targetMessageHash,messageFlags,task.getNonce()));
 	}
 
 	@Override
 	public B<Void> submitVariation(Task task, String targetMessageId, String targetMessageHash, int index, int messageFlags) {
-		return this.taskQueueHelper.submitTask(task, () -> this.discordService.variation(targetMessageId, index, targetMessageHash,messageFlags));
+		return this.taskQueueHelper.submitTask(task, () -> this.discordService.variation(targetMessageId, index, targetMessageHash,messageFlags,task.getNonce()));
+	}
+
+	@Override
+	public B<Void> submitReroll(Task task, String targetMessageId, String targetMessageHash, int messageFlags) {
+		return null;
 	}
 
 	@Override
@@ -61,7 +65,7 @@ public class TaskServiceImpl implements TaskService {
 				throw new E(uploadResult.getMessage());
 			}
 			String finalFileName = uploadResult.getData();
-			return this.discordService.describe(finalFileName);
+			return this.discordService.describe(finalFileName,task.getNonce());
 		});
 	}
 
@@ -77,7 +81,7 @@ public class TaskServiceImpl implements TaskService {
 				}
 				finalFileNames.add(uploadResult.getData());
 			}
-			return this.discordService.blend(finalFileNames, dimensions);
+			return this.discordService.blend(finalFileNames, dimensions,task.getNonce());
 		});
 	}
 }

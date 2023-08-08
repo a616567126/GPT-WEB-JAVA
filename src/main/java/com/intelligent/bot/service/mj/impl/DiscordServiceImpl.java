@@ -57,11 +57,8 @@ public class DiscordServiceImpl implements DiscordService {
 	}
 
 	@Override
-	public B<Void> imagine(String prompt) {
-		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
-		String paramsStr = this.imagineParamsJson.replace("$guild_id",  sysConfig.getMjGuildId())
-				.replace("$channel_id", sysConfig.getMjChannelId())
-				.replace("$session_id", CommonConst.MJ_SESSION_ID);
+	public B<Void> imagine(String prompt, String nonce) {
+		String paramsStr = replaceInteractionParams(this.imagineParamsJson, nonce);
 		JSONObject params = JSONObject.parseObject(paramsStr);
 		params.getJSONObject("data").getJSONArray("options").getJSONObject(0)
 				.put("value", prompt);
@@ -69,11 +66,8 @@ public class DiscordServiceImpl implements DiscordService {
 	}
 
 	@Override
-	public B<Void> upscale(String messageId, int index, String messageHash, int messageFlags) {
-		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
-		String paramsStr = this.upscaleParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
-				.replace("$channel_id", sysConfig.getMjChannelId())
-				.replace("$session_id", CommonConst.MJ_SESSION_ID)
+	public B<Void> upscale(String messageId, int index, String messageHash, int messageFlags, String nonce) {
+		String paramsStr = replaceInteractionParams(this.upscaleParamsJson, nonce)
 				.replace("$message_id", messageId)
 				.replace("$index", String.valueOf(index))
 				.replace("$message_hash", messageHash);
@@ -84,11 +78,8 @@ public class DiscordServiceImpl implements DiscordService {
 	}
 
 	@Override
-	public B<Void> variation(String messageId, int index, String messageHash, int messageFlags) {
-		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
-		String paramsStr = this.variationParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
-				.replace("$channel_id", sysConfig.getMjChannelId())
-				.replace("$session_id", CommonConst.MJ_SESSION_ID)
+	public B<Void> variation(String messageId, int index, String messageHash, int messageFlags, String nonce) {
+		String paramsStr = replaceInteractionParams(this.variationParamsJson, nonce)
 				.replace("$message_id", messageId)
 				.replace("$index", String.valueOf(index))
 				.replace("$message_hash", messageHash);
@@ -99,11 +90,8 @@ public class DiscordServiceImpl implements DiscordService {
 	}
 
 	@Override
-	public B<Void> reroll(String messageId, String messageHash, int messageFlags) {
-		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
-		String paramsStr = this.rerollParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
-				.replace("$channel_id", sysConfig.getMjChannelId())
-				.replace("$session_id", CommonConst.MJ_SESSION_ID)
+	public B<Void> reroll(String messageId, String messageHash, int messageFlags, String nonce) {
+		String paramsStr = replaceInteractionParams(this.rerollParamsJson, nonce)
 				.replace("$message_id", messageId)
 				.replace("$message_hash", messageHash);
 		JSONObject jsonObject = JSONObject.parseObject(paramsStr);
@@ -113,23 +101,17 @@ public class DiscordServiceImpl implements DiscordService {
 	}
 
 	@Override
-	public B<Void> describe(String finalFileName) {
-		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+	public B<Void> describe(String finalFileName, String nonce) {
 		String fileName = CharSequenceUtil.subAfter(finalFileName, "/", true);
-		String paramsStr = this.describeParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
-				.replace("$channel_id", sysConfig.getMjChannelId())
-				.replace("$session_id", CommonConst.MJ_SESSION_ID)
+		String paramsStr = replaceInteractionParams(this.describeParamsJson, nonce)
 				.replace("$file_name", fileName)
 				.replace("$final_file_name", finalFileName);
 		return postJsonAndCheckStatus(paramsStr);
 	}
 
 	@Override
-	public B<Void> blend(List<String> finalFileNames, BlendDimensions dimensions) {
-		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
-		String paramsStr = this.blendParamsJson.replace("$guild_id", sysConfig.getMjGuildId())
-				.replace("$channel_id", sysConfig.getMjChannelId())
-				.replace("$session_id", CommonConst.MJ_SESSION_ID);
+	public B<Void> blend(List<String> finalFileNames, BlendDimensions dimensions, String nonce) {
+		String paramsStr = replaceInteractionParams(this.blendParamsJson, nonce);
 		JSONObject params = JSONObject.parseObject(paramsStr);
 		JSONArray options = params.getJSONObject("data").getJSONArray("options");
 		JSONArray attachments = params.getJSONObject("data").getJSONArray("attachments");
@@ -256,5 +238,12 @@ public class DiscordServiceImpl implements DiscordService {
 				return B.finalBuild(CharSequenceUtil.sub(e.getMessage(), 0, 100));
 			}
 		}
+	}
+	private String replaceInteractionParams(String paramsStr, String nonce) {
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+		return paramsStr.replace("$guild_id", sysConfig.getMjGuildId())
+				.replace("$channel_id", sysConfig.getMjChannelId())
+				.replace("$session_id", CommonConst.MJ_SESSION_ID)
+				.replace("$nonce", nonce);
 	}
 }

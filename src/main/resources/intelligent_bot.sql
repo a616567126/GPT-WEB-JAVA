@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 05/08/2023 09:56:50
+ Date: 08/08/2023 10:49:55
 */
 
 SET NAMES utf8mb4;
@@ -373,12 +373,13 @@ CREATE TABLE `mj_task` (
   `notify_hook` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '回调地址',
   `related_task_id` bigint DEFAULT NULL COMMENT '任务关联 id',
   `message_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '消息 id',
-  `message_hash` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '消息 hash',
+  `message_hash` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '消息 hash',
   `progress` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '任务进度',
   `sub_type` tinyint DEFAULT '1' COMMENT '提交类型 1：web 2：公众号',
   `progress_message_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `flags` int DEFAULT NULL,
   `public_status` tinyint DEFAULT '0' COMMENT '公开状态 0-公开、1-私有',
+  `nonce` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -529,8 +530,6 @@ CREATE TABLE `sys_config` (
   `mj_guild_id` bigint DEFAULT NULL COMMENT 'Mj服务器id',
   `mj_channel_id` bigint DEFAULT NULL COMMENT 'Mj频道id',
   `mj_user_token` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'discordtoken',
-  `mj_bot_token` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '频道机器人token',
-  `mj_bot_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '频道机器人名称',
   `is_open_proxy` tinyint DEFAULT '0' COMMENT '是否开启代理 0关闭 1开启',
   `proxy_ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '代理ip',
   `proxy_port` int DEFAULT NULL COMMENT '代理端口',
@@ -554,7 +553,7 @@ CREATE TABLE `sys_config` (
 -- Records of sys_config
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_config` (`id`, `registration_method`, `default_times`, `gpt_url`, `gpt4_url`, `is_open_gpt`, `is_open_gpt_official`, `img_upload_url`, `img_return_url`, `api_url`, `client_url`, `is_open_sd`, `sd_url`, `is_open_flag_studio`, `flag_studio_key`, `flag_studio_url`, `baidu_appid`, `baidu_secret`, `baidu_key`, `baidu_secret_key`, `is_open_mj`, `mj_guild_id`, `mj_channel_id`, `mj_user_token`, `mj_bot_token`, `mj_bot_name`, `is_open_proxy`, `proxy_ip`, `proxy_port`, `is_open_bing`, `bing_cookie`, `is_open_stable_studio`, `stable_studio_api`, `stable_studio_key`, `client_logo`, `client_name`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 3, 5, 'https://api.openai.com', 'https://api.openai.com', 1, 1, '/www/uploads/', 'https://img.aaa.com', 'https://api.aaa.com', 'https://bot.aaa.com', 1, 'http://127.0.0.1:7860', 0, '1', 'https://flagopen.baai.ac.cn/flagStudio', '1', '2', '3', '4', 1, 5, 6, '7', '8', 'Midjourney Bot', 0, '127.0.0.1', 7890, 0, '9', 1, 'https://api.stability.ai', '10', '/20230608/work_logo.jpg', 'Siana', 22, 0, 0, '2023-04-16 17:46:01', 0, '2023-07-20 09:09:33');
+INSERT INTO `sys_config` (`id`, `registration_method`, `default_times`, `gpt_url`, `gpt4_url`, `is_open_gpt`, `is_open_gpt_official`, `img_upload_url`, `img_return_url`, `api_url`, `client_url`, `is_open_sd`, `sd_url`, `is_open_flag_studio`, `flag_studio_key`, `flag_studio_url`, `baidu_appid`, `baidu_secret`, `baidu_key`, `baidu_secret_key`, `is_open_mj`, `mj_guild_id`, `mj_channel_id`, `mj_user_token`, `is_open_proxy`, `proxy_ip`, `proxy_port`, `is_open_bing`, `bing_cookie`, `is_open_stable_studio`, `stable_studio_api`, `stable_studio_key`, `client_logo`, `client_name`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 3, 5, 'https://api.openai.com', 'https://api.openai.com', 1, 1, '/www/uploads/', 'https://img.aaa.com', 'https://api.aaa.com', 'https://bot.aaa.com', 1, 'http://127.0.0.1:7860', 0, '1', 'https://flagopen.baai.ac.cn/flagStudio', '1', '2', '3', '4', 1, 5, 6, '7', 0, '127.0.0.1', 7890, 0, '9', 1, 'https://api.stability.ai', '10', '/20230608/work_logo.jpg', 'Siana', 22, 0, 0, '2023-04-16 17:46:01', 0, '2023-07-20 09:09:33');
 COMMIT;
 
 -- ----------------------------

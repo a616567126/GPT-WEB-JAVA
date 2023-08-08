@@ -1,5 +1,6 @@
 package com.intelligent.bot.api.midjourney.support;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import com.intelligent.bot.base.result.B;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.enums.mj.TaskStatus;
@@ -50,6 +51,14 @@ public class TaskQueueHelper {
 		return this.runningTasks.stream().filter(t -> id.equals(t.getId())).findFirst().orElse(null);
 	}
 
+	public Task getRunningTaskByNonce(String nonce) {
+		if (CharSequenceUtil.isBlank(nonce)) {
+			return null;
+		}
+		TaskCondition condition = new TaskCondition().setNonce(nonce);
+		return findRunningTask(condition).findFirst().orElse(null);
+	}
+
 	public Stream<Task> findRunningTask(Predicate<Task> condition) {
 		return this.runningTasks.stream().filter(condition);
 	}
@@ -84,15 +93,15 @@ public class TaskQueueHelper {
 		try {
 			task.start();
 			B<Void> result = discordSubmit.call();
-			if (result.getStatus() != ResultEnum.SUCCESS.getCode()) {
+			if (result.getStatus() !=  ResultEnum.SUCCESS.getCode()) {
 				task.fail(result.getMessage());
-				changeStatusAndNotify(task, TaskStatus.FAILURE);
+				saveAndNotify(task);
 				return;
 			}
-			changeStatusAndNotify(task, TaskStatus.SUBMITTED);
+			saveAndNotify(task);
 			do {
 				task.sleep();
-				changeStatusAndNotify(task, task.getStatus());
+				saveAndNotify(task);
 			} while (task.getStatus() == TaskStatus.IN_PROGRESS);
 			log.debug("task finished, id: {}, status: {}", task.getId(), task.getStatus());
 		} catch (InterruptedException e) {
@@ -100,15 +109,14 @@ public class TaskQueueHelper {
 		} catch (Exception e) {
 			log.error("task execute error", e);
 			task.fail("执行错误，系统异常");
-			changeStatusAndNotify(task, TaskStatus.FAILURE);
+			saveAndNotify(task);
 		} finally {
 			this.runningTasks.remove(task);
 			this.taskFutureMap.remove(task.getId());
 		}
 	}
 
-	public void changeStatusAndNotify(Task task, TaskStatus status) {
-		task.setStatus(status);
+	public void saveAndNotify(Task task) {
 		this.taskStoreService.save(task);
 		this.notifyService.notifyTaskChange(task);
 	}

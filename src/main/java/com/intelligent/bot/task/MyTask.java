@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.intelligent.bot.api.midjourney.support.TaskCondition;
 import com.intelligent.bot.api.midjourney.support.TaskQueueHelper;
 import com.intelligent.bot.constant.CommonConst;
+import com.intelligent.bot.enums.mj.TaskAction;
 import com.intelligent.bot.enums.mj.TaskStatus;
 import com.intelligent.bot.enums.sys.SendType;
 import com.intelligent.bot.model.MessageLog;
@@ -136,14 +137,28 @@ public class MyTask {
             if (Arrays.asList(TaskStatus.FAILURE, TaskStatus.SUCCESS).contains(task.getStatus())) {
                 log.warn("task status is failure/success but is in the queue, end it. id: {}", task.getId());
             } else {
-                log.debug("task timeout, id: {}", task.getId());
+                log.error("任务超时, id: {}，当前状态：{}", task.getId(),task.getStatus());
                 task.fail("任务超时");
+                Integer number = CommonConst.MJ_NUMBER;
+                if(task.getAction().equals(TaskAction.UPSCALE)){
+                    number = CommonConst.MJ_U_NUMBER;
+                }
+                if(task.getAction().equals(TaskAction.VARIATION)){
+                    number = CommonConst.MJ_V_NUMBER;
+                }
+                if(task.getAction().equals(TaskAction.DESCRIBE)){
+                    number = CommonConst.MJ_DESCRIBE_NUMBER;
+                }
+                if(task.getAction().equals(TaskAction.BLEND)){
+                    number = CommonConst.MJ_BLEND_NUMBER;
+                }
+                asyncService.updateRemainingTimes(task.getUserId(),  number);
             }
             Future<?> future = this.taskQueueHelper.getRunningFuture(task.getId());
             if (future != null) {
                 future.cancel(true);
             }
-            this.taskQueueHelper.changeStatusAndNotify(task, task.getStatus());
+            this.taskQueueHelper.saveAndNotify(task);
         }
     }
 }

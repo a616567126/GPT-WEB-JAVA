@@ -29,6 +29,7 @@ public class TaskCondition implements Predicate<Task> {
 	private Long relatedTaskId;
 	private String messageId;
 	private String progressMessageId;
+	private String nonce;
 
 
 
@@ -63,6 +64,9 @@ public class TaskCondition implements Predicate<Task> {
 			return false;
 		}
 		if (CharSequenceUtil.isNotBlank(this.progressMessageId) && !this.progressMessageId.equals(task.getProgressMessageId())) {
+			return false;
+		}
+		if (CharSequenceUtil.isNotBlank(this.nonce) && !this.nonce.equals(task.getNonce())) {
 			return false;
 		}
 		return true;

@@ -16,4 +16,8 @@
         where c.deleted = 0
         order by c.id desc
     </select>
+    <select id="checkUseBatchCardPin" resultType="java.lang.Integer">
+        select count(1) from t_order where pay_type = '卡密兑换' and state = 1 and user_id = #{userId}
+        and trade_no in (select card_pin from card_pin where create_time = (select create_time from card_pin where card_pin = #{cardPin}))
+    </select>
 </mapper>

@@ -69,4 +69,9 @@ public class CardPinServiceImpl extends ServiceImpl<CardPinDao, CardPin> impleme
         this.saveOrUpdate(cardPin);
         return cardPin.getCardPin();
     }
+
+    @Override
+    public int checkUseBatchCardPin(Long userId, String cardPin) {
+        return baseMapper.checkUseBatchCardPin(userId,cardPin);
+    }
 }

@@ -27,5 +27,7 @@ public interface ICardPinService extends IService<CardPin> {
 
     String add(Integer number);
 
+    int checkUseBatchCardPin(Long userId, String cardPin);
+
 
 }

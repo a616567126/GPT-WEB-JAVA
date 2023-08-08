@@ -9,17 +9,17 @@ import java.util.List;
 
 public interface DiscordService {
 
-	B<Void> imagine(String prompt);
+	B<Void> imagine(String prompt, String nonce);
 
-	B<Void> upscale(String messageId, int index, String messageHash, int messageFlags);
+	B<Void> upscale(String messageId, int index, String messageHash, int messageFlags, String nonce);
 
-	B<Void> variation(String messageId, int index, String messageHash, int messageFlags);
+	B<Void> variation(String messageId, int index, String messageHash, int messageFlags, String nonce);
 
-	B<Void> reroll(String messageId, String messageHash, int messageFlags);
+	B<Void> reroll(String messageId, String messageHash, int messageFlags, String nonce);
 
-	B<Void> describe(String finalFileName);
+	B<Void> describe(String finalFileName, String nonce);
 
-	B<Void> blend(List<String> finalFileNames, BlendDimensions dimensions);
+	B<Void> blend(List<String> finalFileNames, BlendDimensions dimensions, String nonce);
 
 	B<String> upload(String fileName, DataUrl dataUrl);
 
