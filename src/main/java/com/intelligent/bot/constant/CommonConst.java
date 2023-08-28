@@ -76,7 +76,7 @@ public class CommonConst {
     /**
      * 易支付页面跳转地址
      */
-    public static final String Yi_PAY_RETURN_RUL = "/#/product";
+    public static final String Yi_PAY_RETURN_RUL = "/#/mine";
 
     /**
      * 公众号自动回复消息类型(文本)
