@@ -18,6 +18,7 @@ import com.intelligent.bot.service.sys.CheckService;
 import com.intelligent.bot.service.sys.IMessageLogService;
 import com.intelligent.bot.utils.sys.JwtUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
+import com.intelligent.bot.utils.sys.SendMessageUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -90,7 +91,7 @@ public class BingChatController {
         }
         if(!StringUtils.isEmpty(bingMessage)){
             Stream.of(bingMessage.split("")).forEach( m ->{
-                SseEmitterServer.sendMessage(JwtUtil.getUserId(),m);
+                SendMessageUtil.sendMessage(JwtUtil.getUserId(),m);
             });
             asyncService.endOfAnswer(logId,bingMessage);
         }else {

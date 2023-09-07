@@ -1,9 +1,9 @@
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1:3306/intelligent_bot?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false
+    url: jdbc:mysql://39.101.167.183:3306/intelligent_bot?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false
     username: root
-    password: 123456
+    password: simshen616567126
     driver-class-name: com.mysql.cj.jdbc.Driver
     filters: stat
     maxActive: 30
@@ -21,7 +21,7 @@ spring:
     host: 127.0.0.1
     port: 6379
     database: 1
-    password: 123456
+    password: simshen
     jedis:
       pool:
         max-idle: 100

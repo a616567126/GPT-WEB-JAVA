@@ -20,4 +20,9 @@ public class UserLoginReq {
      */
     @NotEmpty(message = "密码不能为空")
     private String password;
+
+    /**
+     * 是否手机端登录默认客户端登录
+     */
+    private Integer isMobile = 0;
 }

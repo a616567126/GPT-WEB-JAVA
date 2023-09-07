@@ -55,6 +55,11 @@ public class CommonConst {
      */
     public static final String FLAG_STUDIO_TOKEN = "flag:studio";
 
+    /**
+     * 登录终端
+     */
+    public static final String USER_CLIENT = "user:client:";
+
 
     /**
      * mj回调地址
@@ -273,7 +278,7 @@ public class CommonConst {
     /**
      * mj消息地址
      */
-    public static final String DISCORD_MESSAGE_URL = "https://discord.com/api/v10/channels/%s/messages?limit=10";
+    public static final String DISCORD_MESSAGE_URL = "https://discord.com/api/v9/channels/%s/messages";
 
     /**
      * 获取任务信息时最大次数，超过该次数则将此任务改为失败

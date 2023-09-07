@@ -137,6 +137,11 @@ public class Task extends BaseEntity implements Serializable {
 
     private String nonce;
 
+    /**
+     * 频道id
+     */
+    private String discordInstanceId;
+
 
     @JsonIgnore
     private final transient Object lock = new Object();

@@ -8,6 +8,8 @@ import com.neovisionaries.ws.client.WebSocketFactory;
 
 public interface WebSocketStarter {
 
+	void setTrying(boolean trying);
+
 	void start() throws Exception;
 
 	default WebSocketFactory createWebSocketFactory() {

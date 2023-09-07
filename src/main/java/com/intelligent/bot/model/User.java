@@ -1,5 +1,6 @@
 package com.intelligent.bot.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.intelligent.bot.model.base.BaseEntity;
 import lombok.Data;
@@ -72,6 +73,12 @@ public class User extends BaseEntity implements Serializable {
      * 头像地址
      */
     private String avatar;
+
+    /**
+     * 是否手机端登录默认客户端登录
+     */
+    @TableField(exist = false)
+    private Integer isMobile = 0;
 
 
 

@@ -13,11 +13,11 @@ import com.intelligent.bot.enums.mj.TaskAction;
 import com.intelligent.bot.enums.mj.TaskStatus;
 import com.intelligent.bot.model.Task;
 import com.intelligent.bot.model.req.mj.MjCallBack;
-import com.intelligent.bot.server.SseEmitterServer;
 import com.intelligent.bot.service.mj.NotifyService;
 import com.intelligent.bot.service.sys.AsyncService;
 import com.intelligent.bot.service.sys.IMjTaskService;
 import com.intelligent.bot.utils.sys.FileUtil;
+import com.intelligent.bot.utils.sys.SendMessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -81,7 +81,7 @@ public class NotifyServiceImpl implements NotifyService {
 		log.info("mj开始回调,回调内容：{}", mjTask);
 		if(mjTask.getStatus().equals(TaskStatus.SUCCESS)){
 			if(mjTask.getAction() == TaskAction.DESCRIBE){
-				SseEmitterServer.sendMessage(mjTask.getUserId(),mjTask);
+				SendMessageUtil.sendMessage(mjTask.getUserId(),mjTask);
 			}
 			if(null != mjTask.getImageUrl()){
 				String fileLocalPath = FileUtil.base64ToImage(FileUtil.imageUrlToBase64(mjTask.getImageUrl()), mjTask.getAction() == TaskAction.IMAGINE ? String.valueOf(mjTask.getId()) : null);
@@ -89,7 +89,7 @@ public class NotifyServiceImpl implements NotifyService {
 					mjTask.setImageUrl(fileLocalPath);
 					asyncService.sendMjWxMessage(BeanUtil.copyProperties(mjTask,Task.class));
 				}else {
-					SseEmitterServer.sendMessage(mjTask.getUserId(),mjTask);
+					SendMessageUtil.sendMessage(mjTask.getUserId(),mjTask);
 				}
 				Task task = new Task();
 				task.setId(mjTask.getId());
@@ -100,7 +100,7 @@ public class NotifyServiceImpl implements NotifyService {
 		} else {
 			if(mjTask.getSubType() == 1 && null != mjTask.getImageUrl()){
 				mjTask.setImageUrl(FileUtil.imageUrlToBase64(mjTask.getImageUrl()));
-				SseEmitterServer.sendMessage(mjTask.getUserId(),mjTask);
+				SendMessageUtil.sendMessage(mjTask.getUserId(),mjTask);
 			}
 		}
 	}

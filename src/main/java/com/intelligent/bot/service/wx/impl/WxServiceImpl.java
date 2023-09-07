@@ -14,6 +14,7 @@ import com.intelligent.bot.service.wx.WxOutService;
 import com.intelligent.bot.service.wx.WxService;
 import com.intelligent.bot.utils.sys.PasswordUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
+import com.intelligent.bot.utils.sys.SendMessageUtil;
 import lombok.extern.log4j.Log4j2;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
@@ -188,7 +189,7 @@ public class WxServiceImpl implements WxService {
             user.setAvatar(sysConfig.getImgReturnUrl() + user.getAvatar());
         }
         UserAuthRes loginResult = AuthController.createLoginResult(user);
-        SseEmitterServer.sendMessage(tempUserId, loginResult);
+        SendMessageUtil.sendMessage(tempUserId, loginResult);
         RedisUtil.deleteObject(CommonConst.REDIS_KEY_PREFIX_TOKEN + tempUserId);
     }
 

@@ -13,7 +13,7 @@ spring:
     default-property-inclusion: non_null
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-  #    设置上传文件大小
+#    设置上传文件大小
   servlet:
     multipart:
       max-file-size: 10MB
@@ -25,9 +25,8 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
 wx:
   mp:
-    app-id:
-    secret:
+    app-id: wx3db1c442b53c06c9
+    secret: fad144800cf0c96f2ed0490f03a3b94d
     config-storage:
       type: redistemplate
-    token: xxxx
-
+    token: simshen

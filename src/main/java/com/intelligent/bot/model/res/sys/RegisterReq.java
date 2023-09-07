@@ -31,4 +31,9 @@ public class RegisterReq {
      * 浏览器指纹
      */
     private String browserFingerprint;
+
+    /**
+     * 是否手机端登录默认客户端登录
+     */
+    private Integer isMobile = 0;
 }

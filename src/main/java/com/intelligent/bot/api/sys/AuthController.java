@@ -84,6 +84,7 @@ public class AuthController {
         if(!user.getAvatar().contains("http")){
             user.setAvatar(sysConfig.getImgReturnUrl() + user.getAvatar());
         }
+        user.setIsMobile(userLogin.getIsMobile());
         return B.okBuild(createLoginResult(user));
     }
 
@@ -182,6 +183,7 @@ public class AuthController {
             user.setPassword(SecureUtil.md5("123456"));
         }
         userService.saveOrUpdate(user);
+        user.setIsMobile(reqUser.getIsMobile());
         return createLoginResult(user);
     }
 

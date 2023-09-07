@@ -3,10 +3,7 @@ package com.intelligent.bot.utils.sys;
 
 import com.intelligent.bot.base.exception.E;
 import com.intelligent.bot.constant.CommonConst;
-import com.intelligent.bot.model.EmailConfig;
-import com.intelligent.bot.model.GptKey;
-import com.intelligent.bot.model.PayConfig;
-import com.intelligent.bot.model.SysConfig;
+import com.intelligent.bot.model.*;
 import com.intelligent.bot.service.sys.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -37,6 +34,8 @@ public class InitUtil {
     IPayConfigService payConfigService;
     @Resource
     IEmailService emailService;
+    @Resource
+    IDiscordAccountConfigService discordAccountConfigService;
 
 
     private static InitUtil initUtil;
@@ -71,6 +70,25 @@ public class InitUtil {
             List<EmailConfig> emailConfigList = emailService.list();
             if(null != emailConfigList && emailConfigList.size() > 0){
                 redisUtil.setCacheObject(CommonConst.EMAIL_LIST,emailConfigList);
+            }
+        }
+        if(sysConfig.getIsOpenProxy() == 1){
+            System.setProperty("http.proxyHost", sysConfig.getProxyIp());
+            System.setProperty("http.proxyPort", String.valueOf(sysConfig.getProxyPort()));
+            System.setProperty("https.proxyHost", sysConfig.getProxyIp());
+            System.setProperty("https.proxyPort", String.valueOf(sysConfig.getProxyPort()));
+        }
+        //加载mj账号池
+        if(sysConfig.getIsOpenMj() == 1){
+            if(sysConfig.getIsOpenProxy() == 1){
+                System.setProperty("http.proxyHost", sysConfig.getProxyIp());
+                System.setProperty("http.proxyPort", String.valueOf(sysConfig.getProxyPort()));
+                System.setProperty("https.proxyHost", sysConfig.getProxyIp());
+                System.setProperty("https.proxyPort", String.valueOf(sysConfig.getProxyPort()));
+            }
+            List<DiscordAccountConfig> discordAccountConfigList = discordAccountConfigService.lambdaQuery().eq(DiscordAccountConfig::getState, 1).list();
+            for (DiscordAccountConfig configAccount : discordAccountConfigList) {
+                discordAccountConfigService.addAccount(configAccount);
             }
         }
     }

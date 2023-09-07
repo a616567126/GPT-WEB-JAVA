@@ -28,6 +28,7 @@ public class TaskCondition implements Predicate<Task> {
 	private String finalPromptEn;
 	private Long relatedTaskId;
 	private String messageId;
+	private String messageHash;
 	private String progressMessageId;
 	private String nonce;
 
@@ -50,7 +51,7 @@ public class TaskCondition implements Predicate<Task> {
 		if (CharSequenceUtil.isNotBlank(this.promptEn) && !this.promptEn.equals(task.getPromptEn())) {
 			return false;
 		}
-		if (CharSequenceUtil.isNotBlank(this.description) && !this.description.equals(task.getDescription())) {
+		if (CharSequenceUtil.isNotBlank(this.description) && !CharSequenceUtil.contains(task.getDescription(), this.description)) {
 			return false;
 		}
 
@@ -61,6 +62,9 @@ public class TaskCondition implements Predicate<Task> {
 			return false;
 		}
 		if (CharSequenceUtil.isNotBlank(this.messageId) && !this.messageId.equals(task.getMessageId())) {
+			return false;
+		}
+		if (CharSequenceUtil.isNotBlank(this.messageHash) && !this.messageHash.equals(task.getMessageHash())) {
 			return false;
 		}
 		if (CharSequenceUtil.isNotBlank(this.progressMessageId) && !this.progressMessageId.equals(task.getProgressMessageId())) {

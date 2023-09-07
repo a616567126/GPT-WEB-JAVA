@@ -54,7 +54,7 @@ public class ErrorMessageHandler extends MessageHandler {
 		} else if (color == 16711680) {
 			log.error("{} - MJ异常信息: {}\n{}\nfooter: {}", channelId, title, description, footerText);
 			String nonce = getMessageNonce(message);
-			task = this.taskQueueHelper.getRunningTaskByNonce(nonce);
+			task = this.discordLoadBalancer.getRunningTaskByNonce(nonce);
 			if (task != null) {
 				task.fail("[" + title + "] " + description);
 				task.awake();
@@ -69,7 +69,7 @@ public class ErrorMessageHandler extends MessageHandler {
 			}
 			TaskCondition condition = new TaskCondition().setStatusSet(Arrays.asList(TaskStatus.IN_PROGRESS))
 					.setProgressMessageId(referenceMessageId);
-			task = this.taskQueueHelper.findRunningTask(condition).findFirst().orElse(null);
+			task = this.discordLoadBalancer.findRunningTask(condition).findFirst().orElse(null);
 			if (task != null) {
 				task.fail("[" + title + "] " + description);
 				task.awake();

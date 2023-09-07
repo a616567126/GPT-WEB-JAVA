@@ -5,8 +5,7 @@ import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.intelligent.bot.api.midjourney.support.TaskCondition;
-import com.intelligent.bot.api.midjourney.support.TaskQueueHelper;
+import com.intelligent.bot.api.midjourney.loadbalancer.DiscordLoadBalancer;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.enums.mj.TaskAction;
 import com.intelligent.bot.enums.mj.TaskStatus;
@@ -16,7 +15,6 @@ import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.model.Task;
 import com.intelligent.bot.model.req.sd.SdCreateReq;
 import com.intelligent.bot.model.req.sys.MessageLogSave;
-import com.intelligent.bot.server.SseEmitterServer;
 import com.intelligent.bot.service.baidu.BaiDuService;
 import com.intelligent.bot.service.sys.AsyncService;
 import com.intelligent.bot.service.sys.CheckService;
@@ -30,7 +28,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -50,12 +47,12 @@ public class MyTask {
     BaiDuService baiDuService;
 
     @Resource
-    TaskQueueHelper taskQueueHelper;
+    DiscordLoadBalancer discordLoadBalancer;
 
 
 
     @Scheduled(fixedRate = 5000) // 每5秒执行一次
-    public void run() {
+    public void run() throws IOException {
         if(queueUtil.getCurrentQueueLength() > 0){
             SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
             List<String> promptList = queueUtil.getCurrentQueue();
@@ -97,7 +94,7 @@ public class MyTask {
                             //将用户使用次数返回
                             asyncService.updateRemainingTimes(req.getUserId(), CommonConst.SD_NUMBER);
                             queueUtil.remove(promptList.get(0));
-                            SseEmitterServer.sendMessage(req.getUserId(),"图片生成失败，请稍后再试");
+                            SendMessageUtil.sendMessage(req.getUserId(),"图片生成失败，请稍后再试");
                         }
                     });
                     MessageLogSave messageLogSave = MessageLogSave.builder()
@@ -108,19 +105,19 @@ public class MyTask {
                     asyncService.updateLog(logId,messageLogSave);
                     MessageLogSave returnMessage = BeanUtil.copyProperties(messageLogSave, MessageLogSave.class);
                     returnMessage.setImgList(returnImgUrlList);
-                    SseEmitterServer.sendMessage(req.getUserId(),returnMessage);
+                    SendMessageUtil.sendMessage(req.getUserId(),returnMessage);
                     log.info("发送sd画图信息：userId：{}，sd画图内容：{}",req.getUserId(),returnMessage);
                     queueUtil.remove(promptList.get(0));
                 }catch (Exception e){
                     log.info("队列异常，错误信息：{}",e.getMessage());
-                    SseEmitterServer.sendMessage(req.getUserId(),-1);
+                    SendMessageUtil.sendMessage(req.getUserId(),-1);
                     queueUtil.remove(promptList.get(0));
                     asyncService.updateRemainingTimes(req.getUserId(), CommonConst.SD_NUMBER);
                 }
             }
             catch (Exception e) {
                 log.info("队列异常，错误信息：{}", e.getMessage());
-                SseEmitterServer.sendMessage(req.getUserId(), -1);
+                SendMessageUtil.sendMessage(req.getUserId(), -1);
                 queueUtil.remove(promptList.get(0));
                 asyncService.updateRemainingTimes(req.getUserId(), CommonConst.SD_NUMBER);
             }
@@ -128,37 +125,34 @@ public class MyTask {
     }
     @Scheduled(fixedRate = 30000L)
     public void checkTasks() {
-        long currentTime = System.currentTimeMillis();
-        long timeout = TimeUnit.MINUTES.toMillis(CommonConst.TIMEOUT_MINUTES);
-        List<Task> tasks = this.taskQueueHelper.findRunningTask(new TaskCondition())
-                .filter(t -> currentTime - t.getStartTime() > timeout)
-                .collect(Collectors.toList());
-        for (Task task : tasks) {
-            if (Arrays.asList(TaskStatus.FAILURE, TaskStatus.SUCCESS).contains(task.getStatus())) {
-                log.warn("task status is failure/success but is in the queue, end it. id: {}", task.getId());
-            } else {
-                log.error("任务超时, id: {}，当前状态：{}", task.getId(),task.getStatus());
-                task.fail("任务超时");
-                Integer number = CommonConst.MJ_NUMBER;
-                if(task.getAction().equals(TaskAction.UPSCALE)){
-                    number = CommonConst.MJ_U_NUMBER;
+        this.discordLoadBalancer.getAliveInstances().forEach(instance -> {
+            long timeout = TimeUnit.MINUTES.toMillis(instance.account().getTimeoutMinutes());
+            List<Task> tasks = instance.getRunningTasks().stream()
+                    .filter(t -> System.currentTimeMillis() - t.getStartTime() > timeout)
+                    .collect(Collectors.toList());
+            for (Task task : tasks) {
+                if (Arrays.asList(TaskStatus.FAILURE, TaskStatus.SUCCESS).contains(task.getStatus())) {
+                    log.warn("task status is failure/success but is in the queue, end it. id: {}", task.getId());
+                } else {
+                    log.debug("task timeout, id: {}", task.getId());
+                    task.fail("任务超时");
+                    Integer number = CommonConst.MJ_NUMBER;
+                    if(task.getAction().equals(TaskAction.UPSCALE)){
+                        number = CommonConst.MJ_U_NUMBER;
+                    }
+                    if(task.getAction().equals(TaskAction.VARIATION)){
+                        number = CommonConst.MJ_V_NUMBER;
+                    }
+                    if(task.getAction().equals(TaskAction.DESCRIBE)){
+                        number = CommonConst.MJ_DESCRIBE_NUMBER;
+                    }
+                    if(task.getAction().equals(TaskAction.BLEND)){
+                        number = CommonConst.MJ_BLEND_NUMBER;
+                    }
+                    asyncService.updateRemainingTimes(task.getUserId(),  number);
                 }
-                if(task.getAction().equals(TaskAction.VARIATION)){
-                    number = CommonConst.MJ_V_NUMBER;
-                }
-                if(task.getAction().equals(TaskAction.DESCRIBE)){
-                    number = CommonConst.MJ_DESCRIBE_NUMBER;
-                }
-                if(task.getAction().equals(TaskAction.BLEND)){
-                    number = CommonConst.MJ_BLEND_NUMBER;
-                }
-                asyncService.updateRemainingTimes(task.getUserId(),  number);
+                instance.exitTask(task);
             }
-            Future<?> future = this.taskQueueHelper.getRunningFuture(task.getId());
-            if (future != null) {
-                future.cancel(true);
-            }
-            this.taskQueueHelper.saveAndNotify(task);
-        }
+        });
     }
 }

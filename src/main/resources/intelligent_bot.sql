@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 08/08/2023 10:49:55
+ Date: 07/09/2023 13:08:59
 */
 
 SET NAMES utf8mb4;
@@ -68,6 +68,35 @@ BEGIN;
 COMMIT;
 
 -- ----------------------------
+-- Table structure for discord_account_config
+-- ----------------------------
+DROP TABLE IF EXISTS `discord_account_config`;
+CREATE TABLE `discord_account_config` (
+  `id` bigint NOT NULL,
+  `guild_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户id',
+  `channel_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '1' COMMENT '频道id',
+  `user_token` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户token',
+  `state` tinyint DEFAULT '1' COMMENT '是否可用 0 禁用 1启用',
+  `core_size` tinyint DEFAULT '3' COMMENT '并发数',
+  `queue_size` tinyint DEFAULT '10' COMMENT '等待队列长度',
+  `timeout_minutes` tinyint DEFAULT '5' COMMENT '任务超时时间(分钟)',
+  `remark` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注',
+  `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
+  `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
+  `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间（默认为创建时服务器时间）',
+  `operator` bigint DEFAULT '0' COMMENT '操作人编号（默认为0）',
+  `operate_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间（每次更新时自动更新）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='Mj账号池';
+
+-- ----------------------------
+-- Records of discord_account_config
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
 -- Table structure for email_config
 -- ----------------------------
 DROP TABLE IF EXISTS `email_config`;
@@ -101,7 +130,7 @@ CREATE TABLE `error_message` (
   `id` bigint NOT NULL,
   `user_id` bigint DEFAULT NULL COMMENT '用户id',
   `error_message` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '异常内容',
-  `url` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '接口地址',
+  `url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '接口地址',
   `position` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '异常位置',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
@@ -379,7 +408,8 @@ CREATE TABLE `mj_task` (
   `progress_message_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `flags` int DEFAULT NULL,
   `public_status` tinyint DEFAULT '0' COMMENT '公开状态 0-公开、1-私有',
-  `nonce` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `nonce` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `discord_instance_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '频道id',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -527,10 +557,7 @@ CREATE TABLE `sys_config` (
   `baidu_key` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '百度内容审核应用key',
   `baidu_secret_key` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '百度内容审核应用Secret',
   `is_open_mj` tinyint DEFAULT '0' COMMENT '是否开启mj 0未开启 1开启',
-  `mj_guild_id` bigint DEFAULT NULL COMMENT 'Mj服务器id',
-  `mj_channel_id` bigint DEFAULT NULL COMMENT 'Mj频道id',
-  `mj_user_token` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'discordtoken',
-  `is_open_proxy` tinyint DEFAULT '0' COMMENT '是否开启代理 0关闭 1开启',
+  `is_open_proxy` tinyint DEFAULT NULL COMMENT '是否开启代理 0未开启 1开启',
   `proxy_ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '代理ip',
   `proxy_port` int DEFAULT NULL COMMENT '代理端口',
   `is_open_bing` tinyint DEFAULT '0' COMMENT '是否开启bing 0-未开启 1开启',
@@ -553,7 +580,7 @@ CREATE TABLE `sys_config` (
 -- Records of sys_config
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_config` (`id`, `registration_method`, `default_times`, `gpt_url`, `gpt4_url`, `is_open_gpt`, `is_open_gpt_official`, `img_upload_url`, `img_return_url`, `api_url`, `client_url`, `is_open_sd`, `sd_url`, `is_open_flag_studio`, `flag_studio_key`, `flag_studio_url`, `baidu_appid`, `baidu_secret`, `baidu_key`, `baidu_secret_key`, `is_open_mj`, `mj_guild_id`, `mj_channel_id`, `mj_user_token`, `is_open_proxy`, `proxy_ip`, `proxy_port`, `is_open_bing`, `bing_cookie`, `is_open_stable_studio`, `stable_studio_api`, `stable_studio_key`, `client_logo`, `client_name`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 3, 5, 'https://api.openai.com', 'https://api.openai.com', 1, 1, '/www/uploads/', 'https://img.aaa.com', 'https://api.aaa.com', 'https://bot.aaa.com', 1, 'http://127.0.0.1:7860', 0, '1', 'https://flagopen.baai.ac.cn/flagStudio', '1', '2', '3', '4', 1, 5, 6, '7', 0, '127.0.0.1', 7890, 0, '9', 1, 'https://api.stability.ai', '10', '/20230608/work_logo.jpg', 'Siana', 22, 0, 0, '2023-04-16 17:46:01', 0, '2023-07-20 09:09:33');
+INSERT INTO `sys_config` (`id`, `registration_method`, `default_times`, `gpt_url`, `gpt4_url`, `is_open_gpt`, `is_open_gpt_official`, `img_upload_url`, `img_return_url`, `api_url`, `client_url`, `is_open_sd`, `sd_url`, `is_open_flag_studio`, `flag_studio_key`, `flag_studio_url`, `baidu_appid`, `baidu_secret`, `baidu_key`, `baidu_secret_key`, `is_open_mj`, `is_open_proxy`, `proxy_ip`, `proxy_port`, `is_open_bing`, `bing_cookie`, `is_open_stable_studio`, `stable_studio_api`, `stable_studio_key`, `client_logo`, `client_name`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 3, 5, 'https://api.openai.com', 'https://api.openai.com', 1, 1, '/www/uploads/', 'https://img.aaa.com', 'https://api.aaa.com', 'https://bot.aaa.com', 1, 'http://127.0.0.1:7860', 0, '1', 'https://flagopen.baai.ac.cn/flagStudio', '1', '2', '3', '4', 1, 0, '127.0.0.1', 7890, 0, '9', 1, 'https://api.stability.ai', '10', '/20230608/work_logo.jpg', 'Siana', 22, 0, 0, '2023-04-16 17:46:01', 0, '2023-07-20 09:09:33');
 COMMIT;
 
 -- ----------------------------

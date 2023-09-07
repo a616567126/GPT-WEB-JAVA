@@ -31,7 +31,7 @@ public class DescribeSuccessHandler extends MessageHandler {
 		}
 		String imageUrl = imageOptional.get().getString("url");
 		String taskId = this.discordHelper.findTaskIdWithCdnUrl(imageUrl);
-		Task task = this.taskQueueHelper.getRunningTask(Long.valueOf(taskId));
+		Task task = this.discordLoadBalancer.getRunningTask(Long.valueOf(taskId));
 		if (task == null) {
 			return;
 		}

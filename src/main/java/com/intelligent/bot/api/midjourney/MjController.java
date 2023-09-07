@@ -1,6 +1,7 @@
 package com.intelligent.bot.api.midjourney;
 
 import cn.hutool.core.text.CharSequenceUtil;
+import com.intelligent.bot.api.midjourney.loadbalancer.DiscordLoadBalancer;
 import com.intelligent.bot.api.midjourney.support.TaskCondition;
 import com.intelligent.bot.base.exception.E;
 import com.intelligent.bot.base.result.B;
@@ -26,16 +27,12 @@ import eu.maxschuster.dataurl.DataUrlSerializer;
 import eu.maxschuster.dataurl.IDataUrlSerializer;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/mj")
@@ -53,6 +50,9 @@ public class MjController {
 
 	@Resource
 	IMjTaskService mjTaskService;
+
+	@Resource
+	DiscordLoadBalancer discordLoadBalancer;
 
 	@PostMapping(value = "/submit",name = "提交Imagine或UV任务")
 	public B<Task> submit(@RequestBody SubmitReq req) {
@@ -91,6 +91,10 @@ public class MjController {
 
 	@PostMapping(value = "/submit/uv",name = "提交选中放大或变换任务")
 	public B<Task> submitUV(@RequestBody UVSubmitReq req) {
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+		if(null == sysConfig.getIsOpenMj() || sysConfig.getIsOpenMj() == 0){
+			throw new E("暂未开启Mj");
+		}
 		if (null == req.getId()) {
 			throw new E("id 不能为空");
 		}
@@ -110,39 +114,44 @@ public class MjController {
 				throw new E("任务已存在");
 			}
 		}
-		Task task = this.taskStoreService.get(req.getId());
-		if (task == null) {
+		Task targetTask = this.taskStoreService.get(req.getId());
+		if (targetTask == null) {
 			throw new E("关联任务不存在或已失效");
 		}
-		if (!TaskStatus.SUCCESS.equals(task.getStatus())) {
+		if (!TaskStatus.SUCCESS.equals(targetTask.getStatus())) {
 			throw new E("关联任务状态错误");
 		}
-		if (!Arrays.asList(TaskAction.IMAGINE, TaskAction.VARIATION, TaskAction.REROLL, TaskAction.BLEND).contains(task.getAction())) {
+		if (!Arrays.asList(TaskAction.IMAGINE, TaskAction.VARIATION, TaskAction.REROLL, TaskAction.BLEND).contains(targetTask.getAction())) {
 			throw new E("关联任务不允许执行变化");
 		}
 		checkService.checkUser(JwtUtil.getUserId(),req.getTaskAction().equals(TaskAction.VARIATION) ? CommonConst.MJ_V_NUMBER : CommonConst.MJ_U_NUMBER);
-		Task mjTask = newTask();
-		mjTask.setAction(req.getTaskAction());
-		mjTask.setPrompt(task.getPrompt());
-		mjTask.setPromptEn(task.getPromptEn());
-		mjTask.setFinalPrompt(task.getFinalPrompt());
-		mjTask.setRelatedTaskId(task.getId());
-		mjTask.setProgressMessageId(task.getMessageId());
-		mjTask.setFinalPrompt(task.getFinalPrompt());
-		mjTask.setDescription(description);
-		mjTask.setIndex(req.getIndex());
+		Task task = newTask();
+		task.setAction(req.getTaskAction());
+		task.setPrompt(targetTask.getPrompt());
+		task.setPromptEn(targetTask.getPromptEn());
+		task.setFinalPrompt(targetTask.getFinalPrompt());
+		task.setRelatedTaskId(targetTask.getId());
+		task.setProgressMessageId(targetTask.getMessageId());
+		task.setDiscordInstanceId(targetTask.getDiscordInstanceId());
+		task.setFinalPrompt(targetTask.getFinalPrompt());
+		task.setDescription(description);
+		task.setIndex(req.getIndex());
 		if (TaskAction.UPSCALE.equals(req.getTaskAction())) {
-			this.taskService.submitUpscale(mjTask, task.getMessageId(), task.getMessageHash(), req.getIndex(),task.getFlags());
+			this.taskService.submitUpscale(task, targetTask.getMessageId(), targetTask.getMessageHash(), req.getIndex(),targetTask.getFlags());
 		} else if (TaskAction.VARIATION.equals(req.getTaskAction())) {
-			this.taskService.submitVariation(mjTask, task.getMessageId(), task.getMessageHash(), req.getIndex(),task.getFlags());
+			this.taskService.submitVariation(task, targetTask.getMessageId(), targetTask.getMessageHash(), req.getIndex(),targetTask.getFlags());
 		} else {
-			this.taskService.submitReroll(task, task.getMessageId(), task.getMessageHash(), task.getFlags());
+			this.taskService.submitReroll(task, targetTask.getMessageId(), targetTask.getMessageHash(), targetTask.getFlags());
 		}
-		return B.okBuild(mjTask);
+		return B.okBuild(task);
 	}
 
 	@PostMapping(value = "/describe",name = "提交Describe图生文任务")
 	public B<Task> describe(@RequestBody DescribeReq req) {
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+		if(null == sysConfig.getIsOpenMj() || sysConfig.getIsOpenMj() == 0){
+			throw new E("暂未开启Mj");
+		}
 		if (CharSequenceUtil.isBlank(req.getBase64())) {
 			throw new E("校验错误");
 		}
@@ -164,6 +173,10 @@ public class MjController {
 
 	@PostMapping(value = "/blend",name = "提交Blend任务")
 	public B<Task> blend(@RequestBody SubmitBlendReq req) {
+		SysConfig sysConfig = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
+		if(null == sysConfig.getIsOpenMj() || sysConfig.getIsOpenMj() == 0){
+			throw new E("暂未开启Mj");
+		}
 		checkService.checkUser(JwtUtil.getUserId(), CommonConst.MJ_BLEND_NUMBER);
 		List<String> base64Array = req.getBase64Array();
 		if (base64Array == null || base64Array.size() < 2 || base64Array.size() > 5) {
@@ -195,6 +208,13 @@ public class MjController {
 		return B.okBuild();
 	}
 
+	@GetMapping(value = "/queue",name = "查询任务队列")
+	public List<Task> queue() {
+		return this.discordLoadBalancer.getQueueTaskIds().stream()
+				.map(this.taskStoreService::get).filter(Objects::nonNull)
+				.sorted(Comparator.comparing(Task::getSubmitTime))
+				.collect(Collectors.toList());
+	}
 
 
 

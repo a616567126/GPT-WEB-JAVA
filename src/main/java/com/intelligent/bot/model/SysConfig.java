@@ -99,29 +99,13 @@ public class SysConfig extends BaseEntity implements Serializable {
      * 百度Secret
      */
     private String baiduSecret;
-
-    /**
-     * discord服务器id
-     */
-    private String mjGuildId;
-
-    /**
-     * discord频道id
-     */
-    private String mjChannelId;
-
-    /**
-     * discord用户Token
-     */
-    private String mjUserToken;
-
     /**
      * 百度应用key
      */
     private String baiduKey;
 
     /**
-     * 百度应用Secret
+     * 百度应用Secretbranch0delbr
      */
     private String baiduSecretKey;
 

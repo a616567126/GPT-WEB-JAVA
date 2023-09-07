@@ -126,8 +126,6 @@ public class JwtUtil {
         }
     }
 
-
-
     private static String getTokenString(User user) {
         Algorithm algorithm = Algorithm.HMAC256(TOKEN_KEY);
         Date date = new Date();
@@ -142,6 +140,8 @@ public class JwtUtil {
                 .withClaim("type",user.getType())
                 .sign(algorithm);
         RedisUtil.setCacheObject(CommonConst.REDIS_KEY_PREFIX_TOKEN + user.getId(), SecureUtil.md5(token),
+                CommonConst.TOKEN_EXPIRE_TIME, TimeUnit.DAYS);
+        RedisUtil.setCacheObject(CommonConst.USER_CLIENT + user.getId(), user.getIsMobile(),
                 CommonConst.TOKEN_EXPIRE_TIME, TimeUnit.DAYS);
         return token;
     }

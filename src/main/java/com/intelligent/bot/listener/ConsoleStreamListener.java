@@ -7,6 +7,7 @@ import com.intelligent.bot.server.SseEmitterServer;
 import com.intelligent.bot.service.sys.AsyncService;
 import com.intelligent.bot.service.sys.IGptKeyService;
 import com.intelligent.bot.service.sys.IUserService;
+import com.intelligent.bot.utils.sys.SendMessageUtil;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +28,7 @@ public class ConsoleStreamListener extends AbstractStreamListener {
 
     @Override
     public void onMsg(Object message) {
-        SseEmitterServer.sendMessage(userId, message);
+        SendMessageUtil.sendMessage(userId, message);
     }
 
     @Override
@@ -39,9 +40,9 @@ public class ConsoleStreamListener extends AbstractStreamListener {
         asyncService.updateRemainingTimes(userId,  gptKey.getType() == 3 ? CommonConst.GPT_NUMBER : CommonConst.GPT_4_NUMBER);
         log.error("gpt对话异常，异常key：{}",response);
         Message message = Message.ofAssistant("AI对话服务异常请稍后再试");
-        SseEmitterServer.sendMessage(userId, message);
+        SendMessageUtil.sendMessage(userId, message);
         message = Message.ofAssistant("[DONE]");
-        SseEmitterServer.sendMessage(userId, message);
+        SendMessageUtil.sendMessage(userId, message);
         asyncService.endOfAnswer(logId,"AI对话服务异常请稍后再试");
 
     }

@@ -83,4 +83,22 @@ public class DiscordHelper {
 		return new RestTemplate(factory);
 	}
 
+	public String getMessageHash(String imageUrl) {
+		if (CharSequenceUtil.isBlank(imageUrl)) {
+			return null;
+		}
+		if (CharSequenceUtil.endWith(imageUrl, "_grid_0.webp")) {
+			int hashStartIndex = imageUrl.lastIndexOf("/");
+			if (hashStartIndex < 0) {
+				return null;
+			}
+			return CharSequenceUtil.sub(imageUrl, hashStartIndex + 1, imageUrl.length() - "_grid_0.webp".length());
+		}
+		int hashStartIndex = imageUrl.lastIndexOf("_");
+		if (hashStartIndex < 0) {
+			return null;
+		}
+		return CharSequenceUtil.subBefore(imageUrl.substring(hashStartIndex + 1), ".", true);
+	}
+
 }

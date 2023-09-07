@@ -9,6 +9,7 @@ import com.intelligent.bot.server.SseEmitterServer;
 import com.intelligent.bot.service.sys.AsyncService;
 import com.intelligent.bot.service.sys.ISysConfigService;
 import com.intelligent.bot.utils.sys.RedisUtil;
+import com.intelligent.bot.utils.sys.SendMessageUtil;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
@@ -86,7 +87,7 @@ public class BingChatService {
         }else {
             asyncService.updateRemainingTimes(req.getUserId(), CommonConst.BING_NUMBER);
         }
-        SseEmitterServer.sendMessage(req.getUserId(), bingMessage);
+        SendMessageUtil.sendMessage(req.getUserId(), bingMessage);
         asyncService.endOfAnswer(logId,bingMessage);
     }
 
@@ -209,11 +210,11 @@ public class BingChatService {
                                     JSONArray messagesArray = responseObject.getJSONArray("messages");
                                     JSONObject adaptiveCard = messagesArray.getJSONObject(0).getJSONArray("adaptiveCards").getJSONObject(0);
                                     String responseText = adaptiveCard.getJSONArray("body").getJSONObject(0).getString("text");
-                                    SseEmitterServer.sendMessage(req.getUserId(),responseText.replaceAll(bot[0],""));
+                                    SendMessageUtil.sendMessage(req.getUserId(),responseText.replaceAll(bot[0],""));
                                     bot[0] =responseText;
                                 }
                             }else if (response.getInteger("type") == 2){
-                                SseEmitterServer.sendMessage(req.getUserId(),"[DONE]");
+                                SendMessageUtil.sendMessage(req.getUserId(),"[DONE]");
                                 completionHandler.accept(bot[0]);
                             }
                         }
