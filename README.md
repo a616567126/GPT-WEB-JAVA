@@ -78,29 +78,24 @@
 
 
 ## 💻  INSTALL AND START  
-    一、系统依赖jdk1.8 其中redis mysql 8.0 需自行安装（建议修改mysql与redis端口，redis可能会被挖矿）
-    二、shell运行安装步骤
-        1.安装mysql，redis
+       安装步骤
+        1.安装mysql，redis，安装jdk1.8 也可使用个更高版本但不建议
         2.创建数据库名字为：intelligent_bot
         3.导入src/resources/下的intelligent_bot.sql 文件
-        4.使用centos7系统（其他系统需自己修改shell脚本），将application-prod.yml配置改为自己实际配置 复制到/usr/local/siana下
-        5.修改yml中的数据库配置与redis配置
-        6.在根目录下创建临时上传路径/www/temp/data 或自己根据自己实际的路径来配置，注意修改yml中第17行
-        7.增加上传图片目录/www/uploads/ 或自己根据自己实际路径来配置，注意修改sys_config表中的图片上传路径
-        8.进入/usr/local将脚本复制到根目录下
-        9.使用sh start.sh运行安装脚本
-        10.脚本将自动安装git,拉取代码，安装maven，jdk1.8，并配置环境变量
-        11.自动maven打包，放到/usr/local/siana下
-        12.在/etc/systemd/system/下创建bot.service 并开机启动
-        13.打包成功之后会运行systemctl restart bot 运行jar包
-        14.使用journalctl -fu bot 命令可查看当前服务状态日志
-        15.管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码
+        4.修改yml中的数据库配置与redis配置
+        5.在根目录下创建临时上传路径/www/temp/data 或自己根据自己实际的路径来配置，注意修改yml中第17行
+        6.增加上传图片目录/www/uploads/ 或自己根据自己实际路径来配置，注意修改sys_config表中的图片上传路径
+        7.打包java代码复制到/usr/local/siana/下，后续都已这个为准，可根据自己的项目实际位置自行更改
+        8.执行nohup java -jar Intelligent-Bot-0.0.1-SNAPSHOT.jar 启动后台
+        11.查看日志是否有异常日志，若没有则启动成功
+        12.管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码
         ----------------以下说明为客户端与管理端部署说明---------------------
-        16.在服务器上配置启动好服务之后，在客户端与管理端修改api.js里的接口地址
-        17.使用npm run dev 测试是否接口请求正常
-        18.使用npm run build 打包代码，并部署到服务器
-        19.可使用nginx，代理图片服务器，客户端及管理端页面
-    
+        13.在服务器上配置启动好服务之后，在客户端与管理端修改api.js里的接口地址
+        14.使用npm run dev 测试是否接口请求正常
+        15.使用npm run build 打包代码，并部署到服务器
+        16.可使用nginx，代理图片服务器，客户端及管理端页面
+
+
 
 
 
