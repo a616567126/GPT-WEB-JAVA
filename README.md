@@ -27,7 +27,7 @@
 * **注册（公众号注册，邮箱注册，账号密码注册）**
 * **基于SSE GPT 3.5/4.0 流式对话+上下文，支持3.5/4.0第三方接口配置，支持默认角色设置**
 * **GPT 画图**
-* **Midjourney画图，支持文生图，图生文，U,V，混合生图，垫图**
+* **Midjourney画图，支持文生图，图生文，U,V，混合生图，垫图，账号池**
 * **Stable-Diffusion画图，支持模型，Lora配置，支持高清修复**
 * **个人信息展示（剩余次数，身份，昵称）**
 * **个人信息修改（头像，密码）**
@@ -268,9 +268,6 @@ baidu_secret|百度Secret|用于百度翻译
 baidu_key|百度应用key|用于敏感词检查
 baidu_secret_key|百度应用Secret|用于敏感词检查
 is_open_mj|是否开启mj 0-未开启 1开启|无
-mj_guild_id|Mj服务器id|url地址中获得
-mj_channel_id|Mj频道id|url地址中获得
-mj_user_token|mj用户token|F12查看network中的Authorization参数
 is_open_proxy|是否开启代理 0关闭 1开启|无
 proxy_ip|代理ip|无
 proxy_port|代理端口|无
