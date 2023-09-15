@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 07/09/2023 13:08:59
+ Date: 15/09/2023 09:40:28
 */
 
 SET NAMES utf8mb4;
@@ -362,7 +362,7 @@ CREATE TABLE `message_log` (
   `use_number` int DEFAULT '1' COMMENT '使用次数',
   `use_type` tinyint DEFAULT '1' COMMENT '消费类型 1 次数 2 月卡',
   `use_value` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '聊天内容',
-  `gpt_key` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '使用gptkey',
+  `gpt_key` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '使用gptkey',
   `send_type` tinyint DEFAULT '0' COMMENT '1-gpt对话 2-gpt画图 3-sd画图 4-fs画图 5-mj画图 6-bing 7-stableStudio 8-gpt4\n',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
@@ -567,6 +567,7 @@ CREATE TABLE `sys_config` (
   `stable_studio_key` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'StableStudio key',
   `client_logo` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '客户端 logo 地址',
   `client_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '客户端名称',
+  `bard_token` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '谷歌BardToken',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',
@@ -580,7 +581,7 @@ CREATE TABLE `sys_config` (
 -- Records of sys_config
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_config` (`id`, `registration_method`, `default_times`, `gpt_url`, `gpt4_url`, `is_open_gpt`, `is_open_gpt_official`, `img_upload_url`, `img_return_url`, `api_url`, `client_url`, `is_open_sd`, `sd_url`, `is_open_flag_studio`, `flag_studio_key`, `flag_studio_url`, `baidu_appid`, `baidu_secret`, `baidu_key`, `baidu_secret_key`, `is_open_mj`, `is_open_proxy`, `proxy_ip`, `proxy_port`, `is_open_bing`, `bing_cookie`, `is_open_stable_studio`, `stable_studio_api`, `stable_studio_key`, `client_logo`, `client_name`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 3, 5, 'https://api.openai.com', 'https://api.openai.com', 1, 1, '/www/uploads/', 'https://img.aaa.com', 'https://api.aaa.com', 'https://bot.aaa.com', 1, 'http://127.0.0.1:7860', 0, '1', 'https://flagopen.baai.ac.cn/flagStudio', '1', '2', '3', '4', 1, 0, '127.0.0.1', 7890, 0, '9', 1, 'https://api.stability.ai', '10', '/20230608/work_logo.jpg', 'Siana', 22, 0, 0, '2023-04-16 17:46:01', 0, '2023-07-20 09:09:33');
+INSERT INTO `sys_config` (`id`, `registration_method`, `default_times`, `gpt_url`, `gpt4_url`, `is_open_gpt`, `is_open_gpt_official`, `img_upload_url`, `img_return_url`, `api_url`, `client_url`, `is_open_sd`, `sd_url`, `is_open_flag_studio`, `flag_studio_key`, `flag_studio_url`, `baidu_appid`, `baidu_secret`, `baidu_key`, `baidu_secret_key`, `is_open_mj`, `is_open_proxy`, `proxy_ip`, `proxy_port`, `is_open_bing`, `bing_cookie`, `is_open_stable_studio`, `stable_studio_api`, `stable_studio_key`, `client_logo`, `client_name`, `bard_token`, `data_version`, `deleted`, `creator`, `create_time`, `operator`, `operate_time`) VALUES (1, 3, 5, 'https://api.openai.com', 'https://api.openai.com', 1, 1, '/www/uploads/', 'https://img.aaa.com', 'https://api.aaa.com', 'https://bot.aaa.com', 1, 'http://127.0.0.1:7860', 0, '1', 'https://flagopen.baai.ac.cn/flagStudio', '1', '2', '3', '4', 1, 0, '127.0.0.1', 7890, 0, '9', 1, 'https://api.stability.ai', '10', '/20230608/work_logo.jpg', 'Siana', NULL, 22, 0, 0, '2023-04-16 17:46:01', 0, '2023-07-20 09:09:33');
 COMMIT;
 
 -- ----------------------------
