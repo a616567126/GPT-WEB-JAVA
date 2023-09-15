@@ -13,14 +13,11 @@ import com.intelligent.bot.enums.sys.SendType;
 import com.intelligent.bot.listener.ConsoleStreamListener;
 import com.intelligent.bot.model.MessageLog;
 import com.intelligent.bot.model.SysConfig;
-import com.intelligent.bot.model.bard.Answer;
 import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.gpt.GptAlphaReq;
 import com.intelligent.bot.model.req.gpt.GptStreamReq;
 import com.intelligent.bot.model.req.sys.MessageLogSave;
 import com.intelligent.bot.service.baidu.BaiDuService;
-import com.intelligent.bot.service.bard.AIClient;
-import com.intelligent.bot.service.bard.GoogleBardClient;
 import com.intelligent.bot.service.gpt.ChatGPTStream;
 import com.intelligent.bot.service.sys.*;
 import com.intelligent.bot.utils.gpt.Proxys;
@@ -86,12 +83,7 @@ public final class GptController {
         if(null != cacheObject.getIsOpenProxy() && cacheObject.getIsOpenProxy() == 1){
             proxy = Proxys.http(cacheObject.getProxyIp(), cacheObject.getProxyPort());
         }
-        String gptKey ="";
-        if(req.getType() == -1){
-            gptKey = cacheObject.getBardToken();
-        }else {
-            gptKey = InitUtil.getRandomKey(req.getType());
-        }
+        String gptKey = InitUtil.getRandomKey(req.getType());
         List<Message> messages = messageLogService.createMessageLogList(req.getLogId(),req.getProblem());
         messages.add(Message.ofSystem(req.getRole()));
         Long logId = checkService.checkUser(MessageLog.builder()
@@ -100,36 +92,24 @@ public final class GptController {
                 .useValue(JSONObject.toJSONString(messages))
                 .gptKey(gptKey)
                 .userId(JwtUtil.getUserId()).build(),req.getLogId());
-        if(req.getType() == -1){
-            AIClient client = new GoogleBardClient(gptKey);
-            Answer answer = client.ask(req.getProblem());
-            String markdown = answer.markdown();
-            for (int i = 0; i < markdown.length(); i++) {
-                log.info(markdown.charAt(i));
-                SendMessageUtil.sendMessage(JwtUtil.getUserId(),  Message.ofAssistant(String.valueOf(markdown.charAt(i))));
-            }
-            SendMessageUtil.sendMessage(JwtUtil.getUserId(),Message.ofAssistant("[DONE]"));
-            asyncService.endOfAnswer(logId,markdown);
-        }else {
-            ChatGPTStream chatGPTStream = ChatGPTStream.builder()
-                    .timeout(600)
-                    .apiKey(gptKey)
-                    .proxy(proxy)
-                    .apiHost(req.getType() == 3 ? cacheObject.getGptUrl() : cacheObject.getGpt4Url())
-                    .build()
-                    .init();
-            ConsoleStreamListener listener = ConsoleStreamListener.builder()
-                    .userId(JwtUtil.getUserId())
-                    .userService(userService)
-                    .gptKeyService(gptKeyService)
-                    .asyncService(asyncService)
-                    .logId(logId)
-                    .build();
-            listener.setOnComplate(msg -> {
-                asyncService.endOfAnswer(logId,msg.toString());
-            });
-            chatGPTStream.streamChatCompletion(messages, listener,req.getType());
-        }
+        ChatGPTStream chatGPTStream = ChatGPTStream.builder()
+                .timeout(600)
+                .apiKey(gptKey)
+                .proxy(proxy)
+                .apiHost(req.getType() == 3 ? cacheObject.getGptUrl() : cacheObject.getGpt4Url())
+                .build()
+                .init();
+        ConsoleStreamListener listener = ConsoleStreamListener.builder()
+                .userId(JwtUtil.getUserId())
+                .userService(userService)
+                .gptKeyService(gptKeyService)
+                .asyncService(asyncService)
+                .logId(logId)
+                .build();
+        listener.setOnComplate(msg -> {
+            asyncService.endOfAnswer(logId,msg.toString());
+        });
+        chatGPTStream.streamChatCompletion(messages, listener,req.getType());
         return B.okBuild(logId);
     }
     @PostMapping(value = "/official", name = "AI-画图")
