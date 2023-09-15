@@ -219,11 +219,6 @@
 - 1.百度翻译申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91)
 - 1.百度文本审核申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E5%86%85%E5%AE%B9%E5%AE%A1%E6%A0%B8%E5%B9%B3%E5%8F%B0-%E6%96%87%E6%9C%AC)
 
-## 📄  USE Google Bard
- - 1.访问https://bard.google.com/并登录账号密码
- - 2.F12获取cookie![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/439e1038-a181-4055-ad9e-e3478c4dfc74)
- - 3.组合token'__Secure-1PSID'+';'+__Secure-1PSIDTS 例如:aAjs4boxxxx;sidts-xxxx
- - 4.将组合好的token配置到sys_config中的bard_token字段
 
 
 
