@@ -57,7 +57,7 @@
 * **GPT对话（开发中）**
 * **卡密获取、兑换**
 
-## 客户端UI演示
+## 客户端UI演示（Vue2开发）
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/a3a98a22-5e87-4f16-a6dc-371fc3307322">
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/a5a0002a-c0d9-4737-805b-6c77e4b9afe8">
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b7a63a3b-d3b4-40e4-85ba-a12c7c8a24d5">
@@ -69,7 +69,17 @@
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/42e7817d-9641-4910-83a4-141e4bbd2b2c">
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b3fc5030-c22e-4bb6-98eb-1bfe695f5eb9">
 <img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ce79af3c-2d03-4ac8-8b4f-f7226f6d3027">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ce2edc3b-d90a-4ad0-ac3e-51bdcda678e3">
+<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ce2edc3b-d90a-4ad0-ac3e-51bdcda678e3">  
+
+## 移动端UI演示（uniapp开发，可打包小程序,app,H5等）
+<img width="451" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/44530eb6-7fab-4343-b09b-09819b67122c">
+<img width="445" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/c2a8fdb5-2736-4e39-afac-9db1560a70fb">
+<img width="451" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/c6914a94-0193-4711-bc01-cc516e8d8480">
+<img width="448" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/6eb6fece-7f78-48e1-8a0a-c3d0d4c64c5b">
+<img width="449" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ed76ef04-253d-4573-be13-25f4099afc7a">
+<img width="399" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/5c3048ce-2f55-47a5-8df7-f793d3202c7c">
+<img width="397" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/94e18b45-cd90-44b9-8dd8-05e0e22a10de">
+<img width="404" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/3c011a2d-e99e-4145-b24a-125547e9a994">
 
 
 
