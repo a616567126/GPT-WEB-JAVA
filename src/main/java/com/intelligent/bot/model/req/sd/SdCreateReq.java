@@ -103,14 +103,5 @@ public class SdCreateReq {
      */
     private Integer hrSecondPassSteps;
 
-}
-
- @Data
- class SdModelCheckpoint{
-
-     /**
-      * 模型
-      */
-     private String sdModelCheckpoint;
 
 }

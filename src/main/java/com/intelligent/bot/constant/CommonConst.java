@@ -251,19 +251,10 @@ public class CommonConst {
     public static final String SD_PROGRESS = "/sdapi/v1/progress?skip_current_image=false";
 
     /**
-     * mj队列并发数
+     * sd获取图片信息接口
      */
-    public static final Integer MJ_TASK_QUEUE_CORE_SIZE = 3;
 
-    /**
-     * mj等待队列长度
-     */
-    public static final Integer MJ_TASK_QUEUE_QUEUE_SIZE = 10;
-
-    /**
-     * 任务超时时间(分钟)
-     */
-    public static final Integer TIMEOUT_MINUTES = 5;
+    public static final String SD_PNG_INFO = "/sdapi/v1/png-info";
 
     /**
      * mj请求地址
