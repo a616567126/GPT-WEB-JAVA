@@ -25,8 +25,8 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
 wx:
   mp:
-    app-id: wx3db1c442b53c06c9
-    secret: fad144800cf0c96f2ed0490f03a3b94d
+    app-id: xxx
+    secret: xxx
     config-storage:
       type: redistemplate
-    token: simshen
+    token: xxx
