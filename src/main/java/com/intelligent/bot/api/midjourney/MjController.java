@@ -133,7 +133,6 @@ public class MjController {
 		task.setRelatedTaskId(targetTask.getId());
 		task.setProgressMessageId(targetTask.getMessageId());
 		task.setDiscordInstanceId(targetTask.getDiscordInstanceId());
-		task.setFinalPrompt(targetTask.getFinalPrompt());
 		task.setDescription(description);
 		task.setIndex(req.getIndex());
 		if (TaskAction.UPSCALE.equals(req.getTaskAction())) {

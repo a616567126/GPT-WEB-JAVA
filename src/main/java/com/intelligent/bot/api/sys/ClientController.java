@@ -242,4 +242,22 @@ public class ClientController {
         });
         return B.okBuild(gallery);
     }
+
+    @RequestMapping(value = "/updateMobile", name = "修改手机号")
+    @AvoidRepeatRequest(intervalTime = 2626560, msg = "手机号每个月可更换一次")
+    public B<Void> updateMobile(@Validated @RequestBody ClientUpdateMobileReq req) {
+        Long count = userService.lambdaQuery()
+                .eq(User::getMobile, req.getMobile())
+                .ne(User::getId, JwtUtil.getUserId())
+                .count();
+        if(count > 0){
+            throw new E("手机号已存在");
+        }
+        User user = new User();
+        user.setId(JwtUtil.getUserId());
+        user.setMobile(req.getMobile());
+        userService.updateById(user);
+        return B.okBuild();
+    }
+
 }

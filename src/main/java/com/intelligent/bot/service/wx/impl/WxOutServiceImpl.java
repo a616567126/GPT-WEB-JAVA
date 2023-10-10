@@ -16,6 +16,7 @@ import com.intelligent.bot.service.mj.TaskService;
 import com.intelligent.bot.service.mj.TaskStoreService;
 import com.intelligent.bot.service.sys.*;
 import com.intelligent.bot.service.wx.WxOutService;
+import com.intelligent.bot.utils.mj.SnowFlake;
 import com.intelligent.bot.utils.sys.*;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
@@ -260,6 +261,7 @@ public class WxOutServiceImpl implements WxOutService {
                                 }
                             }
                         }
+                        task.setNonce(SnowFlake.INSTANCE.nextId());
                         taskService.submitImagine(task, imageUrlList);
                         respContent = "✅咒语已提交，请等待出图\n" +
                                 "若长时间无返回点击查看\n" +
@@ -294,11 +296,12 @@ public class WxOutServiceImpl implements WxOutService {
                     } else {
                         TaskAction taskAction = content.contains("U") ? TaskAction.UPSCALE : TaskAction.VARIATION;
                         Integer index = Integer.valueOf(subContent[1]);
-                        String description = "/up "
-                                + task.getId()
-                                + " "
-                                + taskAction.name().charAt(0)
-                                + index;
+                        String description = "/up " + taskId;
+                        if (TaskAction.REROLL.equals(taskAction)) {
+                            description += " R";
+                        } else {
+                            description += " " + taskAction.name().charAt(0) + index;
+                        }
                         TaskCondition condition = new TaskCondition().setDescription(description);
                         Task existTask = this.taskStoreService.findOne(condition);
                         if (null != existTask) {
@@ -310,6 +313,8 @@ public class WxOutServiceImpl implements WxOutService {
                             mjTask.setPromptEn(task.getPromptEn());
                             mjTask.setFinalPrompt(task.getFinalPrompt());
                             mjTask.setRelatedTaskId(task.getId());
+                            mjTask.setProgressMessageId(task.getMessageId());
+                            mjTask.setDiscordInstanceId(task.getDiscordInstanceId());
                             mjTask.setDescription(description);
                             mjTask.setIndex(index);
                             mjTask.setSubType(2);
@@ -529,6 +534,7 @@ public class WxOutServiceImpl implements WxOutService {
         task.setId(IDUtil.getNextId());
         task.setSubmitTime(System.currentTimeMillis());
         task.setNotifyHook(sysConfig.getApiUrl() + CommonConst.MJ_CALL_BACK_URL);
+        task.setNonce(SnowFlake.INSTANCE.nextId());
         task.setUserId(userId);
         return task;
     }

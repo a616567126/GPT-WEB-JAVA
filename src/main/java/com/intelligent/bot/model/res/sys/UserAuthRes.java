@@ -35,4 +35,9 @@ public class UserAuthRes {
      */
     private String avatar;
 
+    /**
+     * 手机号
+     */
+    private String mobile;
+
 }

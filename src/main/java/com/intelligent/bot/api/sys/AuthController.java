@@ -197,6 +197,7 @@ public class AuthController {
         res.setUserType(user.getType());
         res.setUserType(user.getType());
         res.setAvatar(user.getAvatar());
+        res.setMobile(user.getMobile());
         res.setExpirationTime(user.getRemainingTimes());
         return res;
     }
