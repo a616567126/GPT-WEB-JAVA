@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import okhttp3.sse.EventSource;
 import okhttp3.sse.EventSourceListener;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -82,7 +83,7 @@ public abstract class AbstractStreamListener extends EventSourceListener {
         }
         Message delta = choices.get(0).getDelta();
         String text = delta.getContent();
-        if (text != null) {
+        if (!StringUtils.isEmpty(text)) {
             if(delta.getContent().equals("<!")){
                 delta.setContent("```\\n");
                 text = delta.getContent();
