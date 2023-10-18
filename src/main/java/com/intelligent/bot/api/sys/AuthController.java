@@ -137,6 +137,12 @@ public class AuthController {
 
     public UserAuthRes saveUser(HttpServletRequest request, Object req, SysConfig sysConfig, boolean isTemp) {
         User reqUser = BeanUtil.copyProperties(req, User.class);
+        if(null != reqUser.getMobile()){
+            Long count = userService.lambdaQuery().eq(User::getMobile, reqUser.getMobile()).count();
+            if(count > 0){
+                throw new E("当前用户已存在");
+            }
+        }
         reqUser.setIpAddress(ServletUtil.getClientIP(request));
         //查询是否有符合的临时用户
         User user = userService.checkTempUser(reqUser.getBrowserFingerprint(), reqUser.getIpAddress());
