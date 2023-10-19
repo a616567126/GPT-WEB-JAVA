@@ -8,7 +8,6 @@ import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.model.User;
 import com.intelligent.bot.model.res.sys.UserAuthRes;
-import com.intelligent.bot.server.SseEmitterServer;
 import com.intelligent.bot.service.sys.IUserService;
 import com.intelligent.bot.service.wx.WxOutService;
 import com.intelligent.bot.service.wx.WxService;
@@ -108,7 +107,9 @@ public class WxServiceImpl implements WxService {
                                 + message.getPicUrl() + "\n\n"
                                 + "若想使用此图片垫图画画 使用以下命令：\n\n"
                                 + "/画画 一只猫 # " + message.getPicUrl() + "\n\n"
-                                + "注意图片地址中不要携带'#'，注意空格及顺序 /画画 + 空格 + 咒语 + 空格 + '#' + 图片地址（多张用空格分割）";
+                                + "若想使用此图片解析咒语 使用以下命令：\n\n"
+                                + "/咒语解析 " + message.getPicUrl() + "\n\n"
+                                + "注意空格及顺序 /咒语解析 + 空格 图片地址";
             } else {
                 respContent = "❗\uFE0F暂不支持该消息类型";
                 log.info("其他消息");
@@ -145,6 +146,9 @@ public class WxServiceImpl implements WxService {
             }
             if (content.startsWith("/U") || content.startsWith("/V")) {
                 respContent = wxOutService.paintingChanges(content,fromUser);
+            }
+            if (content.startsWith("/咒语解析")) {
+                respContent = wxOutService.spellAnalysis(content,fromUser);
             }
             if (content.startsWith("/select")) {
                 respContent = wxOutService.queryProgress(content,fromUser);

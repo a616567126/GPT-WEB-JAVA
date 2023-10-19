@@ -47,6 +47,14 @@ public interface WxOutService {
     String draw (String content,String fromUser);
 
     /**
+     * 咒语解析
+     * @param content
+     * @param fromUser
+     * @return
+     */
+    String spellAnalysis (String content,String fromUser);
+
+    /**
      * 画画变换
      * @param content
      * @return

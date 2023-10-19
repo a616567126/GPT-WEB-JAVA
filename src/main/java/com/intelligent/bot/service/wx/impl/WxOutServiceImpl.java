@@ -7,6 +7,7 @@ import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.intelligent.bot.api.midjourney.support.TaskCondition;
+import com.intelligent.bot.base.exception.E;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.enums.mj.TaskAction;
 import com.intelligent.bot.enums.mj.TaskStatus;
@@ -16,8 +17,13 @@ import com.intelligent.bot.service.mj.TaskService;
 import com.intelligent.bot.service.mj.TaskStoreService;
 import com.intelligent.bot.service.sys.*;
 import com.intelligent.bot.service.wx.WxOutService;
+import com.intelligent.bot.utils.mj.MimeTypeUtils;
 import com.intelligent.bot.utils.mj.SnowFlake;
 import com.intelligent.bot.utils.sys.*;
+import eu.maxschuster.dataurl.DataUrl;
+import eu.maxschuster.dataurl.DataUrlSerializer;
+import eu.maxschuster.dataurl.IDataUrlSerializer;
+import lombok.extern.log4j.Log4j2;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -25,16 +31,20 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import okhttp3.HttpUrl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Service
+@Transactional(rollbackFor = E.class)
+@Log4j2
 public class WxOutServiceImpl implements WxOutService {
 
     @Resource
@@ -84,10 +94,10 @@ public class WxOutServiceImpl implements WxOutService {
                 User checkuser = userService.getOne(null, split[1]);
                 if (null != checkuser) {
                     respContent = "❗\uFE0F当前手机号已被绑定";
-                }else {
+                } else {
                     User user = userService.getOne(fromUser, null);
-                    if (null != user ) {
-                        if(null != user.getMobile()){
+                    if (null != user) {
+                        if (null != user.getMobile()) {
                             respContent = "❗\uFE0F当前微信已绑定账号：" + user.getMobile();
                         }
                     } else {
@@ -119,16 +129,16 @@ public class WxOutServiceImpl implements WxOutService {
                 User checkUser = userService.getOne(null, split[1]);
                 if (null != checkUser) {
                     respContent = "❗\uFE0F当前手机号已被绑定";
-                }else {
+                } else {
                     User user = userService.getOne(fromUser, null);
                     if (null != user) {
                         if (null != user.getMobile()) {
                             respContent = "❗\uFE0F账号已开通，账号为：" + user.getMobile();
-                        }else {
+                        } else {
                             user.setMobile(split[1]);
                             userService.saveOrUpdate(user);
                         }
-                    }else {
+                    } else {
                         user = new User();
                         String password = PasswordUtil.getRandomPassword();
                         user.setName(split[1]);
@@ -272,6 +282,43 @@ public class WxOutServiceImpl implements WxOutService {
                 } catch (Exception e) {
                     respContent = "❗\uFE0F命令有误，请重新输入";
                 }
+            }
+        }
+        saveWxLog(content, fromUser);
+        return respContent;
+    }
+
+    @Override
+    public String spellAnalysis(String content, String fromUser) {
+        String respContent = "✅咒语解析已提交，等待结果返回";
+        String[] contentArray = content.split(" ");
+        if (contentArray.length < 2) {
+            respContent = "❗\uFE0F命令有误，请重新输入";
+        }
+        User user = userService.getOne(fromUser, null);
+        if (null == user) {
+            respContent = "❗\uFE0F请先开通或绑定用户";
+        } else {
+            boolean checkWxUser = checkService.checkWxUser(user.getId(), CommonConst.MJ_DESCRIBE_NUMBER);
+            if (checkWxUser) {
+//                try {
+                    String base64Str = FileUtil.imageUrlToBase64(contentArray[1]);
+                    String imgHead = "data:image/jpeg;base64,";
+                    IDataUrlSerializer serializer = new DataUrlSerializer();
+                    DataUrl dataUrl;
+                    try {
+                        dataUrl = serializer.unserialize(imgHead + base64Str);
+                    } catch (MalformedURLException e) {
+                        return "❗\uFE0F图片地址解析失败，请重新提交";
+                    }
+                    Task task = newTask(user.getId());
+                    task.setAction(TaskAction.DESCRIBE);
+                    String taskFileName = task.getId() + "." + MimeTypeUtils.guessFileSuffix(dataUrl.getMimeType());
+                    task.setDescription("/describe " + taskFileName);
+                    task.setSubType(2);
+                    this.taskService.submitDescribe(task, dataUrl);
+            } else {
+                respContent = "❗\uFE0F余额不足，请充值";
             }
         }
         saveWxLog(content, fromUser);

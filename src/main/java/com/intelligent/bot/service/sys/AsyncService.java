@@ -119,6 +119,8 @@ public class AsyncService {
         if(mjTask.getAction().equals(TaskAction.UPSCALE)){
             content = "\uD83C\uDFA8绘图完成\n"+
                     "\uD83E\uDD73本次消耗次数："+CommonConst.MJ_NUMBER;
+        }else if(mjTask.getAction().equals(TaskAction.DESCRIBE)){
+            content = mjTask.getPrompt();
         }else {
             content = "\uD83C\uDFA8绘图完成\n" +
                     "\uD83E\uDD73本次消耗次数："+CommonConst.MJ_NUMBER+"\n"+
@@ -135,10 +137,13 @@ public class AsyncService {
                     "<a href=\"weixin://bizmsgmenu?msgmenucontent=/V-3-"+mjTask.getId()+"&msgmenuid=1\">变换3</a>\t"+
                     "<a href=\"weixin://bizmsgmenu?msgmenucontent=/V-4-"+mjTask.getId()+"&msgmenuid=1\">变换4</a>";
         }
-        File file = new File(sysConfig.getImgUploadUrl() + mjTask.getImageUrl());
-        WxMediaUploadResult wxMediaUploadResult = wxMpService.getMaterialService().mediaUpload(WxConsts.MediaFileType.IMAGE, file);
-        WxMpKefuMessage message = WxMpKefuMessage.IMAGE().toUser(user.getFromUserName()).mediaId(wxMediaUploadResult.getMediaId()).build();
-        wxMpService.getKefuService().sendKefuMessage(message);
+        WxMpKefuMessage message;
+        if(!mjTask.getAction().equals(TaskAction.DESCRIBE)){
+            File file = new File(sysConfig.getImgUploadUrl() + mjTask.getImageUrl());
+            WxMediaUploadResult wxMediaUploadResult = wxMpService.getMaterialService().mediaUpload(WxConsts.MediaFileType.IMAGE, file);
+            message = WxMpKefuMessage.IMAGE().toUser(user.getFromUserName()).mediaId(wxMediaUploadResult.getMediaId()).build();
+            wxMpService.getKefuService().sendKefuMessage(message);
+        }
         message=WxMpKefuMessage.TEXT().toUser(user.getFromUserName()).content(content).build();
         wxMpService.getKefuService().sendKefuMessage(message);
     }

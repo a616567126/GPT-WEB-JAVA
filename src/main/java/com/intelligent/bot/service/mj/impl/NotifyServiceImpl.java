@@ -81,7 +81,11 @@ public class NotifyServiceImpl implements NotifyService {
 		log.info("mj开始回调,回调内容：{}", mjTask);
 		if(mjTask.getStatus().equals(TaskStatus.SUCCESS)){
 			if(mjTask.getAction() == TaskAction.DESCRIBE){
-				SendMessageUtil.sendMessage(mjTask.getUserId(),mjTask);
+				if(mjTask.getSubType() == 2){
+					asyncService.sendMjWxMessage(BeanUtil.copyProperties(mjTask,Task.class));
+				}else {
+					SendMessageUtil.sendMessage(mjTask.getUserId(),mjTask);
+				}
 			}
 			if(null != mjTask.getImageUrl()){
 				String fileLocalPath = FileUtil.base64ToImage(FileUtil.imageUrlToBase64(mjTask.getImageUrl()), mjTask.getAction() == TaskAction.IMAGINE ? String.valueOf(mjTask.getId()) : null);
