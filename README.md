@@ -75,6 +75,7 @@
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/33de4db7-81f7-405a-b49b-abb5207de0c5)
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/042a51d5-6c94-4729-b790-cb3df4f81481)
 7.我的
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/40b3dd94-328b-499f-9d7c-24ce95c046f3)
 
 
 ## 移动端UI演示（uniapp开发，可打包小程序,app,H5等）
