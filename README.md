@@ -57,18 +57,25 @@
 * **卡密获取、兑换**
 
 ## 客户端UI演示（Vue2开发）
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/a3a98a22-5e87-4f16-a6dc-371fc3307322">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/a5a0002a-c0d9-4737-805b-6c77e4b9afe8">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b7a63a3b-d3b4-40e4-85ba-a12c7c8a24d5">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b846f77c-7fd4-48aa-8a8d-f39ab899add3">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/810c6485-ce70-4c33-9f51-58084714aae1">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/cbc52f30-4943-415f-aaba-6ef315d5fd53">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b748616f-2e74-4ae3-a672-3f2800601b2e">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/8571c1a1-c7bc-4dfc-b47c-0444ea9c3c9a">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/42e7817d-9641-4910-83a4-141e4bbd2b2c">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b3fc5030-c22e-4bb6-98eb-1bfe695f5eb9">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ce79af3c-2d03-4ac8-8b4f-f7226f6d3027">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ce2edc3b-d90a-4ad0-ac3e-51bdcda678e3">  
+1.登录
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/fd64021d-5ed5-4fdf-a284-5e9b87e8e736)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/41f8679a-825e-4533-8412-d31ff7a83549)
+2.GPT对话
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/3fe7bd7d-2e29-4d38-9606-4436e4a82fd3)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/20d3d865-c9ab-4868-ba7b-52423d5cd4b6)
+3.GPT画图
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/09f9b995-fdd8-4406-8eb5-9d178e83e2da)
+4.Midjourney
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/4b5103c1-023c-43a7-b630-36e76b92eadb)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/519403d3-7ecb-4d6b-9257-ceaf23a1376c)
+5.Stable Diffusion
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b33a5d46-02a9-420f-8fbc-27602f2ac112)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/39024f1d-3db5-41be-9c80-b6ab297d50df)
+6.画廊
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/33de4db7-81f7-405a-b49b-abb5207de0c5)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/042a51d5-6c94-4729-b790-cb3df4f81481)
+7.我的
+
 
 ## 移动端UI演示（uniapp开发，可打包小程序,app,H5等）
 <img width="451" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/44530eb6-7fab-4343-b09b-09819b67122c">
