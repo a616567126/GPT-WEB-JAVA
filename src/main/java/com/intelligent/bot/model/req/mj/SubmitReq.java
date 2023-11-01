@@ -53,4 +53,9 @@ public class SubmitReq {
 	 * niji风格
 	 */
 	private String style;
+
+	/**
+	 * 出图模式 1.常规模式 --relax 2.极速模式--fast 3.涡轮模式--turbo
+	 */
+	private Integer plotMode = 1;
 }

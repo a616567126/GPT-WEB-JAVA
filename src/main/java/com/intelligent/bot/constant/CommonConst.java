@@ -147,6 +147,16 @@ public class CommonConst {
     public static final Integer MJ_NUMBER =  5;
 
     /**
+     * mj文生图极速模式
+     */
+    public static final Integer MJ_NUMBER_FAST =  MJ_NUMBER + 2 ;
+
+    /**
+     * mj文生图涡轮模式
+     */
+    public static final Integer MJ_NUMBER_TURBO =  MJ_NUMBER_FAST + 2 ;
+
+    /**
      * mj放大消耗次数
      */
     public static final Integer MJ_U_NUMBER =  2;

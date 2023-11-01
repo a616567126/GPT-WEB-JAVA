@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 15/09/2023 09:40:28
+ Date: 01/11/2023 09:53:16
 */
 
 SET NAMES utf8mb4;
@@ -410,6 +410,7 @@ CREATE TABLE `mj_task` (
   `public_status` tinyint DEFAULT '0' COMMENT '公开状态 0-公开、1-私有',
   `nonce` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `discord_instance_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '频道id',
+  `plot_mode` tinyint DEFAULT '1' COMMENT '出图模式 1.常规模式 --relax 2.极速模式--fast 3.涡轮模式--turbo\n',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',

@@ -75,7 +75,17 @@ public class MjController {
 		if (BannedPromptUtils.isBanned(promptEn)) {
 			throw new E("可能包含敏感词");
 		}
-		checkService.checkUser(JwtUtil.getUserId(),CommonConst.MJ_NUMBER);
+		int userNumber = CommonConst.MJ_NUMBER;
+		String plotMode = "--relax";
+		if(req.getPlotMode() == 2){
+			userNumber = CommonConst.MJ_NUMBER_FAST;
+			plotMode = "--fast";
+		}
+		if(req.getPlotMode() == 3){
+			userNumber = CommonConst.MJ_NUMBER_TURBO;
+			plotMode = "--turbo";
+		}
+		checkService.checkUser(JwtUtil.getUserId(),userNumber);
 		task.setPromptEn(promptEn
 				+(!StringUtils.isEmpty(req.getNo()) ? " --no "+(this.baiDuService.translateToEnglish(req.getNo())) : "")
 				+(!StringUtils.isEmpty(req.getVersion()) ? " " +req.getVersion() : "")
@@ -83,7 +93,8 @@ public class MjController {
 				+(!StringUtils.isEmpty(req.getAr()) ? " " +req.getAr() : "")
 				+(!StringUtils.isEmpty(req.getQ()) ? " " +req.getQ() : "")
 				+(!StringUtils.isEmpty(req.getStylize()) ? " " + req.getStylize() : "")
-				+(!StringUtils.isEmpty(req.getChaos()) ? " " +req.getChaos() : ""));
+				+(!StringUtils.isEmpty(req.getChaos()) ? " " +req.getChaos() : "")
+				+ " " + plotMode);
 		task.setDescription("/imagine " + prompt);
 		this.taskService.submitImagine(task,req.getImgList());
 		return B.okBuild(task);
