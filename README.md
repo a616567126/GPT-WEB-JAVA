@@ -74,7 +74,7 @@
 
 ## 客户端UI演示（Vue2开发）
 1.登录
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/fd64021d-5ed5-4fdf-a284-5e9b87e8e736)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/fd64021d-5ed5-4fdf-a284-5e9b87e8e736)  
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/41f8679a-825e-4533-8412-d31ff7a83549)
 2.GPT对话
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/3fe7bd7d-2e29-4d38-9606-4436e4a82fd3)
@@ -113,20 +113,26 @@
 
 5.Stable Diffusion  
 
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/bc5bcb88-87b8-4c2b-bb34-7aa37f278f8f)
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/dd042725-0513-4dd3-aaf5-2f0148b82714)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/bc5bcb88-87b8-4c2b-bb34-7aa37f278f8f)  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/dd042725-0513-4dd3-aaf5-2f0148b82714)  
+
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/9621bc7f-6a69-48e6-b0a6-ecf6657a6a58)  
 
 6.Midjourney  
 
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/96ae2a4a-ce98-469a-876d-72d2e21e7fad)
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/5a7e3ceb-ee5a-414f-b69f-f577ed797d63)
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/38f6bb54-b6f9-4778-955b-cea46fe73db0)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/96ae2a4a-ce98-469a-876d-72d2e21e7fad)  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/5a7e3ceb-ee5a-414f-b69f-f577ed797d63)  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/38f6bb54-b6f9-4778-955b-cea46fe73db0)  
+
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/e0b11766-035d-4954-bd82-509f769fc9b4)  
 
 7.画廊  
 
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/415c70f7-21a1-4b7a-85a5-420e008655ed)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/415c70f7-21a1-4b7a-85a5-420e008655ed)  
+
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/aad15323-980a-48d4-8b26-65db2fb892d7)  
 
 8.个人中心  
