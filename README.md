@@ -30,13 +30,14 @@
 *     3.支持官方,第三方api地址
 * **GPT 画图**
 * **Midjourney画图**
-*     1.文生图
-*     2.图生文
+*     1./imagine(文生图)
+*     2./describe(图生文)
 *     3.重做
-*     4.切换出图模式
-*     5.放大，变换
-*     6.Strong,Subtle,U2x,U4x,ZoomOut 2x,ZoomOut 1.5x,位置偏移
-*     7.混合生图
+*     4.--relax,--fast(切换出图模式)
+*     5.U放大，V变换
+*     6.Strong,Subtle,U2x,U4x,ZoomOut 2x,ZoomOut 1.5x,➡️⬅️⬆️⬇️位置偏移
+*     7./shorten(咒语解析)
+*     7./blend(混合生图)
 *     8.垫图
 *     9.账号池
 * **Stable-Diffusion画图**
