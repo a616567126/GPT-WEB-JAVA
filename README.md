@@ -83,7 +83,7 @@
 3.GPT画图
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/09f9b995-fdd8-4406-8eb5-9d178e83e2da)
 4.Midjourney
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/4b5103c1-023c-43a7-b630-36e76b92eadb)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/886d1988-4409-4d01-b381-69057f572f71)
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/519403d3-7ecb-4d6b-9257-ceaf23a1376c)
 5.Stable Diffusion
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b33a5d46-02a9-420f-8fbc-27602f2ac112)
