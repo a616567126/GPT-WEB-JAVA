@@ -368,10 +368,7 @@ bard_token|谷歌BardToken|格式为aAjs4boxxxx;sidts-xxxx 注意中间';'
 
 <img src="https://user-images.githubusercontent.com/43660702/228105188-09c49078-9156-40bc-8327-f2b05c5bc5fa.png" width="100px" height="100px"> 
 
-
-## ⭐  记得点一个Star哦!!!!
-
-## ✉  Scan code to add friends（扫码添加微信好友）
+## ✉  Scan code to add friends（扫码添加微信好友）⭐  记得点一个Star哦!!!!
 ![扫码添加好友](https://user-images.githubusercontent.com/43660702/232187172-9d971a97-b7a3-407f-9ba1-a35516505733.jpeg)
 
 
