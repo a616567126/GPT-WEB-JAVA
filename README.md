@@ -24,15 +24,33 @@
 * **登录**
 * **临时用户**
 * **注册（公众号注册，邮箱注册，账号密码注册）**
-* **基于SSE GPT 3.5/4.0 流式对话+上下文，支持3.5/4.0第三方接口配置，支持默认角色设置**
+* **GPt对话**
+*     1.基于SSE WebSocket流式推送
+*     2.支持3.5,4.0等模型
+*     3.支持官方,第三方api地址
 * **GPT 画图**
-* **Midjourney画图，支持文生图,图生文,重做,切换出图模式,U,V,Strong,Subtle，U2x,U4x,ZoomOut 2x,ZoomOut 1.5x,混合生图，垫图，账号池**
-* **Stable-Diffusion画图，支持模型，Lora配置，支持高清修复**
+* **Midjourney画图**
+*     1./imagine(文生图)
+*     2./describe(图生文)
+*     3.重做
+*     4.--relax,--fast(切换出图模式)
+*     5.U放大，V变换
+*     6.Strong,Subtle,U2x,U4x,ZoomOut 2x,ZoomOut 1.5x,➡️⬅️⬆️⬇️位置偏移
+*     7./shorten(咒语解析)
+*     7./blend(混合生图)
+*     8.垫图
+*     9.账号池
+* **Stable-Diffusion画图**
+*     1.模型选择
+*     2.Lora选择
+*     3.支持高清修复
+*     4.垫图
 * **个人信息展示（剩余次数，身份，昵称）**
 * **个人信息修改（头像，密码）**
 * **产品查询购买**
 * **订单查询**
 * **支付方式 易支付、卡密兑换**
+* **图片存储方式本地/oss存储，可动态配置**
 
 
 
@@ -57,28 +75,74 @@
 * **卡密获取、兑换**
 
 ## 客户端UI演示（Vue2开发）
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/a3a98a22-5e87-4f16-a6dc-371fc3307322">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/a5a0002a-c0d9-4737-805b-6c77e4b9afe8">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b7a63a3b-d3b4-40e4-85ba-a12c7c8a24d5">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b846f77c-7fd4-48aa-8a8d-f39ab899add3">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/810c6485-ce70-4c33-9f51-58084714aae1">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/cbc52f30-4943-415f-aaba-6ef315d5fd53">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b748616f-2e74-4ae3-a672-3f2800601b2e">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/8571c1a1-c7bc-4dfc-b47c-0444ea9c3c9a">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/42e7817d-9641-4910-83a4-141e4bbd2b2c">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b3fc5030-c22e-4bb6-98eb-1bfe695f5eb9">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ce79af3c-2d03-4ac8-8b4f-f7226f6d3027">
-<img width="1679" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ce2edc3b-d90a-4ad0-ac3e-51bdcda678e3">  
+1.登录
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/fd64021d-5ed5-4fdf-a284-5e9b87e8e736)  
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/41f8679a-825e-4533-8412-d31ff7a83549)
+2.GPT对话
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/3fe7bd7d-2e29-4d38-9606-4436e4a82fd3)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/20d3d865-c9ab-4868-ba7b-52423d5cd4b6)
+3.GPT画图
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/09f9b995-fdd8-4406-8eb5-9d178e83e2da)
+4.Midjourney
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/e9677882-4520-4ef3-97f1-d63dfa4c361a)
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/519403d3-7ecb-4d6b-9257-ceaf23a1376c)
+5.Stable Diffusion
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/b33a5d46-02a9-420f-8fbc-27602f2ac112)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/39024f1d-3db5-41be-9c80-b6ab297d50df)
+6.画廊
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/33de4db7-81f7-405a-b49b-abb5207de0c5)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/042a51d5-6c94-4729-b790-cb3df4f81481)
+7.我的
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/40b3dd94-328b-499f-9d7c-24ce95c046f3)
+
 
 ## 移动端UI演示（uniapp开发，可打包小程序,app,H5等）
-<img width="451" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/44530eb6-7fab-4343-b09b-09819b67122c">
-<img width="445" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/c2a8fdb5-2736-4e39-afac-9db1560a70fb">
-<img width="451" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/c6914a94-0193-4711-bc01-cc516e8d8480">
-<img width="448" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/6eb6fece-7f78-48e1-8a0a-c3d0d4c64c5b">
-<img width="449" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ed76ef04-253d-4573-be13-25f4099afc7a">
-<img width="399" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/5c3048ce-2f55-47a5-8df7-f793d3202c7c">
-<img width="397" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/94e18b45-cd90-44b9-8dd8-05e0e22a10de">
-<img width="404" alt="image" src="https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/3c011a2d-e99e-4145-b24a-125547e9a994">
+1.登录  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/67e7ba32-cf5f-4559-bbe1-b16e15fbcf88)  
+
+2.菜单页面  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/96dea4e3-43aa-466a-b637-b7b108f9dda5)  
+
+3.GPT对话  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/53427560-8907-4075-8b78-5a8ec1074e2b)  
+
+4.GPT画图  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/505678c6-6fb6-4282-9636-5f65031fd043)  
+
+5.Stable Diffusion  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/bc5bcb88-87b8-4c2b-bb34-7aa37f278f8f)  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/dd042725-0513-4dd3-aaf5-2f0148b82714)  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/9621bc7f-6a69-48e6-b0a6-ecf6657a6a58)  
+
+6.Midjourney  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/96ae2a4a-ce98-469a-876d-72d2e21e7fad)  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/5a7e3ceb-ee5a-414f-b69f-f577ed797d63)  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/38f6bb54-b6f9-4778-955b-cea46fe73db0)  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/e0b11766-035d-4954-bd82-509f769fc9b4)  
+
+7.画廊  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/415c70f7-21a1-4b7a-85a5-420e008655ed)  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/aad15323-980a-48d4-8b26-65db2fb892d7)  
+
+8.个人中心  
+
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/ef240192-5fab-4f60-a4ef-f5ee3122f001)
+
+
 
 
 
