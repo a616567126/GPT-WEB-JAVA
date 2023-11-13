@@ -118,7 +118,7 @@ public final class GptController {
         if(cacheObject.getIsOpenGptOfficial() == 0){
             throw new E("Ai画图已关闭");
         }
-        final String randomKey = InitUtil.getRandomKey(req.getType());
+        final String randomKey = InitUtil.getRandomKey(4);
         List<String> imgUrlList = new ArrayList<>();
         List<String> returnImgUrlList = new ArrayList<>();
         String startTime = DateUtil.getLocalDateTimeNow();
@@ -136,7 +136,6 @@ public final class GptController {
         if(null != cacheObject.getIsOpenProxy() && cacheObject.getIsOpenProxy() == 1){
             proxy = Proxys.http(cacheObject.getProxyIp(), cacheObject.getProxyPort());
         }
-        req.setType(null);
         String resultBody = HttpUtil.createPost(cacheObject.getGptUrl() + CommonConst.CPT_IMAGES_URL)
                 .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
                 .header(Header.AUTHORIZATION, "Bearer " + randomKey)
