@@ -28,7 +28,7 @@
 *     1.基于SSE WebSocket流式推送
 *     2.支持3.5,4.0等模型
 *     3.支持官方,第三方api地址
-* **GPT 画图**
+* **GPT 画图 (dall-e-3模型)**
 * **Midjourney画图**
 *     1./imagine(文生图)
 *     2./describe(图生文)
