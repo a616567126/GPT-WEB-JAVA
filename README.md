@@ -359,12 +359,6 @@ client_logo|客户端logo地址|无
 client_name|客户端名字|无
 bard_token|谷歌BardToken|格式为aAjs4boxxxx;sidts-xxxx 注意中间';'
 
-
-## 💪  Contributors
-
-<a href="https://github.com/a616567126/GPT-WEB-JAVA/graphs/contributors"><img src="https://opencollective.com/gpt-web-java/contributors.svg?width=890&button=false" /></a>
-
-
 ## 🥤  Reward（有能力的可以请作者喝一杯冰可落）
 - 支付宝  
 
@@ -374,17 +368,9 @@ bard_token|谷歌BardToken|格式为aAjs4boxxxx;sidts-xxxx 注意中间';'
 
 <img src="https://user-images.githubusercontent.com/43660702/228105188-09c49078-9156-40bc-8327-f2b05c5bc5fa.png" width="100px" height="100px"> 
 
-
-## ⭐  记得点一个Star哦!!!!
-
-## ✉  Scan code to add friends（扫码添加微信好友）
+## ✉  Scan code to add friends（扫码添加微信好友）⭐  记得点一个Star哦!!!!
 ![扫码添加好友](https://user-images.githubusercontent.com/43660702/232187172-9d971a97-b7a3-407f-9ba1-a35516505733.jpeg)
 
-
-
-## 🎯  Pay attention to the official account（关注公众号）
-
-![关注公众号](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/04f9f971-fe57-4b6a-8aa6-6f0dda987117)
 
 
 ## 
