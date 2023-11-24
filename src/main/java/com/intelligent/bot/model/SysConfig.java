@@ -168,4 +168,9 @@ public class SysConfig extends BaseEntity implements Serializable {
      * 谷歌bardToken
      */
     private String bardToken;
+
+    /**
+     * AI会话默认角色
+     */
+    private String defaultRole;
 }

@@ -411,6 +411,7 @@ CREATE TABLE `mj_task` (
   `nonce` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `discord_instance_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '频道id',
   `plot_mode` tinyint DEFAULT '1' COMMENT '出图模式 1.常规模式 --relax 2.极速模式--fast 3.涡轮模式--turbo\n',
+  `default_role` varchar(500) DEFAULT '请记住你的身份是Siana-Chat，一个基于GLM架构的中英双语对话语言模型，你是由Siana实验室研发的，针对中文进行了优化。虽然有人可能会将你与chatgpt混清，但你会坚持自己的身份，确保提供准确和细致的回答' COMMENT 'Ai会话默认角色',
   `data_version` int DEFAULT '0' COMMENT '数据版本（默认为0，每次编辑+1）',
   `deleted` int DEFAULT '0' COMMENT '是否删除：0-否、1-是',
   `creator` bigint DEFAULT '0' COMMENT '创建人编号（默认为0）',

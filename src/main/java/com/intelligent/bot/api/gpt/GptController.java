@@ -85,7 +85,9 @@ public final class GptController {
         }
         String gptKey = InitUtil.getRandomKey(req.getType());
         List<Message> messages = messageLogService.createMessageLogList(req.getLogId(),req.getProblem());
-        messages.add(Message.ofSystem(req.getRole()));
+        if(StringUtils.isEmpty(req.getRole())){
+            messages.add(Message.ofSystem(cacheObject.getDefaultRole()));
+        }
         Long logId = checkService.checkUser(MessageLog.builder()
                 .useNumber(req.getType() == 3 ? CommonConst.GPT_NUMBER : CommonConst.GPT_4_NUMBER)
                 .sendType(req.getType() == 3 ? SendType.GPT.getType() : SendType.GPT_4.getType())

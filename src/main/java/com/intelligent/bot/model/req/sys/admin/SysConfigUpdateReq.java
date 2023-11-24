@@ -165,4 +165,9 @@ public class SysConfigUpdateReq implements Serializable {
      * 客户端名称
      */
     private String clientName;
+
+    /**
+     * AI会话默认角色
+     */
+    private String defaultRole;
 }
