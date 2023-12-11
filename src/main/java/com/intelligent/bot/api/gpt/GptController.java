@@ -10,7 +10,7 @@ import com.intelligent.bot.base.exception.E;
 import com.intelligent.bot.base.result.B;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.enums.sys.SendType;
-import com.intelligent.bot.listener.ConsoleStreamListener;
+import com.intelligent.bot.listener.gpt.ConsoleStreamListener;
 import com.intelligent.bot.model.MessageLog;
 import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.model.gpt.Message;

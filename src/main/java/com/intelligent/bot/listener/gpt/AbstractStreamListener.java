@@ -1,4 +1,4 @@
-package com.intelligent.bot.listener;
+package com.intelligent.bot.listener.gpt;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -53,7 +53,8 @@ public abstract class AbstractStreamListener extends EventSourceListener {
      * @param throwable the throwable that caused the error
      * @param response  the response associated with the error, if any
      */
-    public abstract void onError(Throwable throwable, String response);
+//    public abstract void onError(Throwable throwable, String response);
+    public abstract void onError(Throwable throwable);
 
     @Override
     public void onOpen(EventSource eventSource, Response response) {
@@ -113,8 +114,9 @@ public abstract class AbstractStreamListener extends EventSourceListener {
             if (Objects.nonNull(response)) {
                 responseText = response.body().string();
             }
-            String[] auth = eventSource.request().headers().toString().split(" ");
-            String key = auth[2];
+            log.error("GPT异常log:{}",responseText);
+//            String[] auth = eventSource.request().headers().toString().split(" ");
+//            String key = auth[2];
             String forbiddenText = "Your access was terminated due to violation of our policies";
             if (StrUtil.contains(responseText, forbiddenText)) {
                 log.error("Chat session has been terminated due to policy violation");
@@ -124,7 +126,8 @@ public abstract class AbstractStreamListener extends EventSourceListener {
             if (StrUtil.contains(responseText, overloadedText)) {
                 log.error("检测到官方超载了，赶紧优化你的代码，做重试吧");
             }
-            this.onError(throwable, key.replaceAll("\\s*|\r|\n|\t",""));
+//            this.onError(throwable, key.replaceAll("\\s*|\r|\n|\t",""));
+            this.onError(throwable);
         } catch (Exception e) {
             log.warn("onFailure error:{}", e);
             // do nothing

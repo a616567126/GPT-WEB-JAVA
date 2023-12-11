@@ -11,7 +11,9 @@ public enum SendType {
     MJ(5,"mj"),
     BING(6,"bing"),
     STABLE_STUDIO(7,"stableStudio"),
-    GPT_4(8,"gpt-4");
+    GPT_4(8,"gpt-4"),
+    SPARK_V2(9,"spark-v2"),
+    SPARK_V3(10,"spark-v3");
 
 
     private Integer type;

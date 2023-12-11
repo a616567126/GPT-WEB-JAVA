@@ -6,11 +6,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.enums.mj.TaskAction;
 import com.intelligent.bot.enums.sys.SendType;
+import com.intelligent.bot.listener.spark.ChatListener;
+import com.intelligent.bot.listener.spark.SparkDeskClient;
 import com.intelligent.bot.model.*;
 import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.sys.MessageLogSave;
+import com.intelligent.bot.model.spark.AIChatRequest;
+import com.intelligent.bot.model.spark.AIChatResponse;
+import com.intelligent.bot.model.spark.Text;
+import com.intelligent.bot.model.spark.Usage;
 import com.intelligent.bot.utils.sys.DateUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
+import com.intelligent.bot.utils.sys.SendMessageUtil;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
@@ -26,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 
 @Component
@@ -49,6 +58,8 @@ public class AsyncService {
 
     @Resource
     WxMpService wxMpService;
+
+    protected StringBuffer lastMessage = new StringBuffer();
 
 
     @Async
@@ -146,6 +157,45 @@ public class AsyncService {
         }
         message=WxMpKefuMessage.TEXT().toUser(user.getFromUserName()).content(content).build();
         wxMpService.getKefuService().sendKefuMessage(message);
+    }
+
+    @Async
+    public void sparkChat(SparkDeskClient sparkDeskClient, AIChatRequest aiChatRequest, Long logId, Long userId){
+        sparkDeskClient.chat(new ChatListener(aiChatRequest) {
+            @SneakyThrows
+            @Override
+            public void onChatError(AIChatResponse aiChatResponse) {
+                log.warn(String.valueOf(aiChatResponse));
+            }
+
+            @Override
+            public void onChatOutput(AIChatResponse aiChatResponse) {
+                String content = aiChatResponse.getPayload().getChoices().getText().get(0).getContent();
+                lastMessage.append(content);
+                SendMessageUtil.sendMessage(userId, Text.builder().role(Text.Role.ASSISTANT.getName()).index(0).content(content).build());
+                log.info("spark回答中:{}",content);
+            }
+
+            @Override
+            public void onChatEnd() {
+                log.info("spark当前会话结束了");
+                endOfAnswer(logId,lastMessage.toString());
+                SendMessageUtil.sendMessage(userId,  Text.builder().role(Text.Role.ASSISTANT.getName()).index(0).content("[DONE]").build());
+                lastMessage = new StringBuffer();
+            }
+
+            @Override
+            public void onChatToken(Usage usage) {
+                log.info("token 信息：{}",usage);
+            }
+        });
+
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

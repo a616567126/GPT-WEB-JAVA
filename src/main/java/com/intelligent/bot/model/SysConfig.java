@@ -173,4 +173,24 @@ public class SysConfig extends BaseEntity implements Serializable {
      * AI会话默认角色
      */
     private String defaultRole;
+
+    /**
+     * 星火模型开关 0 -未开启 、1-开启
+     */
+    private Integer isOpenSpark;
+
+    /**
+     * 星火APPID
+     */
+    private String sparkAppId;
+
+    /**
+     * 星火APIKey
+     */
+    private String sparkApiKey;
+
+    /**
+     * 星火APISecret
+     */
+    private String sparkApiSecret;
 }

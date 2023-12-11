@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.intelligent.bot.dao.MessageLogDao;
 import com.intelligent.bot.model.MessageLog;
 import com.intelligent.bot.model.gpt.Message;
+import com.intelligent.bot.model.spark.Text;
 import com.intelligent.bot.service.sys.IMessageLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,5 +30,18 @@ public class MessageLogServiceImpl extends ServiceImpl<MessageLogDao, MessageLog
         }
         messages.add(Message.of(problem));
         return messages;
+    }
+
+    @Override
+    public List<Text> createTextLogList(Long logId, String problem) {
+        List<Text> text = new ArrayList<>();
+        if(null != logId){
+            MessageLog messageLog = this.getById(logId);
+            if(null != messageLog){
+                text = JSONObject.parseArray(messageLog.getUseValue(),Text.class);
+            }
+        }
+        text.add(Text.builder().role(Text.Role.USER.getName()).content(problem).build());
+        return text;
     }
 }

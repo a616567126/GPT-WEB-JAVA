@@ -194,6 +194,16 @@ public class CommonConst {
     public static final Integer STABLE_STUDIO_NUMBER =  3;
 
     /**
+     * 星火V2模型消耗数量
+     */
+    public static final Integer SPARK_V2_NUMBER =  3;
+
+    /**
+     * 星火V3模型消耗数量
+     */
+    public static final Integer SPARK_V3_NUMBER =  5;
+
+    /**
      * gpt 3.5 token 最大限制
      */
     public static final Integer GPT_3_5_TURBO_0301_TOKENS = 4096;
@@ -356,5 +366,33 @@ public class CommonConst {
     public static final String TOKEN_COOKIE_1PSIDTS = "__Secure-1PSIDTS";
     public static final String BARD_VERSION = "boq_assistant-bard-web-server_20230808.09_p0";
     public static final String EMPTY_STRING = "";
+
+
+    /**
+     * 星火v1.1地址：ws协议
+     */
+    public final static String SPARK_API_HOST_WS_V1_1 = "http://spark-api.xf-yun.com/v1.1/chat";
+    /**
+     * 星火v1.1地址：wss协议
+     */
+    public final static String SPARK_API_HOST_WSS_V1_1 = "https://spark-api.xf-yun.com/v1.1/chat";
+    /**
+     * 星火v2.1地址：ws协议
+     */
+    public final static String SPARK_API_HOST_WS_V2_1 = "http://spark-api.xf-yun.com/v2.1/chat";
+    /**
+     * 星火v2.1地址：wss协议
+     */
+    public final static String SPARK_API_HOST_WSS_V2_1 = "https://spark-api.xf-yun.com/v2.1/chat";
+
+    /**
+     * 星火v3.1地址：ws协议
+     */
+    public final static String SPARK_API_HOST_WS_V3_1 = "http://spark-api.xf-yun.com/v3.1/chat";
+
+    /**
+     * 星火v3.1地址：wss协议
+     */
+    public final static String SPARK_API_HOST_WSS_V3_1 = "https://spark-api.xf-yun.com/v3.1/chat";
 
 }
