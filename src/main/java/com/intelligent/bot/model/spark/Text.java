@@ -3,6 +3,8 @@ package com.intelligent.bot.model.spark;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 
 @Data
 @Builder
@@ -22,6 +24,8 @@ public class Text {
      * 结果序号，取值为[0,10]; 当前为保留字段，开发者可忽略
      */
     private Integer index;
+
+    private LocalDateTime time = LocalDateTime.now();
 
     @Getter
     public enum Role {
