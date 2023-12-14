@@ -361,6 +361,11 @@ stable_studio_key|StableStudio key|无
 client_logo|客户端logo地址|无
 client_name|客户端名字|无
 bard_token|谷歌BardToken|格式为aAjs4boxxxx;sidts-xxxx 注意中间';'
+default_role|Ai会话默认角色|无
+is_open_spark|星火模型开关 0 -未开启 、1-开启|无
+spark_app_id|星火APPID|无
+spark_api_key|星火APIKey|无
+spark_api_secret|星火APISecret|无
 
 ## 🥤  Reward（有能力的可以请作者喝一杯冰可落）
 - 支付宝  
