@@ -111,7 +111,7 @@ public final class GptController {
         listener.setOnComplate(msg -> {
             asyncService.endOfAnswer(logId,msg.toString());
         });
-        chatGPTStream.streamChatCompletion(messages, listener,req.getType());
+        chatGPTStream.streamChatCompletion(messages, listener,req.getType(),req);
         return B.okBuild(logId);
     }
     @PostMapping(value = "/official", name = "AI-画图")

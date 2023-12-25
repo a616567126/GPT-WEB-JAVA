@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intelligent.bot.base.exception.E;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.gpt.Message;
+import com.intelligent.bot.model.req.gpt.GptStreamReq;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -100,7 +101,7 @@ public class ChatGPTStream {
      */
     public void streamChatCompletion(List<Message> messages,
                                      EventSourceListener eventSourceListener,
-                                     Integer type) {
+                                     Integer type, GptStreamReq req) {
         messages.forEach(m ->{
             m.setTime(null);
         });
@@ -108,6 +109,8 @@ public class ChatGPTStream {
         ChatCompletion chatCompletion = ChatCompletion.builder()
                 .messages(messages)
                 .model(model)
+                .temperature(req.getTemperature())
+                .topP(req.getTopP())
                 .stream(true)
                 .build();
         if(chatCompletion.checkTokens()){

@@ -14,4 +14,14 @@ public class GptStreamReq {
 
     private String role;
 
+    /**
+     * 准确性
+     */
+    private double temperature = 0.2;
+
+    /**
+     * 随机性
+     */
+    private double topP = 1d;
+
 }
