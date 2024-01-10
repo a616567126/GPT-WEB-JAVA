@@ -14,7 +14,7 @@
 <h1 align="center"> 🎉 2.0全新版本，全新ui，全新体验</h1>  
 
 <p align="center"> 演示地址：https://bot.aisiana.top</p>
-<p align="center">🧧 2.0全新ui，客户端与管理前端源码不开源，加入VIP群持续更新，扫码下方作者微信添加好友咨询加群</p>
+<p align="center">🧧 2.0全新ui，客户端与管理端移动端，购买后加入VIP群持续更新，扫码下方作者微信添加好友咨询加群</p>
 <p align="center"> 后台管理ui演示地址地址：https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA </p>
 
 

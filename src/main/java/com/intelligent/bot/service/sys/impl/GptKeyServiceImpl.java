@@ -40,6 +40,7 @@ public class GptKeyServiceImpl extends ServiceImpl<GptKeyDao, GptKey> implements
         GptKey gptKey = BeanUtil.copyProperties(req, GptKey.class);
         Long count = this.lambdaQuery()
                 .eq(null != gptKey.getKey(), GptKey::getKey,gptKey.getKey())
+                .eq(GptKey::getType,req.getKey())
                 .count();
         if(count > 0){
             return B.finalBuild("key已存在");
