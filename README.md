@@ -190,7 +190,7 @@
 
 
 
-## 🕹  Precautions For Using Nginx
+## 🕹  使用 Nginx
 
 <p align="center">🪧  若使用nginx反向代理到后端需要增加SEE支持，与SEE长连接时间 </p>
 
@@ -270,13 +270,13 @@
 
 
 
-## 💬  USE GPT
+## 💬  使用 GPT
 - 1.在gpt_key中配置对应的gpt key，注意区分3.5与4.0
 - 2.若国内环境使用请使用代理访问，或使用cloudflare搭理，[教程地址](https://github.com/x-dr/chatgptProxyAPI)
 - 3.gpt使用sse方式进行消息推送与前端交互，若使用nginx请查看上方nginx配置
 
 
-## 🧩  USE Image Upload(图片上传)
+## 🧩  使用 Image Upload(图片上传)
 - 1.创建指定的文件夹如：/usr/local/upload
 - 2.创建成功后在"sys_config"表中"img_upload_url"配置第一步创建的目录记得最后边加上"/"如：/usr/local/upload/
 - 3.使用nginx进行文件夹代理
@@ -286,101 +286,37 @@
 - 7.图片最终的地址为："img_return_url"+"img_upload_url"+文件名，如："https://www.baidu.com/20230618/123.jpg"
 
 
-## 🎨  USE Stable-Diffusion
+## 🎨  使用 Stable-Diffusion
 - 1.在"sd_model"表中配置模型（名字（全部内容包括后缀），图片）
 - 2.若有lora在"sd_lora"表中配置lora（名字，图片）
 - 3.配置"sys_config"表中"is_open_sd"为1，开启状态
 - 4.配置"sys_config"表中"sd_url"的地址，本地默认地址为http://127.0.0.1:7860(记得打开api开关)
 
 
-## 🎨  USE Midjourney
+## 🎨  使用 Midjourney
 - 1.注册 MidJourney创建自己的频道、[参考地址](https://docs.midjourney.com/docs/quick-start)
 - 2.添加成功之后查看浏览器中的地址如：<SMALL>https://discord.com/channels/123/456 </SMALL> 其中123为mj_guild_id,456为mj_channel_id
 - 3.获取mj_user_token，浏览器打开F12随便发送一个信息查看Network,Authorization为用户token
 
 
-## 🪜  USE Proxy
+## 🪜  使用 Proxy（代理）
 <p align="center">GPT、Midjourney 国内网络环境下使用代理访问</p>  
 
 - 代理使用，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E4%BD%BF%E7%94%A8%E4%BB%A3%E7%90%86%E8%AF%B7%E6%B1%82GPT%E3%80%81Midjourney)
 
 
-## 📄  USE Baidu  
+## 📄  使用 百度翻译，内容审核  
 <p align="center">GPT、Midjourney、Stable-Diffusion 使用文本审核，Midjourney、Stable-Diffusion，使用百度翻译</p>    
 
 - 1.百度翻译申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91)
 - 1.百度文本审核申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E5%86%85%E5%AE%B9%E5%AE%A1%E6%A0%B8%E5%B9%B3%E5%8F%B0-%E6%96%87%E6%9C%AC)
 
 
-## 📄  USE Google Bard
- - 1.访问https://bard.google.com/并登录账号密码
- - 2.F12获取cookie![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/439e1038-a181-4055-ad9e-e3478c4dfc74)
- - 3.组合token'__Secure-1PSID'+';'+__Secure-1PSIDTS 例如:aAjs4boxxxx;sidts-xxxx
- - 4.将组合好的token配置到sys_config中的bard_token字段
-
-## 🍾  Put It Last
+## 🍾  作者推荐
 - 作者使用服务器地址：[浅夏云](https://www.qxqxa.com/aff/ZGWPEDLQ)
 - 作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)
-- 默认启动时需配置如下三个表的数据（根据自己实际情况）
-  - gpt_key
-  - pay_config
-  - sys_config
-  - 项目启动时会加载对应参数到redis中，如果手动修改数据库，需要在redis中修改对应参数，防止不生效
-- FlagStudio地址：http://flagstudio.baai.ac.cn/
 
 
-**支付配置(pay_config)**
-字段|描述|注意
--|:-:|-:
-pid|易支付商户id|无
-secret_key|易支付商户秘钥|无
-submit_url|易支付支付请求域名|易支付发起支付的api地址，例如：https://pay888.mfysc.shop/submit.php
-api_url|易支付订单查询api|后端核对订单时，易支付使用订单查询的api地址例如：https://pay888.mfysc.shop/api.php
-wx_appid|微信支付的appid|无
-wx_mchid|微信支付商户号|微信支付平台-商户信息-微信支付商户号
-wx_v3_secret|微信apiv3秘钥|微信支付平台-账户中心-设置APIv3秘钥
-wx_serial_no|证书序列号|微信支付平台-账户中心-API安全-API证书管理-证书序列号（若没有则申请新证书）
-wx_private_key|商户证书内容|微信支付平台-账户中心-API安全-API证书管理-与证书序列号一一对应内容为生成的apiclient_key.pem文件全部内容
-
-**系统配置(sys_config)**
-字段|描述|注意
--|:-:|-:
-registration_method|注册模式 1 账号密码 2 邮箱注册 3 公众号 |开启邮件注册后需要在emil_config中配置邮件相关参数
-default_times|默认注册次数|用户注册时默认赠送请求次数
-gpt_url|gpt请求地址|可使用官方或替换第三方
-gpt4_url|gpt4请求地址|可使用官方或替换第三方
-is_open_gpt|gpt开关 0-未开启、1-开启gpt3.5、2-开启gpt4.0、3-全部|默认开启3.5
-is_open_gpt_official|gpt画图开关 0-未开启、1-开启|默认关闭
-img_upload_url|图片上传地址|例如：/usr/local 配置图片上传路径
-img_return_url|图片域名前缀|上传图片后与图片名组合成可访问的url 例如：https://baidu.com 图片上传成功后 则返回 https://baidu.com /2023/04/26/2222.jpg
-api_url|后台接口地址|用于mj、支付、微信等回调使用
-client_url|客户端页面地址|用于支付跳转等
-is_open_sd|是否开启sd 0未开启 1开启|无
-sd_url|Sd接口地址|开启sd时需配置这个地址
-is_open_flag_studio|是否开启FlagStudio 0-未开启 1开启|无
-flag_studio_key|FlagStudio key|登录之后api获得每天500次请求
-flag_studio_url|FlagStudio 接口地址|暂时写死https://flagopen.baai.ac.cn/flagStudio
-baidu_appid|百度appid|用于百度翻译
-baidu_secret|百度Secret|用于百度翻译
-baidu_key|百度应用key|用于敏感词检查
-baidu_secret_key|百度应用Secret|用于敏感词检查
-is_open_mj|是否开启mj 0-未开启 1开启|无
-is_open_proxy|是否开启代理 0关闭 1开启|无
-proxy_ip|代理ip|无
-proxy_port|代理端口|无
-bing_cookie|微软bing cookie|无
-is_open_bing|是否开启bing 0-未开启 1开启|无
-is_open_stable_studio|是否开启StableStudio 0未开启 1 开启|无
-stable_studio_api|StableStudioapi地址前缀|写死：https://api.stability.ai
-stable_studio_key|StableStudio key|无
-client_logo|客户端logo地址|无
-client_name|客户端名字|无
-bard_token|谷歌BardToken|格式为aAjs4boxxxx;sidts-xxxx 注意中间';'
-default_role|Ai会话默认角色|无
-is_open_spark|星火模型开关 0 -未开启 、1-开启|无
-spark_app_id|星火APPID|无
-spark_api_key|星火APIKey|无
-spark_api_secret|星火APISecret|无
 
 ## 🥤  Reward（有能力的可以请作者喝一杯冰可落）
 - 支付宝  
