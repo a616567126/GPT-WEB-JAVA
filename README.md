@@ -25,17 +25,13 @@
 * **临时用户**
 * **注册（公众号注册，邮箱注册，账号密码注册）**
 * **GPt对话**
-<details>
 *     1.基于SSE WebSocket流式推送
 *     2.支持3.5,4.0等模型
 *     3.支持官方,第三方api地址
-</details>
 * **GPT 画图 (dall-e-3模型)**
 * **星火大模型**
-<details>
-1.基于SSE WebSocket流式推送
-2.支持2,3模型
-</details>
+* **1.基于SSE WebSocket流式推送**
+* **2.支持2,3模型**
 * **Midjourney画图**
 *     1./imagine(文生图)
 *     2./describe(图生文)
