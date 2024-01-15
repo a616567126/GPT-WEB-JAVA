@@ -78,6 +78,7 @@
 * **卡密获取、兑换**
 
 ## 客户端UI演示（Vue2开发）
+<details>
 1.登录
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/fd64021d-5ed5-4fdf-a284-5e9b87e8e736)  
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/41f8679a-825e-4533-8412-d31ff7a83549)
@@ -98,7 +99,7 @@
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/042a51d5-6c94-4729-b790-cb3df4f81481)
 7.我的
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/40b3dd94-328b-499f-9d7c-24ce95c046f3)
-
+</details>
 
 ## 移动端UI演示（uniapp开发，可打包小程序,app,H5等）
 1.登录  
