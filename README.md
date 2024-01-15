@@ -81,8 +81,8 @@
 <details>
 <summary>
     1.登录
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/fd64021d-5ed5-4fdf-a284-5e9b87e8e736)  
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/41f8679a-825e-4533-8412-d31ff7a83549)
+<p>![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/fd64021d-5ed5-4fdf-a284-5e9b87e8e736)  
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/41f8679a-825e-4533-8412-d31ff7a83549)</p>
 </summary>
 2.GPT对话
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/dee76fcf-0580-47db-bffb-6cfaabb9e52d)
