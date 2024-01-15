@@ -25,24 +25,24 @@
 * **临时用户**
 * **注册（公众号注册，邮箱注册，账号密码注册）**
 * **GPt对话**
-*     1.基于SSE WebSocket流式推送
-*     2.支持3.5,4.0等模型
-*     3.支持官方,第三方api地址
+1.基于SSE WebSocket流式推送
+2.支持3.5,4.0等模型
+3.支持官方,第三方api地址
 * **GPT 画图 (dall-e-3模型)**
 * **星火大模型**
-* **1.基于SSE WebSocket流式推送**
-* **2.支持2,3模型**
+1.基于SSE WebSocket流式推送
+2.支持2,3模型
 * **Midjourney画图**
-*     1./imagine(文生图)
-*     2./describe(图生文)
-*     3.重做
-*     4.--relax,--fast(切换出图模式)
-*     5.U放大，V变换
-*     6.Strong,Subtle,U2x,U4x,ZoomOut 2x,ZoomOut 1.5x,➡️⬅️⬆️⬇️位置偏移
-*     7./shorten(咒语解析)
-*     7./blend(混合生图)
-*     8.垫图
-*     9.账号池
+1./imagine(文生图)
+2./describe(图生文)
+3.重做
+4.--relax,--fast(切换出图模式)
+5.U放大，V变换
+6.Strong,Subtle,U2x,U4x,ZoomOut 2x,ZoomOut 1.5x,➡️⬅️⬆️⬇️位置偏移
+7./shorten(咒语解析)
+7./blend(混合生图)
+8.垫图
+9.账号池
 * **Stable-Diffusion画图**
 *     1.模型选择
 *     2.Lora选择
