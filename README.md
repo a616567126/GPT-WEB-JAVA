@@ -79,9 +79,11 @@
 
 ## 客户端UI演示（Vue2开发）
 <details>
-1.登录
+<summary>
+    1.登录
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/fd64021d-5ed5-4fdf-a284-5e9b87e8e736)  
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/41f8679a-825e-4533-8412-d31ff7a83549)
+</summary>
 2.GPT对话
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/dee76fcf-0580-47db-bffb-6cfaabb9e52d)
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/7ddfe6bd-6d16-48cf-9505-d1c0e9a28bb9)
