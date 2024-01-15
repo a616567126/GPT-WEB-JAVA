@@ -32,8 +32,10 @@
 </details>
 * **GPT 画图 (dall-e-3模型)**
 * **星火大模型**
-*     1.基于SSE WebSocket流式推送
-*     2.支持2,3模型
+<details>
+1.基于SSE WebSocket流式推送
+2.支持2,3模型
+</details>
 * **Midjourney画图**
 *     1./imagine(文生图)
 *     2./describe(图生文)
