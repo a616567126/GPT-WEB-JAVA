@@ -49,7 +49,7 @@
 * **个人信息修改（头像，密码）**
 * **产品查询购买**
 * **订单查询**
-* **支付方式 易支付、卡密兑换**
+* **支付方式 易支付、卡密兑换、微信支付**
 * **图片存储方式本地/oss存储，可动态配置**
 
 
@@ -79,7 +79,7 @@
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/fd64021d-5ed5-4fdf-a284-5e9b87e8e736)  
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/41f8679a-825e-4533-8412-d31ff7a83549)
 2.GPT对话
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/dee76fcf-0580-47db-bffb-6cfaabb9e52d)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/d7b7c8fe-414c-4326-ad14-ab474552abfb)
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/7ddfe6bd-6d16-48cf-9505-d1c0e9a28bb9)
 3.GPT画图
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/09f9b995-fdd8-4406-8eb5-9d178e83e2da)
