@@ -39,4 +39,15 @@ public class GetFunctionState {
      * gpt画图开关 0-未开启、1-开启
      */
     private Integer isOpenGptOfficial;
+
+    /**
+     * 星火模型开关 0 -未开启 、1-开启
+     */
+    private Integer isOpenSpark;
+
+
+    /**
+     * gpt4内容识别请求地址
+     */
+    private Integer isOpenGptVision;
 }

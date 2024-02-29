@@ -35,6 +35,13 @@ public class SysConfig extends BaseEntity implements Serializable {
      */
     private String gpt4Url;
 
+
+    /**
+     * gpt4内容识别请求地址
+     */
+    private String gpt4VisionUrl;
+
+
     /**
      * gpt开关 0-未开启、1-开启gpt3.5、2-开启gpt4.0、3-全部
      */
@@ -44,6 +51,11 @@ public class SysConfig extends BaseEntity implements Serializable {
      * gpt画图开关 0-未开启、1-开启
      */
     private Integer isOpenGptOfficial;
+
+    /**
+     * gpt内容识别开关 0-未开启、1开启
+     */
+    private Integer isOpenGptVision;
 
     /**
      * 图片上传路径

@@ -13,7 +13,8 @@ public enum SendType {
     STABLE_STUDIO(7,"stableStudio"),
     GPT_4(8,"gpt-4"),
     SPARK_V2(9,"spark-v2"),
-    SPARK_V3(10,"spark-v3");
+    SPARK_V3(10,"spark-v3"),
+    SPARK_V35(11,"spark-v35");
 
 
     private Integer type;

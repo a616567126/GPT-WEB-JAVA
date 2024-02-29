@@ -24,4 +24,9 @@ public class GptStreamReq {
      */
     private double topP = 1d;
 
+    /**
+     * 文件地址
+     */
+    private String fileUrl;
+
 }

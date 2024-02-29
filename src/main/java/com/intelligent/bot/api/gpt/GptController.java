@@ -13,6 +13,7 @@ import com.intelligent.bot.enums.sys.SendType;
 import com.intelligent.bot.listener.gpt.ConsoleStreamListener;
 import com.intelligent.bot.model.MessageLog;
 import com.intelligent.bot.model.SysConfig;
+import com.intelligent.bot.model.gpt.ImageMessage;
 import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.gpt.GptAlphaReq;
 import com.intelligent.bot.model.req.gpt.GptStreamReq;
@@ -34,6 +35,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.net.Proxy;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -69,13 +71,14 @@ public final class GptController {
             throw new E("Ai对话已关闭");
         }
         if((cacheObject.getIsOpenGpt() == 1 && req.getType() != 3)
-                || (cacheObject.getIsOpenGpt() == 2 && req.getType() != 4)){
+                || (cacheObject.getIsOpenGpt() == 2 && req.getType() < 4)
+                || (cacheObject.getIsOpenGptVision() == 0 && req.getType() > 4)){
             throw new E("Ai模型已关闭");
         }
         if(StringUtils.isEmpty(req.getProblem())){
             throw new E("请输入有效的内容");
         }
-        if(!baiDuService.textToExamine(req.getProblem())){
+        if(req.getType() < 5 && !baiDuService.textToExamine(req.getProblem())){
             throw new E("提问违反相关规定，请更换内容重新尝试");
         }
         //国内需要代理 国外不需要
@@ -84,6 +87,18 @@ public final class GptController {
             proxy = Proxys.http(cacheObject.getProxyIp(), cacheObject.getProxyPort());
         }
         String gptKey = InitUtil.getRandomKey(req.getType());
+        if(req.getType() > 4){
+            List<ImageMessage> imageMessages = new ArrayList<>();
+            ImageMessage imageMessage = new ImageMessage();
+            imageMessage.setText(JSONObject.parseArray(req.getProblem()).getJSONObject(0).getString("text"));
+            imageMessage.setType("text");
+            imageMessages.add(imageMessage);
+            imageMessage = new ImageMessage();
+            imageMessage.setType("image_url");
+            imageMessage.setImage_url(Collections.singletonList(req.getFileUrl()));
+            imageMessages.add(imageMessage);
+            req.setProblem(JSONObject.toJSONString(imageMessages));
+        }
         List<Message> messages = messageLogService.createMessageLogList(req.getLogId(),req.getProblem());
         if(StringUtils.isEmpty(req.getRole())){
             messages.add(Message.ofSystem(cacheObject.getDefaultRole()));
@@ -94,11 +109,18 @@ public final class GptController {
                 .useValue(JSONObject.toJSONString(messages))
                 .gptKey(gptKey)
                 .userId(JwtUtil.getUserId()).build(),req.getLogId());
+        String api = cacheObject.getGptUrl();
+        if(req.getType() == 4){
+            api = cacheObject.getGpt4Url();
+        }
+        if(req.getType() == 5){
+            api = cacheObject.getGpt4VisionUrl();
+        }
         ChatGPTStream chatGPTStream = ChatGPTStream.builder()
                 .timeout(600)
                 .apiKey(gptKey)
                 .proxy(proxy)
-                .apiHost(req.getType() == 3 ? cacheObject.getGptUrl() : cacheObject.getGpt4Url())
+                .apiHost(api)
                 .build()
                 .init();
         ConsoleStreamListener listener = ConsoleStreamListener.builder()

@@ -101,11 +101,17 @@ public class ChatGPTStream {
      */
     public void streamChatCompletion(List<Message> messages,
                                      EventSourceListener eventSourceListener,
-                                     Integer type, GptStreamReq req) {
+                                     Integer type,GptStreamReq req) {
         messages.forEach(m ->{
             m.setTime(null);
         });
-        String model  = type == 3 ? ChatCompletion.Model.GPT_3_5_TURBO_16K.getName() : ChatCompletion.Model.GPT_4.getName();
+        String model  = ChatCompletion.Model.GPT_3_5_TURBO_16K.getName();
+        if(type == 4){
+            ChatCompletion.Model.GPT_4.getName();
+        }
+        if(type == 5){
+            model = ChatCompletion.Model.GPT_4_VISION_PREVIEW.getName();
+        }
         ChatCompletion chatCompletion = ChatCompletion.builder()
                 .messages(messages)
                 .model(model)

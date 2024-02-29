@@ -199,4 +199,14 @@ public class SysConfigQueryRes implements Serializable {
      * AI会话默认角色
      */
     private String defaultRole;
+
+    /**
+     * gpt4内容识别请求地址
+     */
+    private String gpt4VisionUrl;
+
+    /**
+     * gpt内容识别开关 0-未开启、1开启
+     */
+    private Integer isOpenGptVision;
 }

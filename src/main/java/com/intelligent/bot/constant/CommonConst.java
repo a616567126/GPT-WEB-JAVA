@@ -204,6 +204,11 @@ public class CommonConst {
     public static final Integer SPARK_V3_NUMBER =  5;
 
     /**
+     * 星火V3.5模型消耗数量
+     */
+    public static final Integer SPARK_V35_NUMBER =  7;
+
+    /**
      * gpt 3.5 token 最大限制
      */
     public static final Integer GPT_3_5_TURBO_0301_TOKENS = 4096;
@@ -394,5 +399,10 @@ public class CommonConst {
      * 星火v3.1地址：wss协议
      */
     public final static String SPARK_API_HOST_WSS_V3_1 = "https://spark-api.xf-yun.com/v3.1/chat";
+
+    /**
+     * 星火v3.5地址：wss协议
+     */
+    public final static String SPARK_API_HOST_WSS_V3_5 = "https://spark-api.xf-yun.com/v3.5/chat";
 
 }

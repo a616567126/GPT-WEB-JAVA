@@ -14,6 +14,7 @@ import com.intelligent.bot.model.*;
 import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.sys.*;
 import com.intelligent.bot.model.res.sys.*;
+import com.intelligent.bot.model.spark.Text;
 import com.intelligent.bot.service.sys.*;
 import com.intelligent.bot.utils.sys.ImgUtil;
 import com.intelligent.bot.utils.sys.JwtUtil;
@@ -109,16 +110,27 @@ public class ClientController {
                 res.setSendType(e.getSendType());
                 if (e.getSendType().equals(SendType.GPT.getType())
                         || e.getSendType().equals(SendType.GPT_4.getType())
-                        || e.getSendType().equals(SendType.BING.getType())) {
-                    res.setTitle(JSONObject.parseArray(e.getUseValue(), Message.class).get(0).getContent());
-                    List<Message> messages = JSONObject.parseArray(e.getUseValue(), Message.class);
-                    messages.removeIf(m -> m.getRole().equals(Message.Role.SYSTEM.getValue()));
-                    res.setContent(JSONObject.toJSONString(messages));
+                        || e.getSendType().equals(SendType.BING.getType())
+                        || e.getSendType().equals(SendType.SPARK_V2.getType())
+                        || e.getSendType().equals(SendType.SPARK_V3.getType())
+                        || e.getSendType().equals(SendType.SPARK_V35.getType())) {
+                    if(e.getSendType().equals(SendType.SPARK_V2.getType())
+                            || e.getSendType().equals(SendType.SPARK_V3.getType())
+                            || e.getSendType().equals(SendType.SPARK_V35.getType())){
+                        res.setTitle(JSONObject.parseArray(e.getUseValue(), Text.class).get(0).getContent());
+                        List<Text> messages = JSONObject.parseArray(e.getUseValue(), Text.class);
+                        res.setContent(JSONObject.toJSONString(messages));
+                    }else {
+                        res.setTitle(JSONObject.parseArray(e.getUseValue(), Message.class).get(0).getContent());
+                        List<Message> messages = JSONObject.parseArray(e.getUseValue(), Message.class);
+                        messages.removeIf(m -> m.getRole().equals(Message.Role.SYSTEM.getValue()));
+                        res.setContent(JSONObject.toJSONString(messages));
+                    }
                 } else {
                     MessageLogSave messageLogSave = JSONObject.parseObject(e.getUseValue(), MessageLogSave.class);
                     List<String> imgList = new ArrayList<>();
                     messageLogSave.getImgList().forEach( m ->{
-                        imgList.add(sysConfig.getImgReturnUrl() + m );
+                        imgList.add(m.startsWith("http") ? m : sysConfig.getImgReturnUrl() + m );
                     });
                     res.setTitle(messageLogSave.getPrompt());
                     messageLogSave.setImgList(imgList);
@@ -181,7 +193,10 @@ public class ClientController {
                 .isOpenBing(sysConfig.getIsOpenBing())
                 .isOpenMj(sysConfig.getIsOpenMj())
                 .isOpenGpt(sysConfig.getIsOpenGpt())
-                .isOpenGptOfficial(sysConfig.getIsOpenGptOfficial()).build()
+                .isOpenSpark(sysConfig.getIsOpenSpark())
+                .isOpenGptOfficial(sysConfig.getIsOpenGptOfficial())
+                .isOpenGptVision(sysConfig.getIsOpenGptVision())
+                .build()
         );
     }
 
@@ -257,6 +272,7 @@ public class ClientController {
         user.setId(JwtUtil.getUserId());
         user.setMobile(req.getMobile());
         userService.updateById(user);
+
         return B.okBuild();
     }
 

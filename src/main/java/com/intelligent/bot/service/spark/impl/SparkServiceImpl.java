@@ -1,12 +1,15 @@
 package com.intelligent.bot.service.spark.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.intelligent.bot.base.exception.E;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.enums.sys.SendType;
+import com.intelligent.bot.listener.spark.ChatListener;
 import com.intelligent.bot.listener.spark.SparkDeskClient;
 import com.intelligent.bot.model.MessageLog;
 import com.intelligent.bot.model.SysConfig;
+import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.spark.ChatReq;
 import com.intelligent.bot.model.spark.*;
 import com.intelligent.bot.service.baidu.BaiDuService;
@@ -16,14 +19,19 @@ import com.intelligent.bot.service.sys.CheckService;
 import com.intelligent.bot.service.sys.IMessageLogService;
 import com.intelligent.bot.utils.sys.JwtUtil;
 import com.intelligent.bot.utils.sys.RedisUtil;
+import com.intelligent.bot.utils.sys.SendMessageUtil;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 
 @Service
 @Transactional(rollbackFor = E.class)
@@ -44,6 +52,7 @@ public class SparkServiceImpl implements ISparkService {
 
     private static final String GENERAL_V2 = "generalv2";
     private static final String GENERAL_V3 = "generalv3";
+    private static final String GENERAL_V35 = "generalv3.5";
 
     @Override
     public Long chat(ChatReq req) {
@@ -56,12 +65,12 @@ public class SparkServiceImpl implements ISparkService {
         }
         List<Text> messages = messageLogService.createTextLogList(req.getLogId(),req.getProblem());
         Long logId = checkService.checkUser(MessageLog.builder()
-                .useNumber(req.getType() == 2 ? CommonConst.SPARK_V2_NUMBER : CommonConst.SPARK_V3_NUMBER)
-                .sendType(req.getType() == 2 ? SendType.SPARK_V2.getType() : SendType.SPARK_V3.getType())
+                .useNumber(req.getType() == 2 ? CommonConst.SPARK_V2_NUMBER : (req.getType() == 3 ? CommonConst.SPARK_V3_NUMBER : CommonConst.SPARK_V35_NUMBER))
+                .sendType(req.getType() == 2 ? SendType.SPARK_V2.getType() : (req.getType() == 3 ? SendType.SPARK_V3.getType() : SendType.SPARK_V35.getType()))
                 .useValue(JSONObject.toJSONString(messages))
                 .userId(JwtUtil.getUserId()).build(),req.getLogId());
         SparkDeskClient sparkDeskClient = SparkDeskClient.builder()
-                .host(req.getType() == 2 ? CommonConst.SPARK_API_HOST_WSS_V2_1 : CommonConst.SPARK_API_HOST_WSS_V3_1 )
+                .host(req.getType() == 2 ? CommonConst.SPARK_API_HOST_WSS_V2_1 : (req.getType() == 3 ? CommonConst.SPARK_API_HOST_WSS_V3_1 : CommonConst.SPARK_API_HOST_WSS_V3_5) )
                 .appid(cacheObject.getSparkAppId())
                 .apiKey(cacheObject.getSparkApiKey())
                 .apiSecret(cacheObject.getSparkApiSecret())
@@ -75,7 +84,7 @@ public class SparkServiceImpl implements ISparkService {
         Parameter parameter =
                 Parameter.builder()
                         .chat(Chat.builder()
-                                .domain(req.getType() == 2 ? GENERAL_V2 : GENERAL_V3)
+                                .domain(req.getType() == 2 ? GENERAL_V2 : (req.getType() == 3 ? GENERAL_V3 : GENERAL_V35))
                                 .maxTokens(2048)
                                 .temperature(Math.round(random.nextDouble() * 10) / 10.0)
                                 .build())
