@@ -107,7 +107,7 @@ public class ChatGPTStream {
         });
         String model  = ChatCompletion.Model.GPT_3_5_TURBO_16K.getName();
         if(type == 4){
-            ChatCompletion.Model.GPT_4.getName();
+            model = ChatCompletion.Model.GPT_4.getName();
         }
         if(type == 5){
             model = ChatCompletion.Model.GPT_4_VISION_PREVIEW.getName();

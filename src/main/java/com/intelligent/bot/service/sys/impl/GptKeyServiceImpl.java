@@ -47,9 +47,9 @@ public class GptKeyServiceImpl extends ServiceImpl<GptKeyDao, GptKey> implements
         }
         gptKey.setCreateTime(LocalDateTime.now());
         gptKey.setOperateTime(LocalDateTime.now());
-        InitUtil.add(gptKey.getKey(),gptKey);
-        log.error("新增key：{}======缓存key信息：{}",gptKey.getKey(), InitUtil.getAllKey());
         this.save(gptKey);
+        InitUtil.add(gptKey.getId().toString(),gptKey);
+        log.error("新增key：{}======缓存key信息：{}",gptKey.getKey(), InitUtil.getAllKey());
         return B.okBuild();
     }
 
@@ -58,7 +58,7 @@ public class GptKeyServiceImpl extends ServiceImpl<GptKeyDao, GptKey> implements
         List<GptKey> list = this.lambdaQuery().in(GptKey::getId, req.getIds()).list();
         this.removeByIds(req.getIds());
         list.forEach( l ->{
-            InitUtil.removeKey(l.getKey());
+            InitUtil.removeKey(l.getId().toString());
         });
         log.error("删除：{}======缓存key信息：{}",list, InitUtil.getAllKey());
         return B.okBuild();

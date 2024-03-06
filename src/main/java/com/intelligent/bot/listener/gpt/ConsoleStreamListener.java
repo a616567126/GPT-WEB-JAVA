@@ -41,8 +41,7 @@ public class ConsoleStreamListener extends AbstractStreamListener {
         //修改key状态
         asyncService.updateKeyState(messageLog.getGptKey());
         //将用户使用次数返回
-        GptKey gptKey = gptKeyService.lambdaQuery().eq(GptKey::getKey, messageLog.getGptKey()).one();
-        asyncService.updateRemainingTimes(userId,  gptKey.getType() == 3 ? CommonConst.GPT_NUMBER : CommonConst.GPT_4_NUMBER);
+        asyncService.updateRemainingTimes(userId,  messageLog.getUseNumber());
         log.error("gpt对话异常，异常key：{}",messageLog.getGptKey());
         Message message = Message.ofAssistant("Sorry!此次会话失败，请重新尝试（若多次失败请联系作者反馈）");
         SendMessageUtil.sendMessage(userId, message);

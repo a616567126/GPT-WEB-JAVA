@@ -57,7 +57,7 @@ public class InitUtil {
         List<GptKey> gptKeyList = gptKeyService.lambdaQuery().eq(GptKey::getState,0).orderByDesc(GptKey::getSort).list();
 //        gptKeyList.stream().map(GptKey::getKey).collect(Collectors.toList()).forEach(InitUtil::add);
         gptKeyList.forEach( g ->{
-            InitUtil.add(g.getKey(),g);
+            InitUtil.add(g.getId().toString(),g);
         });
         initUtil = this;
         initUtil.gptKeyService = this.gptKeyService;
@@ -68,7 +68,7 @@ public class InitUtil {
         redisUtil.setCacheObject(CommonConst.PAY_CONFIG,payConfig);
         if(sysConfig.getRegistrationMethod() == 2){
             List<EmailConfig> emailConfigList = emailService.list();
-            if(null != emailConfigList && emailConfigList.size() > 0){
+            if(null != emailConfigList && !emailConfigList.isEmpty()){
                 redisUtil.setCacheObject(CommonConst.EMAIL_LIST,emailConfigList);
             }
         }
