@@ -80,8 +80,8 @@
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/fd64021d-5ed5-4fdf-a284-5e9b87e8e736)  
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/41f8679a-825e-4533-8412-d31ff7a83549)
 2.GPT对话
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/d7b7c8fe-414c-4326-ad14-ab474552abfb)
-![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/7ddfe6bd-6d16-48cf-9505-d1c0e9a28bb9)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/40a29c30-6995-4802-846a-590d34a16404)
+![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/7ed29d3e-7cdb-4d58-b569-547ca20380eb)
 3.GPT画图
 ![image](https://github.com/a616567126/GPT-WEB-JAVA/assets/43660702/09f9b995-fdd8-4406-8eb5-9d178e83e2da)
 4.Midjourney
