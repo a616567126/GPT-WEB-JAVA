@@ -35,6 +35,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 @Component
@@ -58,8 +59,6 @@ public class AsyncService {
 
     @Resource
     WxMpService wxMpService;
-
-    protected StringBuffer lastMessage = new StringBuffer();
 
 
     @Async
@@ -159,9 +158,9 @@ public class AsyncService {
         wxMpService.getKefuService().sendKefuMessage(message);
     }
 
-    @Async
-    public void sparkChat(SparkDeskClient sparkDeskClient, AIChatRequest aiChatRequest, Long logId, Long userId){
+    public void sparkChat(SparkDeskClient sparkDeskClient, AIChatRequest aiChatRequest, Long logId, AtomicLong atomicLong){
         sparkDeskClient.chat(new ChatListener(aiChatRequest) {
+            StringBuffer lastMessage = new StringBuffer();
             @SneakyThrows
             @Override
             public void onChatError(AIChatResponse aiChatResponse) {
@@ -172,7 +171,7 @@ public class AsyncService {
             public void onChatOutput(AIChatResponse aiChatResponse) {
                 String content = aiChatResponse.getPayload().getChoices().getText().get(0).getContent();
                 lastMessage.append(content);
-                SendMessageUtil.sendMessage(userId, Text.builder().role(Text.Role.ASSISTANT.getName()).index(0).content(content).build());
+                SendMessageUtil.sendMessage(atomicLong.get(), Text.builder().role(Text.Role.ASSISTANT.getName()).index(0).content(content).build());
                 log.info("spark回答中:{}",content);
             }
 
@@ -180,7 +179,7 @@ public class AsyncService {
             public void onChatEnd() {
                 log.info("spark当前会话结束了");
                 endOfAnswer(logId,lastMessage.toString());
-                SendMessageUtil.sendMessage(userId,  Text.builder().role(Text.Role.ASSISTANT.getName()).index(0).content("[DONE]").build());
+                SendMessageUtil.sendMessage(atomicLong.get(),  Text.builder().role(Text.Role.ASSISTANT.getName()).index(0).content("[DONE]").build());
                 lastMessage = new StringBuffer();
             }
 

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 @Transactional(rollbackFor = E.class)
@@ -99,7 +100,9 @@ public class SparkServiceImpl implements ISparkService {
                         .parameter(parameter)
                         .payload(payload)
                         .build();
-        asyncService.sparkChat(sparkDeskClient,aiChatRequest,logId,JwtUtil.getUserId());
+        Long userId = JwtUtil.getUserId();
+        AtomicLong atomicLong = new AtomicLong(userId);
+        asyncService.sparkChat(sparkDeskClient,aiChatRequest,logId,atomicLong);
         return logId;
     }
 
