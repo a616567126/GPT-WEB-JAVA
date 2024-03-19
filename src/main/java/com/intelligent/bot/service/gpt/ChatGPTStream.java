@@ -5,6 +5,7 @@ import cn.hutool.http.Header;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intelligent.bot.base.exception.E;
 import com.intelligent.bot.constant.CommonConst;
+import com.intelligent.bot.model.gpt.ImgMessage;
 import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.gpt.GptStreamReq;
 import lombok.AllArgsConstructor;
@@ -74,11 +75,8 @@ public class ChatGPTStream {
     /**
      * 流式输出
      */
-    public void streamChatCompletion(ChatCompletion chatCompletion,
+    public void streamChatCompletion(Object chatCompletion,
                                      EventSourceListener eventSourceListener) {
-
-        chatCompletion.setStream(true);
-
         try {
             EventSource.Factory factory = EventSources.createFactory(okHttpClient);
             ObjectMapper mapper = new ObjectMapper();
@@ -101,28 +99,39 @@ public class ChatGPTStream {
      */
     public void streamChatCompletion(List<Message> messages,
                                      EventSourceListener eventSourceListener,
-                                     Integer type,GptStreamReq req) {
-        messages.forEach(m ->{
-            m.setTime(null);
-        });
+                                     Integer type,GptStreamReq req,
+                                     List<ImgMessage> imgMessages) {
         String model  = ChatCompletion.Model.GPT_3_5_TURBO_16K.getName();
         if(type == 4){
             model = ChatCompletion.Model.GPT_4.getName();
         }
-        if(type == 5){
-            model = ChatCompletion.Model.GPT_4_VISION_PREVIEW.getName();
+        if(null != imgMessages && !imgMessages.isEmpty()){
+            imgMessages.forEach(m ->{
+                m.setTime(null);
+            });
+            ChatImgCompletion chatImgCompletion = ChatImgCompletion.builder()
+                    .messages(imgMessages)
+                    .temperature(req.getTemperature())
+                    .topP(req.getTopP())
+                    .stream(true)
+                    .build();
+            streamChatCompletion(chatImgCompletion,eventSourceListener);
+        }else {
+            messages.forEach(m ->{
+                m.setTime(null);
+            });
+            ChatCompletion chatCompletion = ChatCompletion.builder()
+                    .messages(messages)
+                    .model(model)
+                    .temperature(req.getTemperature())
+                    .topP(req.getTopP())
+                    .stream(true)
+                    .build();
+            if(chatCompletion.checkTokens()){
+                throw new E("本次会话长度达到限制，请创建新的会话");
+            }
+            streamChatCompletion(chatCompletion, eventSourceListener);
         }
-        ChatCompletion chatCompletion = ChatCompletion.builder()
-                .messages(messages)
-                .model(model)
-                .temperature(req.getTemperature())
-                .topP(req.getTopP())
-                .stream(true)
-                .build();
-        if(chatCompletion.checkTokens()){
-            throw new E("本次会话长度达到限制，请创建新的会话");
-        }
-        streamChatCompletion(chatCompletion, eventSourceListener);
     }
 
 }

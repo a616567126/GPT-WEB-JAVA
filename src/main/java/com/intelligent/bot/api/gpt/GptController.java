@@ -14,6 +14,7 @@ import com.intelligent.bot.listener.gpt.ConsoleStreamListener;
 import com.intelligent.bot.model.MessageLog;
 import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.model.gpt.ImageMessage;
+import com.intelligent.bot.model.gpt.ImgMessage;
 import com.intelligent.bot.model.gpt.Message;
 import com.intelligent.bot.model.req.gpt.GptAlphaReq;
 import com.intelligent.bot.model.req.gpt.GptStreamReq;
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -87,21 +89,16 @@ public final class GptController {
             proxy = Proxys.http(cacheObject.getProxyIp(), cacheObject.getProxyPort());
         }
         String gptKey = InitUtil.getRandomKey(req.getType());
+        List<Message> messages = null;
+        List<ImgMessage> imgMessages = new ArrayList<>();
         if(req.getType() > 4){
-            List<ImageMessage> imageMessages = new ArrayList<>();
-            ImageMessage imageMessage = new ImageMessage();
-            imageMessage.setText(JSONObject.parseArray(req.getProblem()).getJSONObject(0).getString("text"));
-            imageMessage.setType("text");
-            imageMessages.add(imageMessage);
-            imageMessage = new ImageMessage();
-            imageMessage.setType("image_url");
-            imageMessage.setImage_url(Collections.singletonList(req.getFileUrl()));
-            imageMessages.add(imageMessage);
-            req.setProblem(JSONObject.toJSONString(imageMessages));
-        }
-        List<Message> messages = messageLogService.createMessageLogList(req.getLogId(),req.getProblem());
-        if(StringUtils.isEmpty(req.getRole())){
-            messages.add(Message.ofSystem(cacheObject.getDefaultRole()));
+            List<JSONObject> imageMessages = getJsonObjects(JSONObject.parseArray(req.getProblem()).getJSONObject(0).getString("text"), req.getFileUrl());
+            imgMessages.add(ImgMessage.of(imageMessages));
+        }else {
+            messages = messageLogService.createMessageLogList(req.getLogId(),req.getProblem());
+            if(StringUtils.isEmpty(req.getRole())){
+                messages.add(Message.ofSystem(cacheObject.getDefaultRole()));
+            }
         }
         Long logId = checkService.checkUser(MessageLog.builder()
                 .useNumber(req.getType() == 3 ? CommonConst.GPT_NUMBER : CommonConst.GPT_4_NUMBER)
@@ -133,7 +130,7 @@ public final class GptController {
         listener.setOnComplate(msg -> {
             asyncService.endOfAnswer(logId,msg.toString());
         });
-        chatGPTStream.streamChatCompletion(messages, listener,req.getType(),req);
+        chatGPTStream.streamChatCompletion(messages, listener,req.getType(),req,imgMessages);
         return B.okBuild(logId);
     }
     @PostMapping(value = "/official", name = "AI-画图")
@@ -189,6 +186,23 @@ public final class GptController {
         MessageLogSave returnMessage = BeanUtil.copyProperties(messageLogSave, MessageLogSave.class);
         returnMessage.setImgList(returnImgUrlList);
         return B.okBuild(returnMessage);
+    }
+
+    private static List<JSONObject> getJsonObjects(String text,String url) {
+        JSONObject prompt = new JSONObject();
+        prompt.put("type", "text");
+        prompt.put("text", text);
+        JSONObject image = new JSONObject();
+        image.put("type", "image_url");
+        final JSONObject imageUrl = new JSONObject();
+
+        imageUrl.put("url", url);
+        image.put("image_url", imageUrl);
+
+        List<JSONObject> messages = new LinkedList<>();
+        messages.add(prompt);
+        messages.add(image);
+        return messages;
     }
 
 }
