@@ -167,23 +167,24 @@
         9.修改yml中的数据库配置与redis配置
         10.在根目录下创建临时上传路径/www/temp/data 或自己根据自己实际的路径来配置，注意修改yml中第17行
         11.增加上传图片目录/www/uploads/ 或自己根据自己实际路径来配置，注意修改sys_config表中的图片上传路径
-        12.打包java代码，可使用Idea下载好mavn依赖后执行install，将target下的‘Intelligent-Bot-0.0.1-SNAPSHOT.jar’文件
+        12.gpt默认角色对应的图片在resources/role_img中，在上传目录中创建role文件夹，将role_img中的图片复制到role中
+        13.打包java代码，可使用Idea下载好mavn依赖后执行install，将target下的‘Intelligent-Bot-0.0.1-SNAPSHOT.jar’文件
            复制到/usr/local/siana/下，后续都已这个为准，可根据自己的项目实际位置自行更改
-        13.执行nohup java -jar Intelligent-Bot-0.0.1-SNAPSHOT.jar 启动后台
-        14.查看日志是否有异常日志，若没有则启动成功
-        15.管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码
+        14.执行nohup java -jar Intelligent-Bot-0.0.1-SNAPSHOT.jar 启动后台
+        15.查看日志是否有异常日志，若没有则启动成功
+        16.管理员账号admin密码123456，根据自己需求合理增加或修改表内数据，初始化sql只为正常启动代码
         ----------------以下说明为客户端、管理端、移动端部署说明---------------------
-        16.在服务器上配置启动好服务之后，在客户端与管理端修改api.js里的接口地址,
+        17.在服务器上配置启动好服务之后，在客户端与管理端修改api.js里的接口地址,
            PC端与移动端App.js中修改对应的页面地址，siana_bot（填写移动端地址），
            siana_mobile（填写PC端地址），配置好后自动适配设备，
            PC端管理端使用Node14,Npm6其他版本可能出现各种异常情况，推荐使用vscode打开项目
-        17.使用npm run install安装所需依赖
-        18.使用npm run dev 测试是否接口请求正常。，
-        19.使用npm run build 打包代码，并部署到服务器
-        20.使用Hbuilder打开移动端代码，打包方式（网站-PC Web或手机H5(仅适用于 uni-app)）
-        21.可使用nginx，代理图片服务器，客户端及管理端页面
-        22.系统中使用百度翻译与百度内容审核，查看下方教程进行开通
-        23.GPT与Midjourney需要外网环境，可使用香港服务器，延迟低，可购买下方浅夏云，
+        18.使用npm run install安装所需依赖
+        19.使用npm run dev 测试是否接口请求正常。，
+        20.使用npm run build 打包代码，并部署到服务器
+        21.使用Hbuilder打开移动端代码，打包方式（网站-PC Web或手机H5(仅适用于 uni-app)）
+        22.可使用nginx，代理图片服务器，客户端及管理端页面
+        23.系统中使用百度翻译与百度内容审核，查看下方教程进行开通
+        24.GPT与Midjourney需要外网环境，可使用香港服务器，延迟低，可购买下方浅夏云，
            特惠香港活动690一年8核心16G内存30m
 
 
