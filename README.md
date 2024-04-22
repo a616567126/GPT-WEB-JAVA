@@ -18,8 +18,7 @@
 <p align="center"> 后台管理ui演示地址地址：https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA </p>
 
 
-  ## 👨‍🚀  Major Function
-<h2>📌 客户端</h2>
+<h2>📌 功能项</h2>
 
 - [x] GPt对话(基于SSE WebSocket流式推送,支持3.5,4.0等模型,支持官方,第三方api地址,支持GPT4.0图片识别,dall-e-3模型)
 - [x] 星火大模型(基于SSE WebSocket流式推送,支持2,3,3.5模型)
