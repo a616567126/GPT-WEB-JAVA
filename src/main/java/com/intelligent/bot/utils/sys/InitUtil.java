@@ -33,8 +33,6 @@ public class InitUtil {
     @Resource
     IPayConfigService payConfigService;
     @Resource
-    IEmailService emailService;
-    @Resource
     IDiscordAccountConfigService discordAccountConfigService;
 
 
@@ -66,12 +64,6 @@ public class InitUtil {
         PayConfig payConfig = payConfigService.getById(1);
         redisUtil.setCacheObject(CommonConst.SYS_CONFIG,sysConfig);
         redisUtil.setCacheObject(CommonConst.PAY_CONFIG,payConfig);
-        if(sysConfig.getRegistrationMethod() == 2){
-            List<EmailConfig> emailConfigList = emailService.list();
-            if(null != emailConfigList && !emailConfigList.isEmpty()){
-                redisUtil.setCacheObject(CommonConst.EMAIL_LIST,emailConfigList);
-            }
-        }
         if(sysConfig.getIsOpenProxy() == 1){
             System.setProperty("http.proxyHost", sysConfig.getProxyIp());
             System.setProperty("http.proxyPort", String.valueOf(sysConfig.getProxyPort()));

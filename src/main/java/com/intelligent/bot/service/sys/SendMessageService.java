@@ -30,6 +30,9 @@ public class SendMessageService {
     @Resource
     RedisUtil redisUtil;
 
+    @Resource
+    IEmailService emailService;
+
     public void sendEmail(String email){
         Session session = createSession();
         MimeMessage msg = new MimeMessage(session);
@@ -57,21 +60,12 @@ public class SendMessageService {
     }
 
     public Session createSession(){
-        List<EmailConfig> emailList = RedisUtil.getCacheObject(CommonConst.EMAIL_LIST);
-        if(null == emailList || emailList.size() < 1){
+        List<EmailConfig> emailList = emailService.list();
+        if(null == emailList || emailList.isEmpty()){
             throw new E("暂无可用的邮件服务");
         }
         EmailConfig emailConfig = getListElementRandom(emailList);
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host",emailConfig.getHost());
-        properties.put("mail.smtp.port",emailConfig.getPort());
-        properties.put("mail.smtp.auth","true");
-        properties.put("mail.smtp.starttls.enable","true");
-        if(emailConfig.getHost().contains("qq")){
-            properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
-            properties.put("mail.smtp.socketFactory.port",emailConfig.getPort());
-            properties.put("mail.smtp.starttls.required","true");
-        }
+        Properties properties = getProperties(emailConfig);
         emailForm = emailConfig.getUsername();
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
@@ -81,6 +75,20 @@ public class SendMessageService {
         });
         session.setDebug(true);
         return session;
+    }
+
+    private static Properties getProperties(EmailConfig emailConfig) {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", emailConfig.getHost());
+        properties.put("mail.smtp.port", emailConfig.getPort());
+        properties.put("mail.smtp.auth","true");
+        properties.put("mail.smtp.starttls.enable","true");
+        if(emailConfig.getHost().contains("qq")){
+            properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+            properties.put("mail.smtp.socketFactory.port", emailConfig.getPort());
+            properties.put("mail.smtp.starttls.required","true");
+        }
+        return properties;
     }
 
     public static EmailConfig getListElementRandom(List<EmailConfig> list){
