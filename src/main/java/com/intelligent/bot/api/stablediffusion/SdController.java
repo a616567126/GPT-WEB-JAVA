@@ -1,5 +1,6 @@
 package com.intelligent.bot.api.stablediffusion;
 
+import cn.hutool.http.Header;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -81,7 +82,11 @@ public class SdController {
         if (null == cacheObject.getIsOpenSd() || cacheObject.getIsOpenSd() == 0) {
             throw new E("暂未开启sd");
         }
-        String body = HttpUtil.createGet(cacheObject.getSdUrl() + CommonConst.SD_SAMPLERS).execute().body();
+        String body = HttpUtil
+                .createGet(cacheObject.getSdUrl() + CommonConst.SD_SAMPLERS)
+                .header(Header.AUTHORIZATION,null != cacheObject.getSdAuth() ? cacheObject.getSdAuth() : null)
+                .execute()
+                .body();
         JSONArray jsonArray = JSONObject.parseArray(body);
         for (int i = 0; i < jsonArray.size(); i++) {
             String title = jsonArray.getJSONObject(i).getString("name");
@@ -112,7 +117,10 @@ public class SdController {
         int position = queueUtil.getPosition(JSONObject.toJSONString(req));
         if (currentQueueLength == 0 || ((position + 1) == 1)) {
             res.setState(2);
-            String body = HttpUtil.createGet(cacheObject.getSdUrl() + CommonConst.SD_PROGRESS).execute().body();
+            String body = HttpUtil
+                    .createGet(cacheObject.getSdUrl() + CommonConst.SD_PROGRESS)
+                    .header(Header.AUTHORIZATION,null != cacheObject.getSdAuth() ? cacheObject.getSdAuth() : null)
+                    .execute().body();
             JSONObject bodyJson = JSONObject.parseObject(body);
             res.setImg(bodyJson.getString("current_image"));
             res.setProgress(bodyJson.getDouble("progress"));
@@ -132,7 +140,9 @@ public class SdController {
         }
         JSONObject param = new JSONObject();
         param.put("image", req.getImage());
-        String body = HttpUtil.createPost(cacheObject.getSdUrl() + CommonConst.SD_PNG_INFO)
+        String body = HttpUtil
+                .createPost(cacheObject.getSdUrl() + CommonConst.SD_PNG_INFO)
+                .header(Header.AUTHORIZATION,null != cacheObject.getSdAuth() ? cacheObject.getSdAuth() : null)
                 .body(JSONObject.toJSONString(param))
                 .execute().body();
         System.out.println(body);

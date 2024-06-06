@@ -80,6 +80,7 @@ public class MyTask {
                 param.setLoraList(null);
                 String body = HttpUtil.createPost(postUrl)
                         .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
+                        .header(Header.AUTHORIZATION,null != cacheObject.getSdAuth() ? cacheObject.getSdAuth() : null)
                         .body(StringUtil.toUnderlineCase(param))
                         .execute()
                         .body();

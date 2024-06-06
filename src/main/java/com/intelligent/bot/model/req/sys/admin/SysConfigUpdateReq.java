@@ -72,6 +72,11 @@ public class SysConfigUpdateReq implements Serializable {
     private Integer isOpenSd;
 
     /**
+     * sd接口api鉴权Authorization
+     */
+    private String sdAuth;
+
+    /**
      * 是否开启FlagStudio 0-未开启 1开启
      */
     private Integer isOpenFlagStudio;

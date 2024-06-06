@@ -551,6 +551,7 @@ CREATE TABLE `sys_config` (
   `api_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '后台接口地址',
   `client_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '客户端页面地址',
   `is_open_sd` tinyint DEFAULT '0' COMMENT '是否开启sd 0未开启 1开启',
+  `sd_auth` tinyint DEFAULT '0' COMMENT 'sd接口api鉴权Authorization',
   `sd_url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'Sd接口地址',
   `is_open_flag_studio` tinyint DEFAULT '0' COMMENT '是否开启FlagStudio 0-未开启 1开启',
   `flag_studio_key` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'FlagStudio key',

@@ -67,6 +67,11 @@ public class SysConfigQueryRes implements Serializable {
     private String sdUrl;
 
     /**
+     * sd接口api鉴权Authorization
+     */
+    private String sdAuth;
+
+    /**
      * 是否开启sd 0未开启 1开启
      */
     private Integer isOpenSd;
