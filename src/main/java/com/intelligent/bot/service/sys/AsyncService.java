@@ -197,4 +197,9 @@ public class AsyncService {
         }
     }
 
+    @Async
+    public void deleteFile(File file){
+        FileUtil.del(file);
+    }
+
 }

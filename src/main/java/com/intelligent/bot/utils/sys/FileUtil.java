@@ -2,13 +2,16 @@ package com.intelligent.bot.utils.sys;
 
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import cn.hutool.http.HttpUtil;
 import com.intelligent.bot.constant.CommonConst;
 import com.intelligent.bot.model.SysConfig;
 import com.intelligent.bot.utils.gpt.Proxys;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
@@ -24,6 +27,7 @@ import java.util.regex.Pattern;
 
 @Log4j2
 public class FileUtil {
+
 
     public static String base64ToImage(String base64,String fileName) throws IOException {
         SysConfig cacheObject = RedisUtil.getCacheObject(CommonConst.SYS_CONFIG);
@@ -169,6 +173,14 @@ public class FileUtil {
         file = new File(fileFullPath+newFileName);
         QrCodeUtil.generate(value, 300, 300,
                 file);
+        return file;
+    }
+
+    public static File createFile(String url){
+        String fileName = System.currentTimeMillis() + ".";
+        File getOssFile = cn.hutool.core.io.FileUtil.file(url);
+        File file = new File( CommonConst.UPLOAD_URL + fileName + FileNameUtil.getSuffix(getOssFile));
+        HttpUtil.downloadFile(url, file);
         return file;
     }
 }

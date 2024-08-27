@@ -405,4 +405,8 @@ public class CommonConst {
      */
     public final static String SPARK_API_HOST_WSS_V3_5 = "https://spark-api.xf-yun.com/v3.5/chat";
 
+    public static final String UPLOAD_URL =  "/www/uploads/h5/";
+
+    public static final String MAC_UPLOAD_URL =  "/Users/sim/Desktop/logs/";
+
 }
