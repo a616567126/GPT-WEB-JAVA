@@ -16,6 +16,10 @@
 <p align="center">🧧 3.0全新ui，客户端与管理端移动端，购买后加入VIP群持续更新，扫码下方作者微信添加好友咨询加群</p>
 <p align="center"> 后台管理ui演示地址地址：https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA </p>
 
+## 🍾  作者推荐
+- 作者使用服务器地址：[浅夏云香港美国国内服务器8核心16G内存低至690/年详情扫码联系作者](https://www.qxqxa.com/aff/ZGWPEDLQ)
+- 作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)
+
 
 <h2>📌 功能项</h2>
 
@@ -69,13 +73,6 @@
 
 - 1.百度翻译申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91)
 - 1.百度文本审核申请，配置流程、[参考地址](https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E5%86%85%E5%AE%B9%E5%AE%A1%E6%A0%B8%E5%B9%B3%E5%8F%B0-%E6%96%87%E6%9C%AC)
-
-
-## 🍾  作者推荐
-- 作者使用服务器地址：[浅夏云香港美国国内服务器8核心16G内存低至690/年详情扫码联系作者](https://www.qxqxa.com/aff/ZGWPEDLQ)
-- 作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)
-
-
 
 
 ## 🥤  Reward（有能力的可以请作者喝一杯冰可落）
