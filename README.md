@@ -72,7 +72,7 @@
 
 
 ## 🍾  作者推荐
-- 作者使用服务器地址：[浅夏云](https://www.qxqxa.com/aff/ZGWPEDLQ)
+- 作者使用服务器地址：[浅夏云香港美国国内服务器8核心16G内存低至690/年详情扫码联系作者](https://www.qxqxa.com/aff/ZGWPEDLQ)
 - 作者使用机场地址：[新华云](https://newhua99.com/#/register?code=fMYmE5Ri)
 
 
