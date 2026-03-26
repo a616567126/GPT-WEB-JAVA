@@ -11,8 +11,7 @@
 
 </div>
 
-<h1 align="center"> 🎉 最新版地址：https://super.aisiana.top</h1>
-<h1 align="center"> 🎉 稳定版地址：https://bot.aisiana.top</h1>  
+<h1 align="center"> 💣演示地址已关闭</h1>
 <p align="center">🧧 3.0全新ui，客户端与管理端移动端，购买后加入VIP群持续更新，扫码下方作者微信添加好友咨询加群</p>
 <p align="center"> 后台管理ui演示地址地址：https://github.com/a616567126/GPT-WEB-JAVA/wiki/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86ui%E6%BC%94%E7%A4%BA </p>
 
