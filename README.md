@@ -104,7 +104,7 @@
 
 ### 📈 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=a616567126/GPT-WEB-JAVA&type=Timeline)](https://star-history.com/#a616567126/GPT-WEB-JAVA&Timeline)
+[![Star History Chart](https://star-history.dera.page/svg?repos=a616567126/GPT-WEB-JAVA&type=Timeline)](https://star-history.dera.page/#a616567126/GPT-WEB-JAVA&Timeline)
 
 ---
 
