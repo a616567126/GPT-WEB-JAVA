@@ -21,7 +21,7 @@
 ## 🔥 <span style="font-size: 26px; color: #ff4d4f;"><b>作者推荐（独家福利）</b></span>
 
 * **🚀 独立服务器推荐**：**[浅夏云香港美国国内服务器 | 8核心16G内存低至 690/年 | 详情扫码联系作者](https://www.qxqxa.com/aff/ZGWPEDLQ)**
-* **✈️ 优质高速机场**：**[新华云点此注册](https://newhua99.com/#/register?code=fMYmE5Ri)**
+* **✈️ 优质高速机场**：**[新华云点此注册](https://new.newhua99.com/#/register?code=4REOpo0Y)**
 * **🛸 极致性价比小鸡**：**[Rabisu | 9.9刀洛杉矶小鸡不限流量 1C1G](https://www.rabisu.com/panel/link.php?id=10)**
 
 ---
